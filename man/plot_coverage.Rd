@@ -54,13 +54,4 @@ plot_coverage(map_data)
 plot_coverage(map_data, customize = TRUE)
 
 
-# With user-defined limits
-limits_data <- data.frame(
- chrom = c("CHR1", "CHR2", "CHR3"),
- max_position = c(1500000, 2000000, 2500000)
-)
-
-plot_coverage(map_data, limits = limits_data)
-
-
 }
