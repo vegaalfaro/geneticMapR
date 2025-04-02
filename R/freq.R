@@ -1,17 +1,17 @@
 #'
 #'
 #'
-#' Calculate Genotype Frequency Per Individual or Marker
+#'  Calculate Genotype Frequency Per Individual or Marker
 #'
 #'
-#'
+#' @details
 #' `freq` calculates the relative frequency of genotype classes
 #' (usually `"A", "H", "B"` or `"0", "1", "2"`) for each individual or marker
 #' in a genotype matrix. The function transposes the matrix to process individuals
 #' or markers as needed, computes the relative frequency of each genotype, and
 #' fills missing genotype categories with the most frequent genotype.
 #' Proportions are calculated based on non-missing values. Results may be biased
-#' if the missing data is high. Use `filter_missing_geno`previously if your data
+#' if the missing data is high. Use `filter_missing_geno` previously if your data
 #' has a high proportion of missingness.
 #'
 #'
@@ -27,12 +27,6 @@
 #'   columns correspond to the genotype categories. Values represent relative
 #'   genotype frequencies, calculated based on non-missing values.
 #'
-#' @details
-#' - Computes relative frequencies of genotypes per individual or marker.
-#' - Missing genotype categories are filled with the mode (most frequent genotype).
-#' - Ensures that the output always contains the expected genotype columns.
-#' - Proportions are calculated excluding missing values, so results may be biased
-#'   if missing data is high.
 #'
 #' @examples
 #' # Example genotype matrix (numeric format)
