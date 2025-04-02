@@ -1,10 +1,7 @@
-#'
-#'
-#'
 #'  Calculate Genotype Frequency Per Individual or Marker
 #'
+#' @description
 #'
-#' @details
 #' `freq` calculates the relative frequency of genotype classes
 #' (usually `"A", "H", "B"` or `"0", "1", "2"`) for each individual or marker
 #' in a genotype matrix. The function transposes the matrix to process individuals

@@ -24,9 +24,6 @@ columns correspond to the genotype categories. Values represent relative
 genotype frequencies, calculated based on non-missing values.
 }
 \description{
-Calculate Genotype Frequency Per Individual or Marker
-}
-\details{
 \code{freq} calculates the relative frequency of genotype classes
 (usually \verb{"A", "H", "B"} or \verb{"0", "1", "2"}) for each individual or marker
 in a genotype matrix. The function transposes the matrix to process individuals

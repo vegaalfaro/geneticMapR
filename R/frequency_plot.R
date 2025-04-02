@@ -1,14 +1,12 @@
-#'
-#'
-#'
 #' Generate a Histogram of Genotype Frequencies
 #'
 #'
 #'
-#' This function creates a histogram of genotype frequencies for each genotype category
+#' @description
+#' The function creates a histogram of genotype frequencies for each genotype category
 #' (e.g., `"0", "1", "2"`) based on a frequency data frame. The function also
-#' returns the processed long-format data as an attribute. It would work if your data
-#' is in A, H, B format. Use `formater` to change before using.
+#' returns the processed long-format data as an attribute. It will not work if your data
+#' is in A, H, B format. Use `formater` to change to dosage before using `frequency_plot.`
 #'
 #' @param freq_df Usually the output of `freq`. A data frame where rows represent markers or individuals,
 #'   and columns represent genotype categories with their frequencies.

@@ -17,7 +17,7 @@ plot_coverage(map, limits = NULL, customize = TRUE)
 If \code{NULL} (default), the function computes chromosome limits from \code{map}.}
 
 \item{customize}{Logical. If \code{TRUE}, applies additional visual customizations.
-Default is \code{FALSE}.}
+Default is \code{TRUE}.}
 }
 \value{
 A \code{ggplot2} object representing genome-wide coverage.

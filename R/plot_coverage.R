@@ -1,5 +1,6 @@
 #' Plot Genome-wide Coverage
 #'
+#'@description
 #' Generates a genome-wide coverage plot, displaying the positions
 #' of markers across chromosomes. It is a customized version of `plot_coverage`
 #' from **MapRtools** and allows additional aesthetic modifications.
@@ -10,7 +11,7 @@
 #' @param limits (Optional) A data frame specifying the maximum position for each chromosome.
 #'   If `NULL` (default), the function computes chromosome limits from `map`.
 #' @param customize Logical. If `TRUE`, applies additional visual customizations.
-#'   Default is `FALSE`.
+#'   Default is `TRUE`.
 #'
 #' @return A `ggplot2` object representing genome-wide coverage.
 #'

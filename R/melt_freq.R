@@ -1,10 +1,6 @@
-#'
-#'
-#'
 #' Convert (Melt) Genotype Frequency Data to Long Format
 #'
-#'
-#' @description Convert (Melt) Genotype Frequency Data to Long Format
+#' @description
 #'
 #' Transforms a genotype frequency data frame from wide format
 #' (where genotype categories are columns) to long format, making it easier

@@ -20,8 +20,6 @@ A data frame in long format with three columns:
 }
 }
 \description{
-Convert (Melt) Genotype Frequency Data to Long Format
-
 Transforms a genotype frequency data frame from wide format
 (where genotype categories are columns) to long format, making it easier
 to use with \code{ggplot2} and other tidyverse functions. Works well with \code{freq}

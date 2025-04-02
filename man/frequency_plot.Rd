@@ -15,13 +15,12 @@ A \code{ggplot2} histogram visualizing the distribution of genotype frequencies.
 The processed long-format data is attached as an attribute (\code{attr(output, "data")}).
 }
 \description{
-Generate a Histogram of Genotype Frequencies
+The function creates a histogram of genotype frequencies for each genotype category
+(e.g., \verb{"0", "1", "2"}) based on a frequency data frame. The function also
+returns the processed long-format data as an attribute. It will not work if your data
+is in A, H, B format. Use \code{formater} to change to dosage before using \code{frequency_plot.}
 }
 \details{
-This function creates a histogram of genotype frequencies for each genotype category
-(e.g., \verb{"0", "1", "2"}) based on a frequency data frame. The function also
-returns the processed long-format data as an attribute. It would work if your data
-is in A, H, B format. Use \code{formater} to change before using.
 \itemize{
 \item Converts the input data frame to long format using \code{pivot_longer()}.
 \item Ensures correct ordering of genotype categories.
