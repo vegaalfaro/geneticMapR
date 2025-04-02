@@ -47,7 +47,7 @@
 #' # Compute genotype frequency by individuals
 #' freq(geno_matrix, input_format = "numeric", by = "individuals")
 #'
-#' @importFrom stats prop.table
+#' @importFrom stats prop.table setNames
 #' @export
 freq <- function(x, input_format = "numeric", by = "markers") {
   # Ensure input is a matrix
@@ -59,7 +59,7 @@ freq <- function(x, input_format = "numeric", by = "markers") {
     freqs <- prop.table(table(factor(ind, levels = col_names), useNA = "no"))
 
     # Ensure output always has the correct columns (fill missing ones with 0)
-    full_freqs <- setNames(rep(0, length(col_names)), col_names)
+    full_freqs <- stats::setNames(rep(0, length(col_names)), col_names)
     full_freqs[names(freqs)] <- freqs
 
     return(full_freqs)
