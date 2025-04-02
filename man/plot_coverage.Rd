@@ -4,7 +4,7 @@
 \alias{plot_coverage}
 \title{Plot Genome-wide Coverage}
 \usage{
-plot_coverage(map, limits = NULL, customize = FALSE)
+plot_coverage(map, limits = NULL, customize = TRUE)
 }
 \arguments{
 \item{map}{A data frame with two columns:
@@ -52,6 +52,5 @@ plot_coverage(map_data)
 
 # Coverage plot with custom aesthetics
 plot_coverage(map_data, customize = TRUE)
-
 
 }
