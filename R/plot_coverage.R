@@ -39,6 +39,7 @@
 #' # Coverage plot with custom aesthetics
 #' plot_coverage(map_data, customize = TRUE)
 #'
+#'
 #' @import ggplot2
 #' @export
 plot_coverage <- function(map, limits = NULL, customize = FALSE) {
