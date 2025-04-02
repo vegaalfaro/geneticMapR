@@ -28,6 +28,8 @@
 #' @importFrom scales comma
 #' @export
 plot_genotype_histogram <- function(ans) {
+  Marker <- NULL
+  Value <- NULL
   # Convert genotype matrix to long format
   genotype_data_long2 <- as.data.frame(ans) %>%
     tibble::rownames_to_column(var = "Marker") %>%

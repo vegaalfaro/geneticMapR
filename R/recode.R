@@ -61,7 +61,7 @@
 #'
 #'
 #'
-#' @importFrom dplyr mutate filter across case_when
+#' @importFrom dplyr mutate filter across case_when all_of
 #' @export
 recode <- function(geno, parent1,
                    parent2,

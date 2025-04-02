@@ -35,7 +35,7 @@
 #' geno_char_reversed <- formater(geno_numeric, numeric_output = FALSE)
 #' print(geno_char_reversed)
 #'
-#' @importFrom dplyr mutate across case_when
+#' @importFrom dplyr mutate across case_when everything
 #' @export
 formater <- function(geno, numeric_output = TRUE) {
   # Ensure geno is a dataframe

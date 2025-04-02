@@ -47,7 +47,7 @@
 #' )
 #' formater_flex(dosage, to_numeric = FALSE, ref_allele = "A", alt_allele = "B", ploidy = 4)
 #' }
-#' @importFrom dplyr mutate across case_when
+#' @importFrom dplyr mutate across case_when everything
 #' @importFrom stringr str_count
 #' @export
 formater_flex <- function(geno, to_numeric = TRUE, ref_allele = "A", alt_allele = "B", ploidy = 2) {

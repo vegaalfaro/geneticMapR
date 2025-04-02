@@ -46,6 +46,7 @@
 #'
 #'
 #' @examples
+#' \dontrun{
 #' set.seed(123)
 #' test_geno <- matrix(sample(0:4, 1000, replace = TRUE), nrow = 100, ncol = 10)
 #' rownames(test_geno) <- paste0("Marker", 1:100)
@@ -61,7 +62,8 @@
 #' )
 #'
 #' dim(filtered)  # Number of markers retained
-#'
+#'}
+#' @importFrom stats na.omit
 #' @export
 filter_geno_by_freq_poly <- function(geno_matrix,
                                      max_geno_freq = NULL,

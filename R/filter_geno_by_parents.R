@@ -33,7 +33,7 @@
 #' filtered_geno <- filter_geno_by_parents(geno_data, "Parent1", "Parent2")
 #' print(filtered_geno)
 #'
-#' @importFrom dplyr filter mutate across
+#' @importFrom dplyr filter mutate across where
 #' @export
 filter_geno_by_parents <- function(geno, parent1, parent2) {
   # Ensure geno is a dataframe

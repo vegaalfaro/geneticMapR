@@ -38,7 +38,7 @@
 #' # Compute genotype frequency by individuals
 #' freq(geno_matrix, input_format = "numeric", by = "individuals")
 #'
-#' @importFrom stats prop.table setNames
+#' @importFrom stats setNames
 #' @export
 freq <- function(x, input_format = "numeric", by = "markers") {
   # Ensure input is a matrix

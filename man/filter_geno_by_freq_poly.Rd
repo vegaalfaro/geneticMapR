@@ -41,8 +41,9 @@ on maximum/ minimum genotype frequencies and heterozygous frequency ranges.
 \item Designed for polyploid dosage matrices (not raw genotype strings).
 \item Computes dosage frequencies per marker (row-wise).
 \item \code{het_dosages} is used to define heterozygosity in a generalizable way.
-In diploids, it's simple:
 }
+
+In diploids, it's simple:
 
 0 = homozygous reference (e.g., "AA")
 
@@ -65,6 +66,7 @@ But in polyploids (e.g., tetraploids, hexaploids), we can have more intermediate
 4 = "BBBB" → \strong{homozygous alt}
 }
 \examples{
+\dontrun{
 set.seed(123)
 test_geno <- matrix(sample(0:4, 1000, replace = TRUE), nrow = 100, ncol = 10)
 rownames(test_geno) <- paste0("Marker", 1:100)
@@ -80,5 +82,5 @@ filtered <- filter_geno_by_freq_poly(
 )
 
 dim(filtered)  # Number of markers retained
-
+}
 }
