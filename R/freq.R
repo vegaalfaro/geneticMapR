@@ -81,3 +81,6 @@ freq <- function(x, input_format = "numeric", by = "markers") {
 
   return(result_df)
 }
+
+
+

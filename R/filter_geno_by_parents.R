@@ -52,3 +52,5 @@ filter_geno_by_parents <- function(geno, parent1, parent2) {
 
 
 
+
+

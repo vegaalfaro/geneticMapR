@@ -65,3 +65,7 @@ formater <- function(geno, numeric_output = TRUE) {
 
   return(geno)
 }
+
+
+
+

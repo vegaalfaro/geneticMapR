@@ -61,3 +61,5 @@ plot_genotype_histogram <- function(ans) {
 
   return(geno_hist_plot)
 }
+
+

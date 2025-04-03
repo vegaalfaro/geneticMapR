@@ -165,3 +165,6 @@ trim_LG <- function(chromosome,
     outliers = outliers
   ))
 }
+
+
+

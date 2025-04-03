@@ -143,3 +143,6 @@ order_and_plot <- function(trimmed_geno,
 
 
 
+
+
+

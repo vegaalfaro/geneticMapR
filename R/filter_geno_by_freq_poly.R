@@ -63,7 +63,7 @@
 #'
 #' dim(filtered)  # Number of markers retained
 #'}
-#' @importFrom stats na.omit
+#' @importFrom stats na.omit.
 #' @export
 filter_geno_by_freq_poly <- function(geno_matrix,
                                      max_geno_freq = NULL,
@@ -110,3 +110,7 @@ filter_geno_by_freq_poly <- function(geno_matrix,
   filtered_matrix <- geno_matrix[keep, , drop = FALSE]
   return(filtered_matrix)
 }
+
+
+
+

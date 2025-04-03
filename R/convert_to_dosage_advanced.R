@@ -130,3 +130,4 @@ convert_to_dosage_advanced <- function(GT, alt_alleles = c("1"), strict_missing 
   ))
 }
 
+

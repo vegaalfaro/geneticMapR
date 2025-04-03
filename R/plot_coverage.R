@@ -96,3 +96,5 @@ plot_coverage <- function(map, limits = NULL, customize = TRUE) {
   return(p)
 }
 
+
+

@@ -70,3 +70,6 @@ formater_flex <- function(geno, to_numeric = TRUE, ref_allele = "A", alt_allele 
 
   return(geno)
 }
+
+
+

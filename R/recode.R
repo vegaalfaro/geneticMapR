@@ -143,3 +143,7 @@ recode <- function(geno, parent1,
   return(phased_geno)
 }
 
+
+
+
+

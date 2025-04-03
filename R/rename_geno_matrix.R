@@ -66,3 +66,5 @@ rename_geno_matrix <- function(geno, parent1, parent2, f1) {
   return(geno)
 }
 
+
+
