@@ -2,16 +2,22 @@
 % Please edit documentation in R/extract_map.R
 \name{extract_map}
 \alias{extract_map}
-\title{Create a Physical Map from Chromosome and Position  from Row Names}
+\title{Create a Physical Map from Chromosome and Position from Row Names}
 \usage{
-extract_map(genotype_matrix, chrom_index = 1, pos_index = 2, markers = FALSE)
+extract_map(
+  genotype_matrix,
+  chrom_index = 1,
+  pos_index = 2,
+  markers = FALSE,
+  split_symbol = "_"
+)
 }
 \arguments{
 \item{genotype_matrix}{A matrix where:
 \itemize{
 \item Rows correspond to genetic markers.
-\item Row names contain marker identifiers with multiple components separated by underscores
-(e.g., \code{"A_1_200"}, \code{"B_2_300"}, \code{"C_3_400"}).
+\item Row names contain marker identifiers with multiple components separated by a delimiter
+(e.g., \code{"A_1_200"}, \code{"B-2-300"}, \code{"C.3.400"}).
 \item Columns correspond to individuals (not used in the function but part of the input structure).
 }}
 
@@ -21,8 +27,11 @@ Default is \code{1} (first element).}
 \item{pos_index}{Integer. The index of the position identifier in the split row name.
 Default is \code{2} (second element).}
 
-\item{markers}{Logical. If \code{TRUE}, includes marker names in the output data frame.
+\item{markers}{Logical. If \code{TRUE},  includes original marker names from input in the output data frame.
 Default is \code{FALSE}.}
+
+\item{split_symbol}{Character. The delimiter used to split the row names.
+Default is \code{"_"}. Can be changed to \code{"-"}, \code{"."}, or other valid delimiters.}
 }
 \value{
 A data frame with columns:
@@ -35,30 +44,30 @@ A data frame with columns:
 \description{
 This function extracts chromosome and position information from the row names
 of a genotype matrix. The row names are expected to follow a format
-where components (for example chromosome, position) are separated by an underscore (\code{"_"}).
+where components (for example chromosome, position) are separated by a symbol (e.g., \code{"_"}, \code{"-"}, \code{"."}).
 The user can specify which part of the row name corresponds to the chromosome and position
-using chrom_index and pos_index.
+using \code{chrom_index} and \code{pos_index}, and can customize the delimiter using \code{split_symbol}.
 }
 \details{
 \itemize{
-\item Splits row names at the underscore (\code{"_"}) to extract chromosome and position.
-\item Uses indexes specified by user to determine which part of the row name corresponds to the chromosome and position.
+\item Row names are split using the specified \code{split_symbol} to extract chromosome and position.
+\item The user defines which components to extract using \code{chrom_index} and \code{pos_index}.
 \item Ensures the position column is numeric.
-\item If \code{markers = TRUE}, the output includes an additional \code{"marker"} column, constructed as the combination of Chrom and Position.
+\item If \code{markers = TRUE}, includes marker names in the output.
 }
 }
 \examples{
 \dontrun{
-# Example genotype matrix with row names in "Component1_Component2_Component3" format
+# Example genotype matrix with different delimiters
 geno_matrix <- matrix(nrow = 3, ncol = 2)
 rownames(geno_matrix) <- c("A_1_200", "B_2_300", "C_3_400")
 
-# Default behavior (chromosome = first, position = second)
-map1 < -extract_map(geno_matrix)
-print(map1)
+# Default delimiter "_"
+extract_map(geno_matrix)
 
-# Custom indexes (chromosome = second, position = third)
-map2 <- extract_map(geno_matrix, chrom_index = 2, pos_index = 3)
-print(map2)
+# Using "-" as delimiter
+rownames(geno_matrix) <- c("A-1-200", "B-2-300", "C-3-400")
+extract_map(geno_matrix, chrom_index = 1, pos_index = 3, split_symbol = "-")
 }
+
 }

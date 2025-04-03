@@ -45,3 +45,6 @@ convert_to_dosage <- function(GT) {
   return(geno_matrix)
 }
 
+
+
+

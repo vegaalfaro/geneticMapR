@@ -61,3 +61,4 @@ convert_to_dosage_flex <- function(GT, strict_missing = TRUE) {
 
   return(dosage)
 }
+
