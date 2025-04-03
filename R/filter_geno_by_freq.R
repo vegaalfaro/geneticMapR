@@ -84,3 +84,4 @@ filter_geno_by_freq <- function(geno_matrix, max_geno_freq = NULL,
   return(filtered_geno)
 }
 
+
