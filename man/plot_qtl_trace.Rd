@@ -2,7 +2,8 @@
 % Please edit documentation in R/plot_qtl_trace.R
 \name{plot_qtl_trace}
 \alias{plot_qtl_trace}
-\title{Plot LOD Trace}
+\title{Generates a line plot showing QTL traces (LOD scores) across chromosomes for one or more traits.
+Supports customization of visual appearance and annotations such as significance thresholds and vertical lines.}
 \usage{
 plot_qtl_trace(
   qtl_df,

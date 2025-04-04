@@ -71,5 +71,4 @@ simple_effect_plot(effects_df = my_data,
 
 }
 
-
 }

@@ -19,7 +19,7 @@ haplotype_reconstruction(geno_matrix, error_rate = 0.05, r = 0.01)
 \item{r}{Numeric. The recombination rate used in the transition probability matrix (\code{T.mat}).
 Default is \code{0.01}. The user can use the \code{MLEL} function from \href{https://github.com/jendelman/MapRtools}{MapRtools}
 to get an estimate of recombination frequency with the adjacent argument set to \code{TRUE}
-\emph{result <- MLEL(geno = geno_matrix, pop.type = "f2", LOD = FALSE, adjacent = TRUE)}*
+\code{result <- MLEL(geno = geno_matrix, pop.type = "f2", LOD = FALSE, adjacent = TRUE)}
 In this case the geno_matrix should be of only one chromosome. \code{r} could be estimated as \code{mean(result$value, na.rm = TRUE)}}
 }
 \value{

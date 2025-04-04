@@ -70,8 +70,6 @@ available in Github. \code{trim_LG} provides a simple interphase for trimming LG
 }
 \note{
 Requires a previous installation of \href{https://github.com/jendelman/MapRtools}{MapRtools}.
-This function was refined with assistance from ChatGPT to improve readability,
-efficiency, and visualization formatting.
 }
 \examples{
 \dontrun{

@@ -21,12 +21,10 @@
 #' # Horizontal plot with custom color
 #' # plotMap_gg(example_map, horizontal = TRUE, color = "blue")
 #'
-#' @importFrom ggplot2 ggplot aes geom_segment theme_minimal coord_flip labs scale_y_reverse
-#' @importFrom dplyr bind_rows group_by summarise
+#' @import ggplot2
+#' @import dplyr
 #' @export
 plotMap_gg <- function(map, horizontal = FALSE, color = NULL) {
-  library(ggplot2)
-  library(dplyr)
 
   # Convert map into a tidy format if necessary
   if (inherits(map, "cross")) {

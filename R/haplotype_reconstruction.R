@@ -13,7 +13,7 @@
 #' @param r Numeric. The recombination rate used in the transition probability matrix (`T.mat`).
 #'   Default is `0.01`. The user can use the `MLEL` function from [MapRtools](https://github.com/jendelman/MapRtools)
 #'   to get an estimate of recombination frequency with the adjacent argument set to `TRUE`
-#'   *result <- MLEL(geno = geno_matrix, pop.type = "f2", LOD = FALSE, adjacent = TRUE)**
+#'   `result <- MLEL(geno = geno_matrix, pop.type = "f2", LOD = FALSE, adjacent = TRUE)`
 #'   In this case the geno_matrix should be of only one chromosome. `r` could be estimated as `mean(result$value, na.rm = TRUE)`
 #'
 #' @return A genotype matrix with inferred haplotypes based on HMM correction.

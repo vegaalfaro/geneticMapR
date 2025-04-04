@@ -38,7 +38,7 @@ for each chromosome from \code{map}.
 }
 }
 \note{
-Inspired by and \strong{reliant} on functions by Professor Jeffrey B. Endelman's MapRtools
+Inspired by functions of Professor Jeffrey Endelman's MapRtools
 }
 \examples{
 # Example dataset

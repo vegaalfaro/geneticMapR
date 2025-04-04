@@ -1,4 +1,11 @@
-#' Plot LOD Trace
+utils::globalVariables(c(
+  "position_cM", "chr", "phys.pos", "pos", "plot_pos", "lod", "response_var",
+  "hline", "vline", "y_pos", "label", "Chromosome", "ID", "position_Mb",
+  "sd", "x", "y_end", "y_start"
+))
+
+
+' Plot LOD Trace
 #'
 #' Generates a line plot showing QTL traces (LOD scores) across chromosomes for one or more traits.
 #' Supports customization of visual appearance and annotations such as significance thresholds and vertical lines.
@@ -24,6 +31,7 @@
 #' @import dplyr
 #' @import ggpubr
 #' @importFrom scales hue_pal
+#' @importFrom stats sd
 #' @export
 plot_qtl_trace <- function(qtl_df,
                            thresholds_df,

@@ -40,8 +40,8 @@
 #' - If `drop_outliers = TRUE`, removes markers identified as outliers based on haplotype frequency.
 #'
 #' @note Requires a previous installation of [MapRtools](https://github.com/jendelman/MapRtools).
-#' This function was refined with assistance from ChatGPT to improve readability,
-#' efficiency, and visualization formatting.
+#'
+#'
 #'
 #' @examples
 #' \dontrun{
@@ -70,6 +70,7 @@
 #' @importFrom dplyr arrange select
 #' @importFrom ggplot2 ggtitle
 #' @importFrom parallel detectCores
+#' @import qtl
 #' @export
 trim_LG <- function(chromosome,
                     map,
@@ -77,6 +78,10 @@ trim_LG <- function(chromosome,
                     pop_type = "F2",
                     drop_outliers = TRUE,
                     n_cores = NULL) {
+
+  chrom = NULL
+  position = NULL
+  LG = NULL
 
   if (!requireNamespace("MapRtools", quietly = TRUE)) {
     stop("The 'MapRtools' package is required but not installed.\nInstall it with:\n  remotes::install_github('jendelman/MapRtools')", call. = FALSE)

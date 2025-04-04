@@ -38,6 +38,11 @@ estimate_map <- function(geno_matrix,
                          n_points = seq(10, 20, by = 5),
                          pop.type = "F2") {
 
+  if (!requireNamespace("MapRtools", quietly = TRUE)) {
+    stop("The 'MapRtools' package is required for this function. Please install it from GitHub: https://github.com/jendelman/MapRtools")
+  }
+
+
 # Validate model selection
 if (!(model %in% c("Kosambi", "Haldane"))) {
   stop("Invalid model. Choose either 'Kosambi' or 'Haldane'.")

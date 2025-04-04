@@ -19,11 +19,10 @@
 #' # result <- format_qtl_input(geno2, map2, pheno2, numeric = TRUE)
 #'}
 #'@import dplyr
+#'@import tidyr
 #'
 #' @export
 format_qtl_input <- function(geno, map, pheno, numeric = TRUE) {
-  library(dplyr)
-  library(tidyr)
 
   # Check if map has the required columns
   required_map_cols <- c("marker", "chrom", "position")

@@ -36,6 +36,12 @@
 #' @export
 # Function to plot haplotype reconstruction results
 plot_reconstructed_haplo <- function(original, processed, individuals = 1:50) {
+
+  # Remind users that the functions rely on MapRtools
+  if (!requireNamespace("MapRtools", quietly = TRUE)) {
+    stop("The 'MapRtools' package is required but not installed.\nInstall it with:\n  remotes::install_github('jendelman/MapRtools')", call. = FALSE)
+  }
+
   # Extract chromosome name
   title_prefix <- extract_map(original)
   title_prefix <- unique(title_prefix$chrom)

@@ -7,7 +7,7 @@
 get_LOD_int(cross_obj, model_obj, results_obj, trait = NULL, drop = 1.5)
 }
 \arguments{
-\item{cross_obj}{A \code{cross} object from the \pkg{qtl} package. Usually the output of \link[qtl]{read.cross()} or \link[qtl]{calc.genoprob()}.}
+\item{cross_obj}{A \code{cross} object from the \pkg{qtl} package. Usually the output of \link[qtl]{read.cross} or \link[qtl]{calc.genoprob}.}
 
 \item{model_obj}{Either a scanone/CIM object (class "scanone") or a named list of such objects. Usuall the output of \code{cim} or \code{scanone} from \pkg{qtl}.}
 
@@ -21,7 +21,9 @@ get_LOD_int(cross_obj, model_obj, results_obj, trait = NULL, drop = 1.5)
 A named list of QTL interval summaries, flanking markers, peak marker (pseudo marker or physical marker), and usable marker (closest physical marker if peak is on a pseudo marker).
 }
 \description{
-Computes LOD support intervals for detected QTLs from \link[qtl]{scanone()}  or \link[qtl]{cim()}.
+Computes LOD support intervals for detected QTLs from \link[qtl]{scanone} or \link[qtl]{cim}.
+}
+\details{
 Works with either a single model and qtl results or a list of models and results for multiple traits.
 }
 \examples{

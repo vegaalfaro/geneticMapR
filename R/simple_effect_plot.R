@@ -1,3 +1,6 @@
+# At the top
+utils::globalVariables(c("median", "count"))
+
 #' Simple Effect Plot
 #'
 #' Generates a clean and simple effect plot. Shows the relationship between genotype classes at a marker on a trait.
@@ -50,6 +53,9 @@
 #'
 #' }
 #'
+#' @import ggplot2
+#' @importFrom dplyr group_by summarise
+#' @importFrom stats median na.omit
 #'
 #' @export
 simple_effect_plot <- function(effects_df,
@@ -59,6 +65,7 @@ simple_effect_plot <- function(effects_df,
                                    annotate = TRUE,
                                    flip = FALSE,
                                    trait_label = NULL) {
+
   # Check inputs
   if (!marker_name %in% colnames(effects_df)) {
     stop(paste("Marker", marker_name, "not found in the dataset."))

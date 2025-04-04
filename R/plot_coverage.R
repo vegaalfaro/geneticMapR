@@ -24,7 +24,7 @@
 #' - When `customize = TRUE`, applies a minimalistic theme for enhanced visualization.
 #'
 #' @note
-#' Inspired by and **reliant** on functions by Professor Jeffrey B. Endelman's MapRtools
+#' Inspired by functions of Professor Jeffrey Endelman's MapRtools
 #'
 #'
 #' @examples

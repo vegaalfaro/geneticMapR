@@ -1,9 +1,10 @@
 #' Get LOD Support Intervals for QTL Peaks (Single or Multiple Traits)
 #'
-#' Computes LOD support intervals for detected QTLs from \link[qtl]{scanone()}  or \link[qtl]{cim()}.
+#' Computes LOD support intervals for detected QTLs from \link[qtl]{scanone} or \link[qtl]{cim}.
+#'
 #' Works with either a single model and qtl results or a list of models and results for multiple traits.
 #'
-#' @param cross_obj A `cross` object from the \pkg{qtl} package. Usually the output of \link[qtl]{read.cross()} or \link[qtl]{calc.genoprob()}.
+#' @param cross_obj A `cross` object from the \pkg{qtl} package. Usually the output of \link[qtl]{read.cross} or \link[qtl]{calc.genoprob}.
 #' @param model_obj Either a scanone/CIM object (class "scanone") or a named list of such objects. Usuall the output of `cim` or `scanone` from \pkg{qtl}.
 #' @param results_obj Either a data frame of QTL results (with "chr" and "pos") or a named list of such data frames.
 #' @param trait Optional. Name of the trait to analyze. Required if model_obj and results_obj are lists (i.e., when working with multiple traits).
