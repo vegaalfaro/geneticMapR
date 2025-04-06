@@ -1,0 +1,70 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# geneticMapper
+
+<!-- badges: start -->
+
+<!-- badges: end -->
+
+<img src="man/figures/logo.png" align="right" width="140" />
+
+`geneticMapper` simplifies and streamlines the construction of genetic maps through an organized, reproducible workflow. Built on top of [MapRtools](https://github.com/jendelman/MapRtools) and [R/qtl](https://rqtl.org/), it makes genetic mapping more accessible while supporting flexible analysis. Optimized for F2 diploid plant populations, many functions were generalized to potentially other species and different **ploidy levels**.
+
+## Value
+Genetic map construction involves several practical challenges. `geneticMapper` was designed to help 
+with reproducible genetic map construction and quantitative trait loci (QTL) analysis.
+
+## Installation
+
+You can install the development version of `geneticMapper` from [GitHub](https://github.com/) with:
+
+```{r}
+# Get pak if needed
+if (!requireNamespace("pak", quietly = TRUE)) {
+  install.packages("pak")
+}
+
+#Install geneticMapper
+pak::pak("vegaalfaro/geneticMapper")
+
+# Load library
+library(geneticMapper)
+```
+
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+# Load the example dataset
+data("simulated_geno")
+
+# Check markers previous to recoding
+print(simulated_geno)
+
+# Recode the markers using the recode() function
+phased <- geneticMapper::recode(simulated_geno, parent1 = "Parent1", parent2 = "Parent2")
+
+```
+
+
+```{r}
+# Print the output
+print(phased)
+```
+
+What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so
