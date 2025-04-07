@@ -5,7 +5,7 @@
 \alias{qtl_example}
 \title{QTL Dataset Example}
 \format{
-A list with 3 elements:
+A list with the elements:
 \describe{
 \item{qtl_df}{A scanone and data.frame class object containing LOD scores for each loci in the map for 7 trauts}
 \item{thresholds}{A scanone and dara.frame class object containing significant thresholds for each variable }
@@ -15,7 +15,7 @@ A list with 3 elements:
 }
 }
 \source{
-QTL analysis using R/qtl.
+Own author's QTL analysis using R/qtl on a Table beet shape mapping population (F2).
 }
 \usage{
 qtl_example
