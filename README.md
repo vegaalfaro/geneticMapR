@@ -20,13 +20,13 @@ You can install the development version of `geneticMapper` from
 [GitHub](https://github.com/) with:
 
 ``` r
-# Get pak if needed
-if (!requireNamespace("pak", quietly = TRUE)) {
-  install.packages("pak")
+# Get devtools if needed
+if (!requireNamespace("devtools", quietly = TRUE)) {
+  install.packages("devtools")
 }
 
 #Install geneticMapper
-pak::pak("vegaalfaro/geneticMapper")
+devtools::install_github("vegaalfaro/geneticMapper")
 
 # Load library
 library(geneticMapper)
