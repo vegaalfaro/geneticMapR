@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# {geneticMapper} <img src='man/figures/logo.png' width = "200px" align="right"/>
+# {geneticMapper} <img src="man/figures/logo.png" width="200px" align="right"/>
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -77,8 +77,24 @@ This function generates a QTL trace plot to visualize significance
 scores across chromosomes for one or more traits. It highlights QTL
 peaks and overlays customizable vertical lines
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" /> \##
-Documentation
+``` r
+
+library(geneticMapper)
+data("qtl_example")
+
+     plot_qtl_trace(qtl_df = qtl_example$qtl_df,
+                thresholds_df = qtl_example$thresholds,
+                  vline_df = qtl_example$vline,
+                  use_physical_pos = FALSE,
+                  x_angle = 0,
+                trait_colors = qtl_example$colors,
+                trait_labels = qtl_example$labels,
+                plot_title = "Population 1")
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+## Documentation
 
 For detailed documentation and examples, visit
 [geneticMapper](https://vegaalfaro.github.io/geneticMapper/reference/index.html)

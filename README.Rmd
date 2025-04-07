@@ -13,16 +13,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-
-# {geneticMapper} <img src='man/figures/logo.png' width = "200px" align="right"/>
+# {geneticMapper} <img src="man/figures/logo.png" width="200px" align="right"/>
 
 <!-- badges: start -->
 
 <!-- badges: end -->
 
-
-`geneticMapper` simplifies the construction of genetic maps. Built on top of [MapRtools](https://github.com/jendelman/MapRtools) and [R/qtl](https://rqtl.org/) for reproducible analysis. Optimized for F2 diploid plant populations. Some functions were generalized for different experimental populations and **polyploids**.
- `geneticMapper` was designed to help with reproducible genetic map construction and quantitative trait loci (QTL) analysis.
+`geneticMapper` simplifies the construction of genetic maps. Built on top of [MapRtools](https://github.com/jendelman/MapRtools) and [R/qtl](https://rqtl.org/) for reproducible analysis. Optimized for F2 diploid plant populations. Some functions were generalized for different experimental populations and **polyploids**. `geneticMapper` was designed to help with reproducible genetic map construction and quantitative trait loci (QTL) analysis.
 
 ## Installation
 
@@ -40,7 +37,6 @@ pak::pak("vegaalfaro/geneticMapper")
 # Load library
 library(geneticMapper)
 ```
-
 
 ## Usage
 
@@ -63,11 +59,12 @@ print(phased)
 
 ```
 
-####  Visualization
+#### Visualization
 
-This function generates a QTL trace plot to visualize significance scores across chromosomes for one or more traits. It highlights QTL peaks and overlays customizable vertical lines 
+This function generates a QTL trace plot to visualize significance scores across chromosomes for one or more traits. It highlights QTL peaks and overlays customizable vertical lines
 
-```{r, echo=FALSE}
+```{r, echo=TRUE, fig.width=8, fig.height=5, dpi=300}
+
 library(geneticMapper)
 data("qtl_example")
 
@@ -80,7 +77,7 @@ data("qtl_example")
                 trait_labels = qtl_example$labels,
                 plot_title = "Population 1")
 ```
+
 ## Documentation
 
 For detailed documentation and examples, visit [geneticMapper](https://vegaalfaro.github.io/geneticMapper/reference/index.html)
-
