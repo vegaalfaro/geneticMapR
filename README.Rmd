@@ -13,25 +13,22 @@ knitr::opts_chunk$set(
 )
 ```
 
-# geneticMapper
+
+# {geneticMapper} <img src='man/figures/logo.png' width = "200px" align="right"/>
 
 <!-- badges: start -->
 
 <!-- badges: end -->
 
-<img src="man/figures/logo.png" align="right" width="140" />
 
-`geneticMapper` simplifies and streamlines the construction of genetic maps through an organized, reproducible workflow. Built on top of [MapRtools](https://github.com/jendelman/MapRtools) and [R/qtl](https://rqtl.org/), it makes genetic mapping more accessible while supporting flexible analysis. Optimized for F2 diploid plant populations, many functions were generalized to potentially other species and different **ploidy levels**.
-
-## Value
-Genetic map construction involves several practical challenges. `geneticMapper` was designed to help 
-with reproducible genetic map construction and quantitative trait loci (QTL) analysis.
+`geneticMapper` simplifies the construction of genetic maps. Built on top of [MapRtools](https://github.com/jendelman/MapRtools) and [R/qtl](https://rqtl.org/) for reproducible analysis. Optimized for F2 diploid plant populations. Some functions were generalized for different experimental populations and **polyploids**.
+ `geneticMapper` was designed to help with reproducible genetic map construction and quantitative trait loci (QTL) analysis.
 
 ## Installation
 
 You can install the development version of `geneticMapper` from [GitHub](https://github.com/) with:
 
-```{r}
+```{r, eval=FALSE}
 # Get pak if needed
 if (!requireNamespace("pak", quietly = TRUE)) {
   install.packages("pak")
@@ -45,9 +42,11 @@ library(geneticMapper)
 ```
 
 
-## Example
+## Usage
 
-This is a basic example which shows you how to solve a common problem:
+The example shows how to *recode* markers when neither parent is the reference genome, as is common with [GBS](https://en.wikipedia.org/wiki/Genotyping_by_sequencing) data. Molecular markers (SNPs) must be phased to accurately trace allele inheritance in the progeny. `recode` is a general function that can help with that:
+
+#### Recode
 
 ```{r example}
 # Load the example dataset
@@ -59,12 +58,29 @@ print(simulated_geno)
 # Recode the markers using the recode() function
 phased <- geneticMapper::recode(simulated_geno, parent1 = "Parent1", parent2 = "Parent2")
 
-```
-
-
-```{r}
 # Print the output
 print(phased)
+
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so
+####  Visualization
+
+This function generates a QTL trace plot to visualize significance scores across chromosomes for one or more traits. It highlights QTL peaks and overlays customizable vertical lines 
+
+```{r, echo=FALSE}
+library(geneticMapper)
+data("qtl_example")
+
+     plot_qtl_trace(qtl_df = qtl_example$qtl_df,
+                thresholds_df = qtl_example$thresholds,
+                  vline_df = qtl_example$vline,
+                  use_physical_pos = FALSE,
+                  x_angle = 0,
+                trait_colors = qtl_example$colors,
+                trait_labels = qtl_example$labels,
+                plot_title = "Population 1")
+```
+## Documentation
+
+For detailed documentation and examples, visit [geneticMapper](https://vegaalfaro.github.io/geneticMapper/reference/index.html)
+
