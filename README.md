@@ -98,3 +98,7 @@ data("qtl_example")
 
 For detailed documentation and examples, visit
 [geneticMapper](https://vegaalfaro.github.io/geneticMapper/reference/index.html)
+
+### Logo
+
+credit: Adriana Lopez \<3
