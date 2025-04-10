@@ -59,12 +59,6 @@ print(simulated_geno)
 
 # Recode the markers using the recode() function
 phased <- geneticMapper::recode(simulated_geno, parent1 = "Parent1", parent2 = "Parent2")
-#> Warning: replacing previous import 'dplyr::lag' by 'stats::lag' when loading
-#> 'geneticMapper'
-#> Warning: replacing previous import 'dplyr::filter' by 'stats::filter' when
-#> loading 'geneticMapper'
-#> Warning: replacing previous import 'stats::filter' by 'dplyr::filter' when
-#> loading 'geneticMapper'
 
 # Print the output
 print(phased)

@@ -16,7 +16,9 @@
 #' @param max.loci Maximum number of markers to use per chromosome (default: NULL)
 #' @param position "bp" or "Mb" (default: "bp")
 #' @param xlim_range Zoom in range on the x axis, default is c(0, 20). Set to NULL to see entire plot.
-#' @param r2_threshold r² value for decay distance calculation (default: 0.2)
+#' @param r2_threshold r² value for decay distance calculation (default: 0.2),
+#' @param show_vline show a vertical line intersecting the x-axis at the the half-decay distance (default, TRUE)
+#' @param show_hline show a horizontal line intersecting the y-axis at the selected r² (default, TRUE)
 #' @param seed Optional integer seed to make the random sampling reproducible
 #'
 #' @return A list containing:
@@ -40,6 +42,7 @@
 #' @import stats
 #'
 #' @export
+
 LD_decay_plot <- function(data,
                           map,
                           max.pair = 1e4,
@@ -47,7 +50,10 @@ LD_decay_plot <- function(data,
                           position = "bp",
                           r2_threshold = 0.2,
                           xlim_range = c(0, 20),
-                          seed = 123) {
+                          show_vline = TRUE,
+                          show_hline = TRUE,
+                          seed = 123)
+{
 
 
   # Input validation
@@ -109,8 +115,8 @@ LD_decay_plot <- function(data,
   # Try fitting SSasymp model
   nls_fit <- tryCatch(
     stats::nls(r2 ~ SSasymp(d, Asym, R0, lrc),
-        data = sample_data,
-        control = nls.control(maxiter = 200, warnOnly = TRUE)),
+               data = sample_data,
+               control = stats::nls.control(maxiter = 200, warnOnly = TRUE)),
     error = function(e) {
       warning("nls fit failed: ", conditionMessage(e))
       return(NULL)
@@ -124,7 +130,7 @@ LD_decay_plot <- function(data,
   # Predict and calculate half-decay
   dmax <- max(result$d)
   pred_df <- data.frame(d = seq(0, dmax, length.out = 500))
-  pred_df$r2 <- predict(nls_fit, newdata = pred_df)
+  pred_df$r2 <- stats::predict(nls_fit, newdata = pred_df)
 
   coefs <- coef(nls_fit)
   half_decay_dist <- tryCatch({
@@ -145,7 +151,16 @@ LD_decay_plot <- function(data,
 
   p <- ggplot(data = sample_data, aes(x = d, y = r2)) +
     geom_point(alpha = 0.3, size = 1) +
-    geom_line(data = pred_df, aes(x = d, y = r2), color = "red", linewidth = 1) +
+    geom_line(data = pred_df, aes(x = d, y = r2), color = "red", linewidth = 1)
+
+  if (!is.na(half_decay_dist) && show_vline) {
+    p <- p + geom_vline(xintercept = half_decay_dist, linetype = 2, color = "red", linewidth = 0.5)
+  }
+  if (show_hline) {
+    p <- p + geom_hline(yintercept = r2_threshold, linetype = 2, color = "red", linewidth = 0.5)
+  }
+
+  p <- p +
     labs(x = unit_label, y = expression(r^2)) +
     theme_bw()
 

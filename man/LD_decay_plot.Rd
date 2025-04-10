@@ -12,6 +12,8 @@ LD_decay_plot(
   position = "bp",
   r2_threshold = 0.2,
   xlim_range = c(0, 20),
+  show_vline = TRUE,
+  show_hline = TRUE,
   seed = 123
 )
 }
@@ -26,9 +28,13 @@ LD_decay_plot(
 
 \item{position}{"bp" or "Mb" (default: "bp")}
 
-\item{r2_threshold}{r² value for decay distance calculation (default: 0.2)}
+\item{r2_threshold}{r² value for decay distance calculation (default: 0.2),}
 
 \item{xlim_range}{Zoom in range on the x axis, default is c(0, 20). Set to NULL to see entire plot.}
+
+\item{show_vline}{show a vertical line intersecting the x-axis at the the half-decay distance (default, TRUE)}
+
+\item{show_hline}{show a horizontal line intersecting the y-axis at the selected r² (default, TRUE)}
 
 \item{seed}{Optional integer seed to make the random sampling reproducible}
 }

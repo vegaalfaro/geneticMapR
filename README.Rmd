@@ -44,7 +44,7 @@ The example shows how to *recode* markers when neither parent is the reference g
 
 #### Recode
 
-```{r example}
+```{r example, message = FALSE}
 # Load the example dataset
 data("simulated_geno")
 
