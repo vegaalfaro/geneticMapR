@@ -1,14 +1,12 @@
 #' Plot LD vs distance
 #'
-#' Plot LD vs distance using an asymptotic regression model with points.
+#' Plot LD vs distance using an asymptotic regression model.
 #'
 #' An asymptotic regression model is fit using \link[stats]{SSasymp}.
 #' The distance where r² reaches a specified threshold (e.g., 0.1 or 0.2) is calculated and returned.
 #' This function calculates r² by chromosome and  follows the general logic of [MapRtools::LD.plot](https://github.com/jendelman/MapRtools/blob/master/R/plot_LD.R) but uses the function
 #' \link[stats]{SSasymp} to model the non-linear LD decay. This function will give you a
 #' quick and simple estimate of LD. For more sophisticated LD functions see [David Gerard](https://github.com/dcgerard) [ldfast()](https://cran.r-project.org/web/packages/ldsep/vignettes/fast.html)
-#'
-#'
 #'
 #' @param data Genotype matrix (markers as columns, individuals as rows)
 #' @param map Data frame with columns 'chrom', 'marker', and 'position'
@@ -18,8 +16,8 @@
 #' @param xlim_range Zoom in range on the x axis, default is c(0, 20). Set to NULL to see entire plot.
 #' @param r2_threshold r² value for decay distance calculation (default: 0.2),
 #' @param show_vline show a vertical line intersecting the x-axis at the the half-decay distance (default, TRUE)
-#' @param show_hline show a horizontal line intersecting the y-axis at the selected r² (default, TRUE)
-#' @param seed Optional integer seed to make the random sampling reproducible
+#' @param show_hline show a horizontal line intersecting the y-axis at the selected r² threshold (default, TRUE)
+#' @param seed Optional integer seed to make the random sampling reproducible. Default 123.
 #'
 #' @return A list containing:
 #' \item{plot}{ggplot2 object with points and fitted curve (or NULL if fit fails)}
@@ -27,7 +25,7 @@
 #' \item{model}{Fitted nls object (or NULL if fitting failed)}
 #'
 #' @details
-#' It processes each chromosome separately to compute all pairwise r^2
+#' It processes each chromosome separately to compute all pairwise r²
 #'  values within chromosomes, then it combines the results across all
 #'   chromosomes into a single dataset, and fits one global LD decay model
 #'   to the pooled data. No cross-chromosome marker pairs are considered.
@@ -36,7 +34,7 @@
 #' data pertaining to the chromosome of interest.
 #'
 #' @note
-#'  If the number of rows (number of marker pairs) is larger than max.pair (default is 10,000), we proceed to random sampling.
+#'  If the number of rows (number of marker pairs) is larger than max.pair (default is 1e4), we proceed to random sampling.
 #'
 #' @import ggplot2
 #' @import stats
