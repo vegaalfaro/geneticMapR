@@ -8,7 +8,7 @@
 #' \link[stats]{SSasymp} to model the non-linear LD decay. This function will give you a
 #' quick and simple estimate of LD. For more sophisticated LD functions see [David Gerard](https://github.com/dcgerard) [ldfast()](https://cran.r-project.org/web/packages/ldsep/vignettes/fast.html)
 #'
-#' @param data Genotype matrix (markers as columns, individuals as rows)
+#' @param data Genotype matrix (markers as columns, individuals as rows). Rownames have the marker names that matcho those of the marker column in the `map`.
 #' @param map Data frame with columns 'chrom', 'marker', and 'position'
 #' @param max.pair Maximum number of r² pairs for the model (default: 1e4)
 #' @param max.loci Maximum number of markers to use per chromosome (default: NULL)

@@ -18,7 +18,7 @@ LD_decay_plot(
 )
 }
 \arguments{
-\item{data}{Genotype matrix (markers as columns, individuals as rows)}
+\item{data}{Genotype matrix (markers as columns, individuals as rows). Rownames have the marker names that matcho those of the marker column in the \code{map}.}
 
 \item{map}{Data frame with columns 'chrom', 'marker', and 'position'}
 
