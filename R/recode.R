@@ -61,7 +61,7 @@
 #'
 #'
 #'
-#' @importFrom dplyr mutate filter across case_when all_of
+#' @importFrom dplyr mutate across all_of case_when
 #' @export
 recode <- function(geno, parent1,
                    parent2,
@@ -110,7 +110,7 @@ recode <- function(geno, parent1,
 
   # Apply phasing logic across all marker columns (excluding parent columns)
   phased_geno <- geno %>%
-    mutate(across(-all_of(c(parent1, parent2)), ~ case_when(
+    dplyr::mutate(dplyr::across(-dplyr::all_of(c(parent1, parent2)), ~ dplyr::case_when(
       (.data[[parent1]] == 0 & .data[[parent2]] == 2 & . == 0) ~ "A",
       (.data[[parent1]] == 0 & .data[[parent2]] == 2 & . == 1) ~ "H",
       (.data[[parent1]] == 0 & .data[[parent2]] == 2 & . == 2) ~ "B",
@@ -124,15 +124,15 @@ recode <- function(geno, parent1,
 
   # Set parent1 = 0 and parent2 = 2
   phased_geno <- phased_geno %>%
-    mutate(
-      across(all_of(parent1), ~ case_when(. == 1 ~ 1, TRUE ~ 0)),
-      across(all_of(parent2), ~ case_when(. == 1 ~ 1, TRUE ~ 2))
+    dplyr::mutate(
+      dplyr::across(dplyr::all_of(parent1), ~ dplyr::case_when(. == 1 ~ 1, TRUE ~ 0)),
+      dplyr::across(dplyr::all_of(parent2), ~ dplyr::case_when(. == 1 ~ 1, TRUE ~ 2))
     )
 
   # Convert phased markers to numeric output
   if (numeric_output) {
     phased_geno <- phased_geno %>%
-      mutate(across(-all_of(c(parent1, parent2)), ~ case_when(
+      dplyr::mutate(dplyr::across(-dplyr::all_of(c(parent1, parent2)), ~ dplyr::case_when(
         . == "A" ~ 0,
         . == "B" ~ 2,
         . == "H" ~ 1,

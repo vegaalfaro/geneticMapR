@@ -33,18 +33,17 @@
 #' filtered_geno <- filter_geno_by_parents(geno_data, "Parent1", "Parent2")
 #' print(filtered_geno)
 #'
-#' @importFrom dplyr filter mutate across where
 #' @export
 filter_geno_by_parents <- function(geno, parent1, parent2) {
   # Ensure geno is a dataframe
   geno <- as.data.frame(geno)
 
   # Convert character columns to numeric
-  geno <- geno %>% mutate(across(where(is.character), as.numeric))
+  geno <- geno %>% dplyr::mutate(dplyr::across(dplyr::where(is.character), as.numeric))
 
   # Filter based on specified parent columns
   ans <- geno %>%
-    filter((.data[[parent1]] == 0 & .data[[parent2]] == 2) |  # A × B
+    dplyr::filter((.data[[parent1]] == 0 & .data[[parent2]] == 2) |  # A × B
              (.data[[parent1]] == 2 & .data[[parent2]] == 0))   # B × A (y = 2 - x)
 
   return(ans)

@@ -18,8 +18,6 @@
 #' # Example usage:
 #' # result <- format_qtl_input(geno2, map2, pheno2, numeric = TRUE)
 #'}
-#'@import dplyr
-#'@import tidyr
 #'
 #' @export
 format_qtl_input <- function(geno, map, pheno, numeric = TRUE) {
@@ -46,17 +44,19 @@ format_qtl_input <- function(geno, map, pheno, numeric = TRUE) {
   }
 
   # Convert all phenotype columns to character
-  pheno <- pheno %>% mutate(across(everything(), as.character))
+  pheno <- pheno %>% dplyr::mutate(across(everything(), as.character))
 
   # Create empty rows for phenotypic data
-  empty_rows <- as.data.frame(matrix("", nrow = 2, ncol = ncol(pheno)))
+  empty_rows <- as.data.frame(matrix("", nrow = 2,
+                                     ncol = ncol(pheno)))
+
   colnames(empty_rows) <- colnames(pheno)
 
   # Insert empty rows at the beginning of phenotype data
-  pheno <- bind_rows(empty_rows, pheno)
+  pheno <- dplyr::bind_rows(empty_rows, pheno)
 
   # Add placeholders for ID column
-  pheno <- pheno %>% mutate(ID = replace(ID, c(1, 2), c("chrom", "position")))
+  pheno <- pheno %>% dplyr::mutate(ID = replace(ID, c(1, 2), c("chrom", "position")))
 
   # Transpose genotype data
   geno_t <- t(geno) %>% as.data.frame()
@@ -66,22 +66,22 @@ format_qtl_input <- function(geno, map, pheno, numeric = TRUE) {
   colnames(map_t) <- colnames(geno_t)
 
   # Insert map as first two rows in genotype matrix
-  geno_t <- bind_rows(map_t, geno_t)
+  geno_t <- dplyr::bind_rows(map_t, geno_t)
 
   # Remove marker row
   geno_t <- geno_t[-1, ]
 
   # Convert row names to column 'ID'
-  geno_t <- rownames_to_column(geno_t, var = "ID")
+  geno_t <- tibble::rownames_to_column(geno_t, var = "ID")
 
   # Merge phenotype with genotype
-  cross_df <- full_join(pheno, geno_t, by = "ID")
+  cross_df <- dplyr::full_join(pheno, geno_t, by = "ID")
 
   # Remove placeholder names in the first two rows
   cross_df$ID[1:2] <- ""
 
   # Ensure first two rows are empty
-  cross_df[1:2, ] <- mutate_all(cross_df[1:2, ], ~ifelse(. == "NA", "", .))
+  cross_df[1:2, ] <- dplyr::mutate_all(cross_df[1:2, ], ~ifelse(. == "NA", "", .))
 
   return(as.data.frame(cross_df))
 }

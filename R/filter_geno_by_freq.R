@@ -38,10 +38,11 @@
 #'                                      het_freq_range = c(0.1, 0.80), min_geno_freq = 0.05)
 #'
 #'
-#' @importFrom dplyr filter mutate across case_when
 #' @export
-filter_geno_by_freq <- function(geno_matrix, max_geno_freq = NULL,
-                                het_freq_range = NULL, min_geno_freq = NULL,
+filter_geno_by_freq <- function(geno_matrix,
+                                max_geno_freq = NULL,
+                                het_freq_range = NULL,
+                                min_geno_freq = NULL,
                                 input_format = "numeric") {
 
   # If all parameters are NULL, return the original matrix

@@ -30,6 +30,7 @@ Formats input data for the read.cross function of \href{https://rqtl.org/}{R/qtl
 # Example usage:
 # result <- format_qtl_input(geno2, map2, pheno2, numeric = TRUE)
 }
+
 }
 \seealso{
 \code{\link[=write.csv]{write.csv()}}, \code{\link[=read.cross]{read.cross()}}

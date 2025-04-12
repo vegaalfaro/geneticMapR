@@ -54,8 +54,10 @@
 #'
 #'
 #' @export
-filter_missing_geno <- function(geno_matrix, threshold = 0.10,
+filter_missing_geno <- function(geno_matrix,
+                                threshold = 0.10,
                                 filter_by = c("markers", "individuals")) {
+
   filter_by <- match.arg(filter_by)  # Ensure valid input
 
   # Initialize variables to prevent missing objects in return statement

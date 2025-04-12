@@ -10,6 +10,8 @@ A data frame with 6 rows and 5 variables:
 \item{Parent1}{Parent1 genotype in dosage of ALT allele (numeric)}
 \item{Parent2}{Parent2 genotype in dosage of ALT allele (numeric)}
 \item{F2_1}{Progeny genotype in dosage of ALT allele (numeric)}
+\item{F2_2}{Genotype of F2 individual 2}
+\item{F2_3}{Genotype of F2 individual 3}
 }
 }
 \source{

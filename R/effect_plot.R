@@ -33,8 +33,7 @@
 #' @note
 #' The half-eye visualization is inspired in work by [Cedric Scherer](https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/)
 #'
-#' @import ggplot2
-#' @import ggdist
+#' @importFrom ggdist stat_halfeye
 #' @importFrom dplyr group_by summarise
 #'
 #' @examples

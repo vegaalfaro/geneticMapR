@@ -36,11 +36,9 @@
 #' @note
 #'  If the number of rows (number of marker pairs) is larger than max.pair (default is 1e4), we proceed to random sampling.
 #'
-#' @import ggplot2
-#' @import stats
+#' @importFrom stats cor dist nls nls.control predict coef
 #'
 #' @export
-
 LD_decay_plot <- function(data,
                           map,
                           max.pair = 1e4,
