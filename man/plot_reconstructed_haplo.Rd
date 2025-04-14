@@ -29,7 +29,7 @@ for a specified set of individuals. It uses \code{MapRtools::plot_geno()} for vi
 and appends informative titles based on the chromosome name.
 }
 \details{
-The function uses \code{extract_map()} from \code{geneticMapper} to infer the chromosome name from the original
+The function uses \code{extract_map()} from \code{geneticMapR} to infer the chromosome name from the original
 genotype matrix, which is then used to annotate the plots. Both matrices are expected
 to be compatible with \code{MapRtools::plot_geno()}.
 }

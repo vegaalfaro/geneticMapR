@@ -1,6 +1,6 @@
 #' QTL Dataset Example
 #'
-#' A list containing QTL LOD scores, thresholds, and vline (annotation) data for demonstrating the functions in `geneticMapper`. It also include a colors character vector and labels for publication ready plots.
+#' A list containing QTL LOD scores, thresholds, and vline (annotation) data for demonstrating the functions in `geneticMapR`. It also include a colors character vector and labels for publication ready plots.
 #'
 #' @format A list with the elements:
 #' \describe{

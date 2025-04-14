@@ -21,6 +21,6 @@ Own author's QTL analysis using R/qtl on a Table beet shape mapping population (
 qtl_example
 }
 \description{
-A list containing QTL LOD scores, thresholds, and vline (annotation) data for demonstrating the functions in \code{geneticMapper}. It also include a colors character vector and labels for publication ready plots.
+A list containing QTL LOD scores, thresholds, and vline (annotation) data for demonstrating the functions in \code{geneticMapR}. It also include a colors character vector and labels for publication ready plots.
 }
 \keyword{datasets}

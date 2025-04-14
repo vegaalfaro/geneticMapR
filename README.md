@@ -1,22 +1,22 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# {geneticMapper} <img src="man/figures/logo.png" width="200px" align="right"/>
+# {geneticMapR} <img src="man/figures/logo.png" width="200px" align="right"/>
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-`geneticMapper` simplifies the construction of genetic maps. Built on
-top of [MapRtools](https://github.com/jendelman/MapRtools) and
+`geneticMapR` simplifies the construction of genetic maps. Built on top
+of [MapRtools](https://github.com/jendelman/MapRtools) and
 [R/qtl](https://rqtl.org/) for reproducible analysis. Optimized for F2
 diploid plant populations. Some functions were generalized for different
-experimental populations and **polyploids**. `geneticMapper` was
-designed to help with reproducible genetic map construction and
-quantitative trait loci (QTL) analysis.
+experimental populations and **polyploids**. `geneticMapR` was designed
+to help with reproducible genetic map construction and quantitative
+trait loci (QTL) analysis.
 
 ## Installation
 
-You can install the development version of `geneticMapper` from
+You can install the development version of `geneticMapR` from
 [GitHub](https://github.com/) with:
 
 ``` r
@@ -25,11 +25,11 @@ if (!requireNamespace("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
 
-#Install geneticMapper
-devtools::install_github("vegaalfaro/geneticMapper")
+#Install geneticMapR
+devtools::install_github("vegaalfaro/geneticMapR")
 
 # Load library
-library(geneticMapper)
+library(geneticMapR)
 ```
 
 ## Usage
@@ -58,7 +58,7 @@ print(simulated_geno)
 #> Marker6       2       0    2    0    0
 
 # Recode the markers using the recode() function
-phased <- geneticMapper::recode(simulated_geno, parent1 = "Parent1", parent2 = "Parent2")
+phased <- geneticMapR::recode(simulated_geno, parent1 = "Parent1", parent2 = "Parent2")
 
 # Print the output
 print(phased)
@@ -79,7 +79,7 @@ peaks and overlays customizable vertical lines
 
 ``` r
 
-library(geneticMapper)
+library(geneticMapR)
 data("qtl_example")
 
      plot_qtl_trace(qtl_df = qtl_example$qtl_df,
@@ -97,8 +97,8 @@ data("qtl_example")
 ## Documentation
 
 For detailed documentation and examples, visit
-[geneticMapper](https://vegaalfaro.github.io/geneticMapper/reference/index.html)
+[geneticMapR](https://vegaalfaro.github.io/geneticMapR/reference/index.html)
 
-### Logo
+### Hexlogo
 
 Credit: Adriana Lopez

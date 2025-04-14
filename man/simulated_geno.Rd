@@ -21,6 +21,6 @@ Simulated data for internal use.
 simulated_geno
 }
 \description{
-This dataset contains a sample genotype matrix for demonstration of \code{geneticMapper} functions.
+This dataset contains a sample genotype matrix for demonstration of \code{geneticMapR} functions.
 }
 \keyword{datasets}

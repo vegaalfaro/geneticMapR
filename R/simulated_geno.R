@@ -1,6 +1,6 @@
 #' Simulated Simple Genotype Matrix Dataset
 #'
-#' This dataset contains a sample genotype matrix for demonstration of `geneticMapper` functions.
+#' This dataset contains a sample genotype matrix for demonstration of `geneticMapR` functions.
 #'
 #' @format A data frame with 6 rows and 5 variables:
 #' \describe{

@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(geneticMapper)
+library(geneticMapR)
 
-test_check("geneticMapper")
+test_check("geneticMapR")

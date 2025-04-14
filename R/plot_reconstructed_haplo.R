@@ -17,7 +17,7 @@
 #'   \item{p2}{Genotype plot after HMM, titled with the chromosome name and "After HMM".}
 #' }
 #'
-#' @details The function uses `extract_map()` from `geneticMapper` to infer the chromosome name from the original
+#' @details The function uses `extract_map()` from `geneticMapR` to infer the chromosome name from the original
 #'         genotype matrix, which is then used to annotate the plots. Both matrices are expected
 #'         to be compatible with `MapRtools::plot_geno()`.
 #'
