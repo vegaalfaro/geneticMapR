@@ -5,7 +5,7 @@ Authors@R:
     person("Andrey", "Vega", , "vegaalfaro@wisc.edu", role = c("aut", "cre"), 
     comment = c(ORCID = "0000-0002-3293-9456"))
 Description: Genetic map construction in experimental crossess. Works for F2 mapping populations with plans for extending to Backcross and Recombinant Inbred Lines.
-License: MIT 
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
