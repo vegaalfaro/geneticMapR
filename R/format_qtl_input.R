@@ -16,7 +16,17 @@
 #' @examples
 #' \dontrun{
 #' # Example usage:
-#' # result <- format_qtl_input(geno2, map2, pheno2, numeric = TRUE)
+#'  result <- format_qtl_input(geno2, map2, pheno2, numeric = TRUE)
+#'
+#' # Write as CSV
+#' write.csv(result, file = "formatted_qtl_data.csv", row.names = FALSE)
+#'
+#' # Read into a cross object (R/qtl)
+#' library(qtl)
+#' cross_data <- read.cross(format = "csv",
+#'                          file = "formatted_qtl_data.csv",
+#'                          genotypes = c("A", "H", "B"),
+#'                          estimate.map = FALSE)
 #'}
 #'
 #' @export

@@ -20,6 +20,8 @@
 #' - Generates a faceted histogram where each panel represents a genotype category.
 #' - Stores both the generated plot and the processed data but returns only the plot by default.
 #'
+#' @seealso [freq()]
+#'
 #' @examples
 #' # Example frequency data frame
 #' freq_data <- data.frame(

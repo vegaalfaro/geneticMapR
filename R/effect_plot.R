@@ -36,6 +36,7 @@
 #' @importFrom ggdist stat_halfeye
 #' @importFrom dplyr group_by summarise
 #'
+#'
 #' @examples
 #' \dontrun{
 #' effect_plot(effects_df = my_data,
@@ -54,10 +55,7 @@
 #'                   c("AAAA", "AAAB", "AABB", "ABBB", "BBBB")
 #'                 flip = TRUE,
 #'                 trait_label = "Height (cm)")
-#'
-#'
 #' }
-#'
 #' @export
 effect_plot <- function(effects_df,
                             marker_name,

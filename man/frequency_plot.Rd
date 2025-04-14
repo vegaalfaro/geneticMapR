@@ -45,3 +45,6 @@ print(p)  # Display the plot
 attr(p, "data")
 
 }
+\seealso{
+\code{\link[=freq]{freq()}}
+}

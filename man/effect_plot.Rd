@@ -72,8 +72,5 @@ effect_plot(effects_df = my_data,
                   c("AAAA", "AAAB", "AABB", "ABBB", "BBBB")
                 flip = TRUE,
                 trait_label = "Height (cm)")
-
-
 }
-
 }

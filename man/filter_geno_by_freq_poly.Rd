@@ -46,9 +46,7 @@ on maximum/ minimum genotype frequencies and heterozygous frequency ranges.
 In diploids, it's simple:
 
 0 = homozygous reference (e.g., "AA")
-
 1 = heterozygous (e.g., "AB")
-
 2 = homozygous alternate (e.g., "BB")
 
 So "1" is always the heterozygous state.
@@ -56,14 +54,13 @@ So "1" is always the heterozygous state.
 But in polyploids (e.g., tetraploids, hexaploids), we can have more intermediate states. For example, in a tetraploid:
 
 0 = "AAAA" → \strong{homozygous ref}
-
 1 = "AAAB"
-
 2 = "AABB"
-
 3 = "ABBB"
-
 4 = "BBBB" → \strong{homozygous alt}
+}
+\note{
+This function has been tested but not rigorously please contact author with any issues.
 }
 \examples{
 \dontrun{
