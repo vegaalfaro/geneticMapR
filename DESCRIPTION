@@ -22,8 +22,8 @@ Imports:
     ggdist,
     ggpubr,
     qtl
+Remotes: jendelman/MapRtools
 Suggests: 
-    MapRtools,
     knitr,
     rmarkdown,
     devtools,
