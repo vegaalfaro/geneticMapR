@@ -1,0 +1,9 @@
+pandoc: 3.1.11
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  geneticMapR: geneticMapR.html
+last_built: 2025-04-15T18:59Z
+urls:
+  reference: https://vegaalfaro.github.io/geneticMapR/reference
+  article: https://vegaalfaro.github.io/geneticMapR/articles
