@@ -33,6 +33,7 @@
 #' If the user is interested in LD per chromosome, provide a map and data file with only
 #' data pertaining to the chromosome of interest.
 #'
+#'
 #' @note
 #'  If the number of rows (number of marker pairs) is larger than max.pair (default is 1e4), we proceed to random sampling.
 #'
