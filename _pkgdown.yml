@@ -3,9 +3,10 @@ template:
   bootstrap: 5
 
 reference:
+pkgdown::build_site()
+
   - title: Core Functions
     contents:
-
       - convert_to_dosage_advanced
       - effect_plot
       - estimate_map
@@ -16,8 +17,6 @@ reference:
       - recode
       - simple_effect_plot
       - trim_LG
-
-
 
   - title: Filtering, Formatting and Plotting
     contents:
@@ -38,9 +37,7 @@ reference:
       - plot_marey
       - plot_reconstructed_haplo
 
-
-
-  - title:  Data
+  - title: Data
     contents:
       - simulated_geno
       - qtl_example
@@ -53,4 +50,3 @@ reference:
       - melt_freq
       - rename_geno_matrix
       - estimate_error
-
