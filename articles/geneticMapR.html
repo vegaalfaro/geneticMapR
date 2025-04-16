@@ -64,9 +64,98 @@
 
     
     
+<p><code>geneticMapR</code> is an R package designed to simplify the
+construction of genetic maps and QTL analysis using molecular markers in
+F<sub>2</sub> bi-parental populations.</p>
+<p>Genetic map construction is often overlooked in the genetic mapping
+literature and can be time-consuming. This package aims to make the
+process reproducible and to provide tools for QTL visualization and
+plant genetic research.</p>
+<p>Functions in <code>geneticMapR</code> and key mapping steps will be
+illustrated using a real dataset from <em>Beta vulgaris</em> (table
+beet), an outcrossing species. The F<sub>2</sub> population was derived
+from crosses between Conical × Round and Cylindrical × Round inbred
+lines, representing distinct root shapes. The challenges posed by the
+outcrossing nature of <em>Beta vulgaris</em> will help highlight
+practical solutions for common problems in genetic mapping.</p>
+<p>My early genetic maps were difficult to reproduce and prone to
+mistakes. I hope <code>geneticMapR</code> supports your journey toward
+reliable and reproducible genetic maps.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vegaalfaro/geneticMapR" class="external-link">geneticMapR</a></span><span class="op">)</span></span></code></pre></div>
-  </main>
+<code class="sourceCode R"><span><span class="co"># Get devtools if needed</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">#Install geneticMapR</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"vegaalfaro/geneticMapR"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="where-to-start">Where to start?<a class="anchor" aria-label="anchor" href="#where-to-start"></a>
+</h2>
+<p><code>geneticMapR</code> helps you construct genetic maps in
+F<sub>2</sub> mapping populations. While it is primarily designed for
+diploid species, some functions also support polyploids.</p>
+<p>To get started, you’ll need a few essential files:</p>
+<ul>
+<li><p><strong>Genotype file</strong>: A matrix where individuals are
+scored for their genotype across multiple loci in the genome.</p></li>
+<li><p><strong>Phenotype file</strong>: One or more traits measured
+across individuals, possibly across time or environments
+(multi-environment trials), depending on your species.</p></li>
+</ul>
+<p><code>geneticMapR</code> provides example data to walk you through
+the mapping process. We’ll start with an example <code>VCF</code>[<a href="https://samtools.github.io/hts-specs/VCFv4.2.pdf" class="external-link uri">https://samtools.github.io/hts-specs/VCFv4.2.pdf</a>] file
+which is the typical output of next generation sequencing platforms like
+genotyping by sequencing (<a href="https://en.wikipedia.org/wiki/Genotyping_by_sequencing" class="external-link">GBS</a>)</p>
+</div>
+<div class="section level2">
+<h2 id="recommendations">Recommendations<a class="anchor" aria-label="anchor" href="#recommendations"></a>
+</h2>
+<p>When genotyping, it is critical to include DNA from the parental
+lines and the F<sub>1</sub> individuals. Ideally, this should be from
+the actual plants used to create the population, especially in
+outcrossing species like carrot or beet.</p>
+<p>If tissue from the original parents or F<sub>1</sub> is unavailable,
+use samples from other plants of the same genotype. However, in
+outcrossing species, even inbred lines may show unexpected diversity.
+I’ve seen this firsthand in carrots.</p>
+<p>Parental genotypes are essential for <em>recoding</em> or
+<em>phasing</em> markers to reflect parental inheritance, a core step in
+genetic mapping. They’re also helpful for resolving problematic markers
+and understanding residual heterozygosity, which is common in many
+populations.</p>
+<p>Having the parents and F<sub>1</sub> genotyped will prove invaluable
+for a genetic mapping project.</p>
+</div>
+<div class="section level2">
+<h2 id="using-your-own-data">Using Your Own Data<a class="anchor" aria-label="anchor" href="#using-your-own-data"></a>
+</h2>
+<p>You can use your own genotype matrix (from a VCF or GBS pipeline)
+with <code>geneticMapR</code>. Functions like
+<code><a href="../reference/convert_to_dosage.html">convert_to_dosage()</a></code> and
+<code><a href="../reference/convert_to_dosage_flex.html">convert_to_dosage_flex()</a></code> help format raw genotype calls
+into phased numeric values compatible with the package.</p>
+<p>For unfiltered VCF-derived matrices, make sure to:</p>
+<ul>
+<li>Filter for bi-allelic SNPs.</li>
+<li>Remove non-polymorphic markers.</li>
+<li>Keep only SNPs with sufficient depth and genotype quality scores, it
+varies for each project or population.</li>
+</ul>
+<p>If you need help in this step, check the
+<code>bcftools_tutorial</code> in my github <a href="https://github.com/vegaalfaro/bcftools_tutorial" class="external-link">vegaalfaro/bcftools_tutorial</a>.
+Still under development.</p>
+</div>
+<div class="section level2">
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h2>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

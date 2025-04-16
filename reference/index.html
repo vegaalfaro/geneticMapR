@@ -31,7 +31,7 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="core-functions">Core Functions<a class="anchor" aria-label="anchor" href="#core-functions"></a></h2>
 
 
 
@@ -43,46 +43,16 @@
 
       <dl><dt>
 
-          <code><a href="LD_decay_plot.html">LD_decay_plot()</a></code>
-
-        </dt>
-        <dd>Plot LD vs distance</dd>
-      </dl><dl><dt>
-
-          <code><a href="convert_to_dosage.html">convert_to_dosage()</a></code>
-
-        </dt>
-        <dd>Convert VCF Genotype Format to Dosage for Diploids</dd>
-      </dl><dl><dt>
-
           <code><a href="convert_to_dosage_advanced.html">convert_to_dosage_advanced()</a></code>
 
         </dt>
         <dd>Convert VCF Genotype Format to Dosage (Advanced, Polyploid-Compatible)</dd>
       </dl><dl><dt>
 
-          <code><a href="convert_to_dosage_flex.html">convert_to_dosage_flex()</a></code>
-
-        </dt>
-        <dd>Convert VCF Genotype Format to Dosage (Supports Polyploids and Missing Alleles)</dd>
-      </dl><dl><dt>
-
-          <code><a href="drop_parents.html">drop_parents()</a></code>
-
-        </dt>
-        <dd>Drop Parents and F1 Individuals from a Data Frame</dd>
-      </dl><dl><dt>
-
           <code><a href="effect_plot.html">effect_plot()</a></code>
 
         </dt>
         <dd>Powerful Effect Plots</dd>
-      </dl><dl><dt>
-
-          <code><a href="estimate_error.html">estimate_error()</a></code>
-
-        </dt>
-        <dd>Estimate Genotyping Error Rate</dd>
       </dl><dl><dt>
 
           <code><a href="estimate_map.html">estimate_map()</a></code>
@@ -96,6 +66,53 @@
         </dt>
         <dd>Create a Physical Map from Chromosome and Position from Row Names</dd>
       </dl><dl><dt>
+
+          <code><a href="freq.html">freq()</a></code>
+
+        </dt>
+        <dd>Calculate Genotype Frequency Per Individual or Marker</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_LOD_int.html">get_LOD_int()</a></code>
+
+        </dt>
+        <dd>Get LOD Support Intervals for QTL Peaks (Single or Multiple Traits)</dd>
+      </dl><dl><dt>
+
+          <code><a href="haplotype_reconstruction.html">haplotype_reconstruction()</a></code>
+
+        </dt>
+        <dd>F2 diploid population Haplotype Reconstruction</dd>
+      </dl><dl><dt>
+
+          <code><a href="recode.html">recode()</a></code>
+
+        </dt>
+        <dd>Phase Genotype Marker Data Based on Parental References</dd>
+      </dl><dl><dt>
+
+          <code><a href="simple_effect_plot.html">simple_effect_plot()</a></code>
+
+        </dt>
+        <dd>Simple Effect Plot</dd>
+      </dl><dl><dt>
+
+          <code><a href="trim_LG.html">trim_LG()</a></code>
+
+        </dt>
+        <dd>Trim Linkage Groups Based on LOD Thresholds</dd>
+      </dl></div><div class="section level2">
+      <h2 id="filtering-formatting-and-plotting">Filtering, Formatting and Plotting<a class="anchor" aria-label="anchor" href="#filtering-formatting-and-plotting"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
 
           <code><a href="filter_geno_by_freq.html">filter_geno_by_freq()</a></code>
 
@@ -121,12 +138,6 @@
         <dd>Filter Markers or Individuals Based on Missing Genotype Data</dd>
       </dl><dl><dt>
 
-          <code><a href="format_qtl_input.html">format_qtl_input()</a></code>
-
-        </dt>
-        <dd>Format Input Data for R/qtl package</dd>
-      </dl><dl><dt>
-
           <code><a href="formater.html">formater()</a></code>
 
         </dt>
@@ -139,34 +150,22 @@
         <dd>Flexible Genotype Format Converter (Supports Polyploid Dosage)</dd>
       </dl><dl><dt>
 
-          <code><a href="freq.html">freq()</a></code>
+          <code><a href="format_qtl_input.html">format_qtl_input()</a></code>
 
         </dt>
-        <dd>Calculate Genotype Frequency Per Individual or Marker</dd>
+        <dd>Format Input Data for R/qtl package</dd>
+      </dl><dl><dt>
+
+          <code><a href="LD_decay_plot.html">LD_decay_plot()</a></code>
+
+        </dt>
+        <dd>Plot LD vs distance</dd>
       </dl><dl><dt>
 
           <code><a href="frequency_plot.html">frequency_plot()</a></code>
 
         </dt>
         <dd>Generate a Histogram of Genotype Frequencies</dd>
-      </dl><dl><dt>
-
-          <code><a href="get_LOD_int.html">get_LOD_int()</a></code>
-
-        </dt>
-        <dd>Get LOD Support Intervals for QTL Peaks (Single or Multiple Traits)</dd>
-      </dl><dl><dt>
-
-          <code><a href="haplotype_reconstruction.html">haplotype_reconstruction()</a></code>
-
-        </dt>
-        <dd>F2 diploid population Haplotype Reconstruction</dd>
-      </dl><dl><dt>
-
-          <code><a href="melt_freq.html">melt_freq()</a></code>
-
-        </dt>
-        <dd>Convert (Melt) Genotype Frequency Data to Long Format</dd>
       </dl><dl><dt>
 
           <code><a href="order_and_plot.html">order_and_plot()</a></code>
@@ -179,6 +178,12 @@
 
         </dt>
         <dd>Plot Genetic Map Using ggplot2 in R/qtl data environment</dd>
+      </dl><dl><dt>
+
+          <code><a href="plot_qtl_trace.html">plot_qtl_trace()</a></code>
+
+        </dt>
+        <dd>Generates a line plot showing QTL traces (LOD scores) across chromosomes for one or more traits. Supports customization of visual appearance and annotations such as significance thresholds and vertical lines.</dd>
       </dl><dl><dt>
 
           <code><a href="plot_coverage.html">plot_coverage()</a></code>
@@ -199,28 +204,68 @@
         <dd>Generate a Marey Plot for one Chromosome</dd>
       </dl><dl><dt>
 
-          <code><a href="plot_qtl_trace.html">plot_qtl_trace()</a></code>
-
-        </dt>
-        <dd>Generates a line plot showing QTL traces (LOD scores) across chromosomes for one or more traits. Supports customization of visual appearance and annotations such as significance thresholds and vertical lines.</dd>
-      </dl><dl><dt>
-
           <code><a href="plot_reconstructed_haplo.html">plot_reconstructed_haplo()</a></code>
 
         </dt>
         <dd>Plot Haplotype Reconstruction Results Before and After HMM</dd>
+      </dl></div><div class="section level2">
+      <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="simulated_geno.html">simulated_geno</a></code>
+
+        </dt>
+        <dd>Simulated Simple Genotype Matrix Dataset</dd>
       </dl><dl><dt>
 
           <code><a href="qtl_example.html">qtl_example</a></code>
 
         </dt>
         <dd>QTL Dataset Example</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="utility-functions">Utility Functions<a class="anchor" aria-label="anchor" href="#utility-functions"></a></h2>
 
-          <code><a href="recode.html">recode()</a></code>
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="convert_to_dosage.html">convert_to_dosage()</a></code>
 
         </dt>
-        <dd>Phase Genotype Marker Data Based on Parental References</dd>
+        <dd>Convert VCF Genotype Format to Dosage for Diploids</dd>
+      </dl><dl><dt>
+
+          <code><a href="convert_to_dosage_flex.html">convert_to_dosage_flex()</a></code>
+
+        </dt>
+        <dd>Convert VCF Genotype Format to Dosage (Supports Polyploids and Missing Alleles)</dd>
+      </dl><dl><dt>
+
+          <code><a href="drop_parents.html">drop_parents()</a></code>
+
+        </dt>
+        <dd>Drop Parents and F1 Individuals from a Data Frame</dd>
+      </dl><dl><dt>
+
+          <code><a href="melt_freq.html">melt_freq()</a></code>
+
+        </dt>
+        <dd>Convert (Melt) Genotype Frequency Data to Long Format</dd>
       </dl><dl><dt>
 
           <code><a href="rename_geno_matrix.html">rename_geno_matrix()</a></code>
@@ -229,24 +274,13 @@
         <dd>Rename Parents, F1, and F2 Individuals in a Genotype Matrix</dd>
       </dl><dl><dt>
 
-          <code><a href="simple_effect_plot.html">simple_effect_plot()</a></code>
+          <code><a href="estimate_error.html">estimate_error()</a></code>
 
         </dt>
-        <dd>Simple Effect Plot</dd>
-      </dl><dl><dt>
-
-          <code><a href="simulated_geno.html">simulated_geno</a></code>
-
-        </dt>
-        <dd>Simulated Simple Genotype Matrix Dataset</dd>
-      </dl><dl><dt>
-
-          <code><a href="trim_LG.html">trim_LG()</a></code>
-
-        </dt>
-        <dd>Trim Linkage Groups Based on LOD Thresholds</dd>
+        <dd>Estimate Genotyping Error Rate</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
