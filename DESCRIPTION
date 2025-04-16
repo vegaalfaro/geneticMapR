@@ -1,5 +1,5 @@
 Package: geneticMapR
-Title: Functions for Constructing and Analyzing Genetic Maps
+Title: Tools for Making Genetic Map Construction Easier
 Version: 0.0.0.9000
 Authors@R: 
     person("Andrey", "Vega", , "vegaalfaro@wisc.edu", role = c("aut", "cre"), 
@@ -21,7 +21,8 @@ Imports:
     HMM,
     ggdist,
     ggpubr,
-    qtl
+    qtl,
+    utils
 Remotes: jendelman/MapRtools
 Suggests: 
     knitr,

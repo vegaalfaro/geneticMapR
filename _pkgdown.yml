@@ -2,3 +2,55 @@ url: https://vegaalfaro.github.io/geneticMapR/
 template:
   bootstrap: 5
 
+reference:
+  - title: Core Functions
+    contents:
+
+      - convert_to_dosage_advanced
+      - effect_plot
+      - estimate_map
+      - extract_map
+      - freq
+      - get_LOD_int
+      - haplotype_reconstruction
+      - recode
+      - simple_effect_plot
+      - trim_LG
+
+
+
+  - title: Filtering, Formatting and Plotting
+    contents:
+      - filter_geno_by_freq
+      - filter_geno_by_freq_poly
+      - filter_geno_by_parents
+      - filter_missing_geno
+      - formater
+      - formater_flex
+      - format_qtl_input
+      - LD_decay_plot
+      - frequency_plot
+      - order_and_plot
+      - plotMap_gg
+      - plot_qtl_trace
+      - plot_coverage
+      - plot_genotype_histogram
+      - plot_marey
+      - plot_reconstructed_haplo
+
+
+
+  - title:  Data
+    contents:
+      - simulated_geno
+      - qtl_example
+
+  - title: Utility Functions
+    contents:
+      - convert_to_dosage
+      - convert_to_dosage_flex
+      - drop_parents
+      - melt_freq
+      - rename_geno_matrix
+      - estimate_error
+

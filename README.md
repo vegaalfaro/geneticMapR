@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# {geneticMapR} <img src="man/figures/logo.png" width="200px" align="right"/>
+# geneticMapR <img src="man/figures/logo.png" width="200px" align="right" alt="geneticMapR website"/>
 
 <!-- badges: start -->
 <!-- badges: end -->
