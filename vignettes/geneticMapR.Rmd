@@ -69,7 +69,7 @@ For unfiltered VCF-derived matrices, make sure to:
 * Remove non-polymorphic markers. 
 * Keep only SNPs with sufficient depth and genotype quality scores, it varies for each project or population.
 
-If you need help in this step, check the `bcftools_tutorial` in my github [vegaalfaro/bcftools_tutorial](https://github.com/vegaalfaro/bcftools_tutorial). Still under development. 
+If you need help in this step, check the `bcftools_tutorial` in my github [vegaalfaro/bcftoolsR](https://github.com/vegaalfaro/bcftoolsR). Still under development. 
 
 ## Documentation
 
