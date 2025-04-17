@@ -31,7 +31,6 @@
 #' - Removes non-polymorphic markers (markers where both parents have the same genotype).
 #' - If `handle_het_markers = FALSE`, retains only homozygous marker where dosages are as follows: (`P1 = 0` & `P2 = 2` or `P1 = 2` & `P2 = 0`)
 #' - If `handle_het_markers = TRUE`, allows heterozygous markers to be kept.
-#' - Ensures that `parent1` is always `0` and specific heterozygous markers to be kept.
 #' - Ensures that `parent1` is always `0` and `parent2` is always `2` for standardization.
 #' - Returns a numeric matrix if `numeric_output = TRUE`, otherwise returns phased `"A"`, `"B"`, `"H"` values.
 #' - More details on the heterozygous F2 marker types ("AxH", "HxB", "HxA", "BxH") are in [Braun et al. (2017).](https://acsess.onlinelibrary.wiley.com/doi/10.3835/plantgenome2016.10.0110)
