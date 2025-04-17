@@ -3,8 +3,6 @@ template:
   bootstrap: 5
 
 reference:
-pkgdown::build_site()
-
   - title: Core Functions
     contents:
       - convert_to_dosage_advanced
