@@ -3,7 +3,7 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   geneticMapR: geneticMapR.html
-last_built: 2025-04-16T00:19Z
+last_built: 2025-04-17T03:14Z
 urls:
   reference: https://vegaalfaro.github.io/geneticMapR/reference
   article: https://vegaalfaro.github.io/geneticMapR/articles
