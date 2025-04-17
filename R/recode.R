@@ -35,9 +35,6 @@
 #' - Returns a numeric matrix if `numeric_output = TRUE`, otherwise returns phased `"A"`, `"B"`, `"H"` values.
 #' - More details on the heterozygous F2 marker types ("AxH", "HxB", "HxA", "BxH") are in [Braun et al. (2017).](https://acsess.onlinelibrary.wiley.com/doi/10.3835/plantgenome2016.10.0110)
 #'
-#' @note This function was refined with assistance from ChatGPT to improve clarity,
-#' efficiency, and visualization formatting. Extensive testing was performed by the author to verify outputs.
-#'
 #' @examples
 #' # Example genotype data
 #' geno_data <- data.frame(
