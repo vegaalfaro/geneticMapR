@@ -8,3 +8,6 @@ docs
 inst/doc
 /doc/
 /Meta/
+tmp
+
+vignettes/local_copy.vcf.gz
