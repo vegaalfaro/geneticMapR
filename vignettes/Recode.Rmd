@@ -33,7 +33,12 @@ if (!requireNamespace("geneticMapR", quietly = TRUE)) devtools::install_github("
 if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
 if (!requireNamespace("MapRtools", quietly = TRUE)) devtools::install_github("jendelman/MapRtools")
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-#BiocManager::install(c("VariantAnnotation", "Rsamtools"))
+if (!requireNamespace("VariantAnnotation", quietly = TRUE)) { BiocManager::install("VariantAnnotation")
+}
+if (!requireNamespace("Rsamtools", quietly = TRUE)) {
+  BiocManager::install("Rsamtools")
+}
+
 
 # Load libraries
 library(geneticMapR) 
@@ -416,7 +421,7 @@ geno.freq.het.filtered <- freq(het_phased_geno_1629_filt,
 
 
 # Create plot
-frequency_plot(geno.freq.het.filtered) + ggtitle("Het markers, unfiltered")
+frequency_plot(geno.freq.het.filtered) + ggtitle("Het markers, filtered")
 
 ```
 
