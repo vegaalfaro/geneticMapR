@@ -39,11 +39,16 @@ devtools::install_github("vegaalfaro/geneticMapR")
 library(geneticMapR)
 ```
 
+## Learn geneticMapR
+
+Check out the Articles tab to learn in detail how to construct genetic maps for F~2~ mapping populations. Other populations under development. The vignettes (articles) are systematically designed to teach you how to create genetic maps and learn the functions along the way. 
+[geneticMapR](https://vegaalfaro.github.io/geneticMapR/reference/index.html) documentation also provides some examples.
+
 ## Usage
 
 The example shows how to *recode* markers when neither parent is the reference genome, as is common with [GBS](https://en.wikipedia.org/wiki/Genotyping_by_sequencing) data. Molecular markers (SNPs) must be phased to accurately trace allele inheritance in the progeny. `recode` is a general function that can help with that:
 
-#### Recode
+#### Recode markers
 
 ```{r example, message = FALSE}
 # Load the example dataset
@@ -60,7 +65,7 @@ print(phased)
 
 ```
 
-#### Visualization
+#### Visualization capabilities
 
 This function generates a QTL trace plot to visualize significance scores across chromosomes for one or more traits. It highlights QTL peaks and overlays customizable vertical lines
 
@@ -83,5 +88,5 @@ data("qtl_example")
 
 For detailed documentation and examples, visit [geneticMapR](https://vegaalfaro.github.io/geneticMapR/reference/index.html)
 
-### Hexlogo 
+## Hexlogo 
 Credit: Adriana Lopez
