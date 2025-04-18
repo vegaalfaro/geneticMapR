@@ -83,12 +83,12 @@ available in Github. <code>trim_LG</code> provides a simple interphase for trimm
 <dd><p>A genotype matrix where:</p><ul><li><p>Rows represent genetic markers.</p></li>
 <li><p>Columns represent individuals.</p></li>
 <li><p>Values represent genotype calls.
-Preferably, a binned genotype matrix. Binning can be performed using <code>MapRtools::LDbin</code>.</p></li>
+Preferably, a binned genotype matrix. Binning can be performed using <code><a href="https://rdrr.io/pkg/MapRtools/man/LDbin.html" class="external-link">MapRtools::LDbin</a></code>.</p></li>
 </ul></dd>
 
 
 <dt id="arg-pop-type">pop_type<a class="anchor" aria-label="anchor" href="#arg-pop-type"></a></dt>
-<dd><p>Character. The population type used for linkage estimation. Default is <code>"F2"</code>. Would work with any of the following "DH","BC","F2","S1","RIL.self","RIL.sib". Based on <code>MapRtools::MLEL()</code></p></dd>
+<dd><p>Character. The population type used for linkage estimation. Default is <code>"F2"</code>. Would work with any of the following "DH","BC","F2","S1","RIL.self","RIL.sib". Based on <code><a href="https://rdrr.io/pkg/MapRtools/man/MLEL.html" class="external-link">MapRtools::MLEL()</a></code></p></dd>
 
 
 <dt id="arg-drop-outliers">drop_outliers<a class="anchor" aria-label="anchor" href="#arg-drop-outliers"></a></dt>
@@ -116,8 +116,8 @@ If <code>NULL</code>, the function selects the maximum available minus one.</p><
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
 
-<ul><li><p>Computes LOD scores for marker pairs using <code>MapRtools::MLEL()</code>, parallelized with multiple cores.</p></li>
-<li><p>Displays an interactive "candy stripe" plot for visualizing linkage groups using <code>MapRtools::LG()</code>.</p></li>
+<ul><li><p>Computes LOD scores for marker pairs using <code><a href="https://rdrr.io/pkg/MapRtools/man/MLEL.html" class="external-link">MapRtools::MLEL()</a></code>, parallelized with multiple cores.</p></li>
+<li><p>Displays an interactive "candy stripe" plot for visualizing linkage groups using <code><a href="https://rdrr.io/pkg/MapRtools/man/LG.html" class="external-link">MapRtools::LG()</a></code>.</p></li>
 <li><p>Asks the user to define a LOD range and a final LOD threshold for marker filtering.</p></li>
 <li><p>If <code>drop_outliers = TRUE</code>, removes markers identified as outliers based on haplotype frequency.</p></li>
 </ul></div>

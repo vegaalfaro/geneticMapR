@@ -90,50 +90,18 @@ genotype recoding is based on founder descent.</p>
 <p>We will need a series of packages, below we show how to install them
 if needed.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Install required packages (if not already installed)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"geneticMapR"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"vegaalfaro/geneticMapR"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"MapRtools"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jendelman/MapRtools"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; gmp          (NA -&gt; 0.7-5   ) [CRAN]</span></span>
-<span><span class="co">#&gt; bit          (NA -&gt; 4.6.0   ) [CRAN]</span></span>
-<span><span class="co">#&gt; permute      (NA -&gt; 0.9-7   ) [CRAN]</span></span>
-<span><span class="co">#&gt; iterators    (NA -&gt; 1.0.14  ) [CRAN]</span></span>
-<span><span class="co">#&gt; foreach      (NA -&gt; 1.5.2   ) [CRAN]</span></span>
-<span><span class="co">#&gt; RcppArmad... (NA -&gt; 14.4.1-1) [CRAN]</span></span>
-<span><span class="co">#&gt; osqp         (NA -&gt; 0.6.3.3 ) [CRAN]</span></span>
-<span><span class="co">#&gt; scs          (NA -&gt; 3.2.7   ) [CRAN]</span></span>
-<span><span class="co">#&gt; ECOSolveR    (NA -&gt; 0.5.5   ) [CRAN]</span></span>
-<span><span class="co">#&gt; Rmpfr        (NA -&gt; 1.0-0   ) [CRAN]</span></span>
-<span><span class="co">#&gt; bit64        (NA -&gt; 4.6.0-1 ) [CRAN]</span></span>
-<span><span class="co">#&gt; vegan        (NA -&gt; 2.6-10  ) [CRAN]</span></span>
-<span><span class="co">#&gt; TSP          (NA -&gt; 1.2-4   ) [CRAN]</span></span>
-<span><span class="co">#&gt; registry     (NA -&gt; 0.5-1   ) [CRAN]</span></span>
-<span><span class="co">#&gt; qap          (NA -&gt; 0.1-2   ) [CRAN]</span></span>
-<span><span class="co">#&gt; gclus        (NA -&gt; 1.3.3   ) [CRAN]</span></span>
-<span><span class="co">#&gt; ca           (NA -&gt; 0.71.1  ) [CRAN]</span></span>
-<span><span class="co">#&gt; splines2     (NA -&gt; 0.5.4   ) [CRAN]</span></span>
-<span><span class="co">#&gt; CVXR         (NA -&gt; 1.0-15  ) [CRAN]</span></span>
-<span><span class="co">#&gt; seriation    (NA -&gt; 1.5.7   ) [CRAN]</span></span>
-<span><span class="co">#&gt; scam         (NA -&gt; 1.2-18  ) [CRAN]</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #00BBBB;">R CMD build</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; * checking for file ‘/tmp/Rtmpzy1uDt/remotes1ec325f327c2/jendelman-MapRtools-cabbd53/DESCRIPTION’ ... OK</span></span>
-<span><span class="co">#&gt; * preparing ‘MapRtools’:</span></span>
-<span><span class="co">#&gt; * checking DESCRIPTION meta-information ... OK</span></span>
-<span><span class="co">#&gt; * checking for LF line-endings in source and make files and shell scripts</span></span>
-<span><span class="co">#&gt; * checking for empty or unneeded directories</span></span>
-<span><span class="co">#&gt; Omitted ‘LazyData’ from DESCRIPTION</span></span>
-<span><span class="co">#&gt; * building ‘MapRtools_0.36.tar.gz’</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"VariantAnnotation"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"VariantAnnotation"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"Rsamtools"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"Rsamtools"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
+<code class="sourceCode R"><span><span class="co"># Load or install packages if needed </span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"geneticMapR"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"vegaalfaro/geneticMapR"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"MapRtools"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jendelman/MapRtools"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"VariantAnnotation"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"VariantAnnotation"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"Rsamtools"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"Rsamtools"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load libraries</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vegaalfaro/geneticMapR" class="external-link">geneticMapR</a></span><span class="op">)</span> </span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vegaalfaro/geneticMapR" class="external-link">geneticMapR</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">MapRtools</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">VariantAnnotation</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
@@ -147,7 +115,7 @@ if needed.</p>
 <h2 id="load-and-explore-vcf-file">Load and Explore VCF File<a class="anchor" aria-label="anchor" href="#load-and-explore-vcf-file"></a>
 </h2>
 <p>The VCF file is somewhat large (19.8 MB) to be included as a system
-file. The repository <a href="https://github.com/vegaalfaro/geneticMapRFiles" class="external-link">geneticMapRFiles</a>
+file. <a href="https://github.com/vegaalfaro/geneticMapRFiles" class="external-link">geneticMapRFiles</a>
 is a data-only repository that will help us save data and run through
 examples without much issues. Let’s get a local copy of the VCF file
 using <code><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">utils::download.file()</a></code></p>
@@ -200,12 +168,19 @@ fields using VariantAnnotation’s geno function.</p>
 <p>genotypes are coded as <code>"0/0"</code>, <code>"0/1"</code>, or
 <code>"1/1"</code>, representing the maximum likelihood call:
 <code>0</code> for the reference (REF) allele and <code>1</code> for the
-alternate (ALT) allele. For example, <code>"0/0"</code> means a dosage
-of 0 ALT alleles, <code>"0/1"</code> or <code>"1/0"</code> is a dosage
-of 1 ALT allele and <code>"1/1"</code> corresponds to a dosage of 2.</p>
-<p>The <code>convert_to_dosage</code> family of functions in
-<strong>geneticMapR</strong> handles this conversion easily. For
-polyploids (e.g., <code>"0/0/0/0"</code>), check out
+alternate (ALT) allele. For example:</p>
+<ul>
+<li>
+<code>"0/0"</code> is a dosage of 0 ALT alleles,</li>
+<li>
+<code>"0/1"</code> or <code>"1/0"</code> is a dosage of 1 ALT allele
+and</li>
+<li>
+<code>"1/1"</code> corresponds to a dosage of 2 ALT alleles.</li>
+</ul>
+<p>The <code>convert_to_dosage</code> <a href="https://vegaalfaro.github.io/geneticMapR/reference/index.html">family
+of functions</a> in <code>geneticMapR</code> handles this conversion
+easily. For polyploids (e.g., <code>"0/0/0/0"</code>), check out
 <code>convert_to_dosage_advanced</code> and
 <code>convert_to_dosage_flex</code>.</p>
 <p>Let’s convert the genotype calls into dosages:</p>
@@ -263,9 +238,11 @@ were removed as they have data that exceeds the 0.1 threshold.</p>
 <p>Let’s see an example on how to access the results.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Access outputs</span></span>
-<span><span class="va">filtered_geno</span> <span class="op">&lt;-</span> <span class="va">geno_missing_filtered</span><span class="op">$</span><span class="va">filtered_geno</span></span>
-<span><span class="va">missing_values</span> <span class="op">&lt;-</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">geno_missing_filtered</span><span class="op">$</span><span class="va">pct_missing</span><span class="op">)</span></span>
+<span><span class="va">filtered_geno</span> <span class="op">&lt;-</span> <span class="va">geno_missing_filtered</span><span class="op">$</span><span class="va">filtered_geno</span> <span class="co"># Filtered geno matrix</span></span>
+<span><span class="va">missing_values</span> <span class="op">&lt;-</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">geno_missing_filtered</span><span class="op">$</span><span class="va">pct_missing</span><span class="op">)</span> <span class="co">#</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">missing_values</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"missing"</span></span>
+<span></span>
+<span><span class="co"># Removed individuals</span></span>
 <span><span class="va">removed_individuals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ind <span class="op">=</span> <span class="va">geno_missing_filtered</span><span class="op">$</span><span class="va">removed_individuals</span><span class="op">)</span></span></code></pre></div>
 <p>Let’s see which individuals were removed</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -308,12 +285,14 @@ names should contain components (chromosome, position) separated by a
 symbol (e.g., _, -, .). Use arguments <code>chrom_index</code> and
 <code>pos_index</code> to specify their positions, and split_symbol to
 define the delimiter.</p>
-<p>In our previous example <strong>“CHR7_192222”</strong>,
+<p>In our example <strong>“CHR7_192222”</strong>,
 <code>chrom_index = 1</code> as the chromosome is the first field before
 the delimiter “_“. If our markers were coded as
 <strong>W257B_“CHR7_192222”</strong> then <code>chrom_index = 2</code>
 and <code>pos_index = 3</code> as chromosome and position are in the
 second and third field respectively.</p>
+<p><code>extract_map</code> is tested to work with the symbols “_“,”-”
+and “.”. Other valid separators may also be valid</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Extract physical map</span></span>
 <span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_map.html">extract_map</a></span><span class="op">(</span>genotype_matrix <span class="op">=</span> <span class="va">filtered_geno</span>,</span>
@@ -340,20 +319,19 @@ second and third field respectively.</p>
 <div class="section level2">
 <h2 id="genotype-frequency">Genotype Frequency<a class="anchor" aria-label="anchor" href="#genotype-frequency"></a>
 </h2>
-<p>We can evaluate homozygosity levels in genotype data using the
-<code><a href="../reference/freq.html">freq()</a></code> function. The function computes the relative
-frequency of each genotype (typically coded as 0, 1, or 2) across
-markers or individuals.</p>
+<p>We can evaluate genotype frecuency using the <code><a href="../reference/freq.html">freq()</a></code>
+function. The function computes the relative frequency of each genotype
+(typically coded as 0, 1, or 2) across markers or individuals.</p>
 <div class="section level4">
 <h4 id="genotype-frequency-by-marker">Genotype Frequency by Marker<a class="anchor" aria-label="anchor" href="#genotype-frequency-by-marker"></a>
 </h4>
-<p>To evaluate how homozygous the parents (or any sample) are across
-markers, we first calculate genotype frequencies by marker:</p>
+<p>We first calculate genotype frequencies by marker:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">geno.freq.mar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/freq.html">freq</a></span><span class="op">(</span><span class="va">filtered_geno</span>, input_format <span class="op">=</span> <span class="st">"numeric"</span>, by <span class="op">=</span> <span class="st">"markers"</span><span class="op">)</span></span></code></pre></div>
 <p>This returns the relative frequency of each genotype (0, 1, 2) at
 each marker locus across all individuals, allowing identification of
 loci with high homozygosity or heterozygosity.</p>
+<p>It can also help to filter out markers downstream.</p>
 <p>Let’s take a look</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">geno.freq.mar</span><span class="op">)</span></span>
@@ -368,7 +346,7 @@ loci with high homozygosity or heterozygosity.</p>
 <div class="section level4">
 <h4 id="genotype-frequency-by-marker-1">Genotype Frequency by Marker<a class="anchor" aria-label="anchor" href="#genotype-frequency-by-marker-1"></a>
 </h4>
-<p>To evaluate the homozygosity within individuals across all
+<p>To evaluate genotype frequncies for individuals across all
 markers:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">geno.freq.ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/freq.html">freq</a></span><span class="op">(</span><span class="va">filtered_geno</span>, input_format <span class="op">=</span> <span class="st">"numeric"</span>, by <span class="op">=</span> <span class="st">"individuals"</span><span class="op">)</span></span></code></pre></div>
@@ -393,8 +371,8 @@ homozygosity levels.</p>
 <p>Markers can be classified based on the genotypes of two parents:</p>
 <ul>
 <li>
-<strong>Homozygous</strong>: P1 = 0 &amp; P2 = 2 (or vice
-versa)</li>
+<strong>Homozygous</strong>: Fixed for either one allele (P1 = 0
+&amp; P2 = 2 or P1 = 2 &amp; P2 = 0:)</li>
 <li>
 <strong>Non-polymorphic</strong>: Both parents have the same
 genotype (e.g., P1 = P2 = 0, 1, or 2)</li>
@@ -404,7 +382,8 @@ genotype (e.g., P1 = P2 = 0, 1, or 2)</li>
 </ul>
 <p>Non-polymorphic markers should always be removed. Heterozygous
 markers can optionally be excluded depending on your analysis goals.</p>
-<p>To filter for homozygous markers only use:</p>
+<p>To filter out heterozygous markers and keep only homozygous markers,
+we can use <code><a href="../reference/filter_geno_by_parents.html">filter_geno_by_parents()</a></code>.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Declare the name of the parents as they appear in the column of your geno</span></span>
 <span><span class="va">P1</span> <span class="op">&lt;-</span> <span class="st">"P2550-Cylindra-P1-Theta-A9"</span></span>
@@ -416,18 +395,19 @@ markers can optionally be excluded depending on your analysis goals.</p>
 parental genotypes. <code>filter_geno_by_parents</code> retains only
 homozygous polymorphic markers between two specified parents.</p>
 <p><strong>Note</strong>: The <code><a href="../reference/recode.html">recode()</a></code>function also
-performs this filtering automatically. The use can specify also if
-<code><a href="../reference/recode.html">recode()</a></code>should keep het markers.</p>
+performs this filtering automatically. The user can specify also if
+<code><a href="../reference/recode.html">recode()</a></code>should keep het markers or not. Let’s see.</p>
 </div>
 <div class="section level2">
 <h2 id="recode-genotypes">Recode Genotypes<a class="anchor" aria-label="anchor" href="#recode-genotypes"></a>
 </h2>
 <p><code><a href="../reference/recode.html">geneticMapR::recode()</a></code> is the heart of the package. This
 powerful function phases or recodes genotype marker data based on two
-parental references (parent1 and parent2).</p>
+parental references (arguments <code>parent1</code> and
+<code>parent2</code>).</p>
 <p>Recoding markers is one of the key steps in genetic mapping. The
-markers are coded in a way that the haplotypes coming from either parent
-can be tracked in the F<sub>2</sub> progeny.</p>
+markers are coded in a way such that the haplotypes coming from either
+parent can be tracked in the F<sub>2</sub> progeny.</p>
 <p><img src="Recode_files/figure-html/recode%20fig-1.png" width="960"></p>
 <div class="section level3">
 <h3 id="typical-representation">Typical representation<a class="anchor" aria-label="anchor" href="#typical-representation"></a>
@@ -443,16 +423,17 @@ lines are usually shown as fully homozygous:</p>
 </ul>
 <p>The resulting F1 is heterozygous (green, dosage = 1) at all loci.</p>
 <p>F<sub>2</sub> individuals show a segregating mix of genotypes (0, 1,
-2). This representation is valid when one your parents is the
+2).</p>
+<p>This representation is valid when one your parents is the
 <em>reference genome used to call SNPs</em>. If that is the case then no
 recoding needs to occur. However, that is a rather rare case.</p>
 </div>
 <div class="section level3">
 <h3 id="alternative-representation">Alternative representation<a class="anchor" aria-label="anchor" href="#alternative-representation"></a>
 </h3>
-<p>Parental genotypes, are assumed to be homozygous but are fixed for
-different alleles across loci, allowing for more complex and realistic
-representations:</p>
+<p>In this representation, parental genotypes, are assumed to be
+homozygous but are fixed for different alleles across loci, allowing for
+more complex and realistic representations:</p>
 <ul>
 <li>P1.b and P2.b carry <em>both</em> homozygous dosage values (0, or
 2). Still homozygous but fixed for different alleles.</li>
@@ -478,8 +459,10 @@ observed in these individuals</p>
 <h2 id="recode-function">Recode function<a class="anchor" aria-label="anchor" href="#recode-function"></a>
 </h2>
 <p><code><a href="../reference/recode.html">recode()</a></code> was created to help with the task of recoding
-the markers so that they reflect a the “typical representation. The
-function is qute flexible and helps the user:</p>
+the markers so that they reflect a the “typical representation”. This
+helps the user track the origin of the haplotypes in the F<sub>2</sub>.
+<strong>Essential for genetic mapping.</strong> The function is quite
+flexible and its main functionality is:</p>
 <ul>
 <li>Drop markers where either of the parent is NA</li>
 <li>Remove non-polymorphic markers automatically (both parents have the
@@ -487,7 +470,9 @@ same genotype)</li>
 <li>If <code>handle_het_markers</code> = TRUE, allows parental
 heterozygous markers to be kept.</li>
 </ul>
-<p>Designed to work for F<sub>2</sub> populations.</p>
+<p><strong>Note</strong>: there are different types of Het markers.
+Please see the <a href="https://vegaalfaro.github.io/geneticMapR/reference/index.html">function
+documentation</a> for more information.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Retains only homozygous markers</span></span>
 <span><span class="va">hom_phased_geno_1629</span> <span class="op">&lt;-</span> <span class="fu">geneticMapR</span><span class="fu">::</span><span class="fu"><a href="../reference/recode.html">recode</a></span><span class="op">(</span>geno <span class="op">=</span> <span class="va">filtered_geno</span>,</span>
@@ -506,6 +491,34 @@ heterozygous markers to be kept.</li>
 <span>                               handle_het_markers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Dropping markers with NA in at least one of the parents. Your genotype matrix contains missing parental genotypes.</span></span>
 <span><span class="co">#&gt; Dropping non-polymorphic markers. Your genotype matrix contains markers that are identical in the two parents.</span></span></code></pre></div>
+<p>Below is an example of how <code><a href="../reference/recode.html">recode()</a></code> works. Is based on
+simulated data for convenience.</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load the example dataset</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"simulated_geno"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Check markers previous to recoding</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">simulated_geno</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         Parent1 Parent2 F2_1 F2_2 F2_3</span></span>
+<span><span class="co">#&gt; Marker1       0       2    0    1    2</span></span>
+<span><span class="co">#&gt; Marker2       2       0    2    0    1</span></span>
+<span><span class="co">#&gt; Marker3       0       2    1    2    1</span></span>
+<span><span class="co">#&gt; Marker4       2       0    2    0    0</span></span>
+<span><span class="co">#&gt; Marker5       0       2    0    2    1</span></span>
+<span><span class="co">#&gt; Marker6       2       0    2    0    0</span></span>
+<span></span>
+<span><span class="co"># Recode the markers using the recode() function</span></span>
+<span><span class="va">phased</span> <span class="op">&lt;-</span> <span class="fu">geneticMapR</span><span class="fu">::</span><span class="fu"><a href="../reference/recode.html">recode</a></span><span class="op">(</span><span class="va">simulated_geno</span>, parent1 <span class="op">=</span> <span class="st">"Parent1"</span>, parent2 <span class="op">=</span> <span class="st">"Parent2"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Print the output</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">phased</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         Parent1 Parent2 F2_1 F2_2 F2_3</span></span>
+<span><span class="co">#&gt; Marker1       0       2    0    1    2</span></span>
+<span><span class="co">#&gt; Marker2       0       2    0    2    1</span></span>
+<span><span class="co">#&gt; Marker3       0       2    1    2    1</span></span>
+<span><span class="co">#&gt; Marker4       0       2    0    2    2</span></span>
+<span><span class="co">#&gt; Marker5       0       2    0    2    1</span></span>
+<span><span class="co">#&gt; Marker6       0       2    0    2    2</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="tradeoff-between-marker-type-and-genome-coverage">Tradeoff Between Marker Type and Genome Coverage<a class="anchor" aria-label="anchor" href="#tradeoff-between-marker-type-and-genome-coverage"></a>
@@ -514,26 +527,22 @@ heterozygous markers to be kept.</li>
 the quantity of heterozygous markers.</p>
 <p>Including heterozygous markers increases genome coverage compared to
 using only homozygous markers, but comes with tradeoffs. While
-heterozygous markers can improve coverage, especially in regions with
-segregation distortion or deleterious alleles, they may complicate
-downstream linkage group estimation due to their different segregation
-patterns.</p>
+heterozygous markers can improve coverage, especially in regions near
+the centromere, loci with segregation distortion or deleterious alleles,
+they may complicate downstream linkage group estimation due to their
+different segregation patterns.</p>
 <p>The following section illustrates this tradeoff between marker type
 and genome coverage.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_coverage.html">plot_coverage</a></span><span class="op">(</span>map <span class="op">=</span> <span class="fu"><a href="../reference/extract_map.html">extract_map</a></span><span class="op">(</span><span class="va">hom_phased_geno_1629</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Homozygous markers only"</span><span class="op">)</span></span>
-<span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_coverage.html">plot_coverage</a></span><span class="op">(</span>map <span class="op">=</span> <span class="fu"><a href="../reference/extract_map.html">extract_map</a></span><span class="op">(</span><span class="va">het_phased_geno_1629</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Homozygous and heterozygous markers"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_coverage.html">plot_coverage</a></span><span class="op">(</span>map <span class="op">=</span> <span class="fu"><a href="../reference/extract_map.html">extract_map</a></span><span class="op">(</span><span class="va">hom_phased_geno_1629</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Homozygous"</span><span class="op">)</span></span>
+<span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_coverage.html">plot_coverage</a></span><span class="op">(</span>map <span class="op">=</span> <span class="fu"><a href="../reference/extract_map.html">extract_map</a></span><span class="op">(</span><span class="va">het_phased_geno_1629</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Homozygous + heterozygous"</span><span class="op">)</span></span>
 <span><span class="va">c</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_genotype_histogram.html">plot_genotype_histogram</a></span><span class="op">(</span><span class="va">hom_phased_geno_1629</span><span class="op">)</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_genotype_histogram.html">plot_genotype_histogram</a></span><span class="op">(</span><span class="va">het_phased_geno_1629</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span>, <span class="va">c</span>, <span class="va">d</span>, </span>
 <span>          nrow <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>          ncol <span class="op">=</span> <span class="fl">2</span></span>
-<span>          <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 193 rows containing non-finite outside the scale range</span></span>
-<span><span class="co">#&gt; (`stat_bin()`).</span></span>
-<span><span class="co">#&gt; Warning: Removed 801 rows containing non-finite outside the scale range</span></span>
-<span><span class="co">#&gt; (`stat_bin()`).</span></span></code></pre></div>
+<span>          <span class="op">)</span></span></code></pre></div>
 <p><img src="Recode_files/figure-html/tradeoff%20marker%20type%20v%20coverage-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
@@ -542,7 +551,7 @@ and genome coverage.</p>
 <p><code>geneticMapR</code> includes functions to estimate frequencies
 like <code><a href="../reference/freq.html">freq()</a></code> in an easy way. The function allows to estimate
 genotype frequencies for later filtering.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Get Frequencies</span></span>
 <span><span class="va">geno.freq.hom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/freq.html">freq</a></span><span class="op">(</span><span class="va">hom_phased_geno_1629</span>,  input_format <span class="op">=</span> <span class="st">"numeric"</span>, by <span class="op">=</span><span class="st">"markers"</span><span class="op">)</span> </span>
@@ -564,7 +573,7 @@ frequencies, say no lower than 0.1 or hiher than 0.70. Which is
 reasonable for an F<sub>2</sub> mapping populations.</p>
 <p>The resulting plot shows a filtered marker set and the overabundance
 of markers at frequencies of 0 and 1 have been filtered out.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Heterozygous marker curation</span></span>
 <span><span class="va">het_phased_geno_1629_filt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_geno_by_freq.html">filter_geno_by_freq</a></span><span class="op">(</span><span class="va">het_phased_geno_1629</span>, </span>
 <span>                                                 max_geno_freq <span class="op">=</span> <span class="fl">0.90</span>, </span>
@@ -584,12 +593,12 @@ of markers at frequencies of 0 and 1 have been filtered out.</p>
 <p>Below we see that our filtering paramaters have left us with a
 typical 1:2:1 segregation ratio even for markers that included
 heterozygous markers that were properly filtered.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_genotype_histogram.html">plot_genotype_histogram</a></span><span class="op">(</span><span class="va">het_phased_geno_1629_filt</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Homozygous + filtered heterozygous markers"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Homo + filtered het markers"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">w</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/plot_genotype_histogram.html">plot_genotype_histogram</a></span><span class="op">(</span><span class="va">hom_phased_geno_1629</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Homozygous markers"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Hom markers"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="va">v</span>, <span class="va">w</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: Removed 435 rows containing non-finite outside the scale range</span></span>
@@ -601,7 +610,7 @@ heterozygous markers that were properly filtered.</p>
 <div class="section level2">
 <h2 id="save-results">Save Results<a class="anchor" aria-label="anchor" href="#save-results"></a>
 </h2>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">hom_phased_geno_1629</span>,</span>
 <span>     <span class="va">het_phased_geno_1629</span>,</span>
 <span>     <span class="va">het_phased_geno_1629_filt</span>,</span>
@@ -622,7 +631,7 @@ Let’s continue in the next article the genetic map construction.</p>
 <div class="section level2">
 <h2 id="session-information">Session Information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.5.0 (2025-04-11)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
@@ -664,7 +673,7 @@ Let’s continue in the next article the genetic map construction.</p>
 <span><span class="co">#&gt;   [7] fs_1.6.6                 ragg_1.4.0               vctrs_0.6.5             </span></span>
 <span><span class="co">#&gt;  [10] splines2_0.5.4           memoise_2.0.1            RCurl_1.98-1.17         </span></span>
 <span><span class="co">#&gt;  [13] rstatix_0.7.2            htmltools_0.5.8.1        S4Arrays_1.8.0          </span></span>
-<span><span class="co">#&gt;  [16] usethis_3.1.0            distributional_0.5.0     curl_6.2.2              </span></span>
+<span><span class="co">#&gt;  [16] usethis_3.1.0            curl_6.2.2               distributional_0.5.0    </span></span>
 <span><span class="co">#&gt;  [19] broom_1.0.8              SparseArray_1.8.0        Formula_1.2-5           </span></span>
 <span><span class="co">#&gt;  [22] sass_0.4.10              bslib_0.9.0              htmlwidgets_1.6.4       </span></span>
 <span><span class="co">#&gt;  [25] desc_1.4.3               cachem_1.1.0             GenomicAlignments_1.44.0</span></span>
@@ -672,34 +681,33 @@ Let’s continue in the next article the genetic map construction.</p>
 <span><span class="co">#&gt;  [31] pkgconfig_2.0.3          Matrix_1.7-3             R6_2.6.1                </span></span>
 <span><span class="co">#&gt;  [34] fastmap_1.2.0            GenomeInfoDbData_1.2.14  shiny_1.10.0            </span></span>
 <span><span class="co">#&gt;  [37] digest_0.6.37            colorspace_2.1-1         AnnotationDbi_1.70.0    </span></span>
-<span><span class="co">#&gt;  [40] ps_1.9.1                 pkgload_1.4.0            RSQLite_2.3.9           </span></span>
-<span><span class="co">#&gt;  [43] textshaping_1.0.0        seriation_1.5.7          labeling_0.4.3          </span></span>
-<span><span class="co">#&gt;  [46] httr_1.4.7               abind_1.4-8              mgcv_1.9-1              </span></span>
-<span><span class="co">#&gt;  [49] compiler_4.5.0           remotes_2.5.0            withr_3.0.2             </span></span>
-<span><span class="co">#&gt;  [52] bit64_4.6.0-1            HMM_1.0.1                backports_1.5.0         </span></span>
-<span><span class="co">#&gt;  [55] BiocParallel_1.42.0      DBI_1.2.3                carData_3.0-5           </span></span>
-<span><span class="co">#&gt;  [58] pkgbuild_1.4.7           ggsignif_0.6.4           DelayedArray_0.34.0     </span></span>
-<span><span class="co">#&gt;  [61] sessioninfo_1.2.3        rjson_0.2.23             CVXR_1.0-15             </span></span>
-<span><span class="co">#&gt;  [64] tools_4.5.0              httpuv_1.6.16            glue_1.8.0              </span></span>
-<span><span class="co">#&gt;  [67] restfulr_0.0.15          callr_3.7.6              nlme_3.1-168            </span></span>
-<span><span class="co">#&gt;  [70] promises_1.3.2           BSgenome_1.76.0          gtable_0.3.6            </span></span>
-<span><span class="co">#&gt;  [73] qtl_1.70                 ca_0.71.1                car_3.1-3               </span></span>
-<span><span class="co">#&gt;  [76] foreach_1.5.2            pillar_1.10.2            ggdist_3.3.2            </span></span>
-<span><span class="co">#&gt;  [79] stringr_1.5.1            later_1.4.2              splines_4.5.0           </span></span>
-<span><span class="co">#&gt;  [82] lattice_0.22-6           rtracklayer_1.68.0       gmp_0.7-5               </span></span>
-<span><span class="co">#&gt;  [85] bit_4.6.0                tidyselect_1.2.1         registry_0.5-1          </span></span>
-<span><span class="co">#&gt;  [88] miniUI_0.1.2             knitr_1.50               xfun_0.52               </span></span>
-<span><span class="co">#&gt;  [91] devtools_2.4.5           scam_1.2-18              stringi_1.8.7           </span></span>
-<span><span class="co">#&gt;  [94] UCSC.utils_1.4.0         yaml_2.3.10              evaluate_1.0.3          </span></span>
-<span><span class="co">#&gt;  [97] codetools_0.2-20         BiocManager_1.30.25      cli_3.6.4               </span></span>
-<span><span class="co">#&gt; [100] xtable_1.8-4             systemfonts_1.2.2        munsell_0.5.1           </span></span>
-<span><span class="co">#&gt; [103] processx_3.8.6           jquerylib_0.1.4          Rcpp_1.0.14             </span></span>
-<span><span class="co">#&gt; [106] XML_3.99-0.18            parallel_4.5.0           ellipsis_0.3.2          </span></span>
-<span><span class="co">#&gt; [109] blob_1.2.4               pkgdown_2.1.1            profvis_0.4.0           </span></span>
-<span><span class="co">#&gt; [112] urlchecker_1.0.1         bitops_1.0-9             Rmpfr_1.0-0             </span></span>
-<span><span class="co">#&gt; [115] scales_1.3.0             purrr_1.0.4              crayon_1.5.3            </span></span>
-<span><span class="co">#&gt; [118] rlang_1.1.6              cowplot_1.1.3            KEGGREST_1.48.0         </span></span>
-<span><span class="co">#&gt; [121] TSP_1.2-4</span></span></code></pre></div>
+<span><span class="co">#&gt;  [40] pkgload_1.4.0            textshaping_1.0.0        RSQLite_2.3.9           </span></span>
+<span><span class="co">#&gt;  [43] seriation_1.5.7          labeling_0.4.3           httr_1.4.7              </span></span>
+<span><span class="co">#&gt;  [46] abind_1.4-8              mgcv_1.9-1               compiler_4.5.0          </span></span>
+<span><span class="co">#&gt;  [49] remotes_2.5.0            withr_3.0.2              bit64_4.6.0-1           </span></span>
+<span><span class="co">#&gt;  [52] HMM_1.0.1                backports_1.5.0          BiocParallel_1.42.0     </span></span>
+<span><span class="co">#&gt;  [55] carData_3.0-5            DBI_1.2.3                pkgbuild_1.4.7          </span></span>
+<span><span class="co">#&gt;  [58] ggsignif_0.6.4           DelayedArray_0.34.0      sessioninfo_1.2.3       </span></span>
+<span><span class="co">#&gt;  [61] rjson_0.2.23             CVXR_1.0-15              tools_4.5.0             </span></span>
+<span><span class="co">#&gt;  [64] httpuv_1.6.16            glue_1.8.0               restfulr_0.0.15         </span></span>
+<span><span class="co">#&gt;  [67] nlme_3.1-168             promises_1.3.2           BSgenome_1.76.0         </span></span>
+<span><span class="co">#&gt;  [70] gtable_0.3.6             qtl_1.70                 ca_0.71.1               </span></span>
+<span><span class="co">#&gt;  [73] car_3.1-3                foreach_1.5.2            pillar_1.10.2           </span></span>
+<span><span class="co">#&gt;  [76] ggdist_3.3.2             stringr_1.5.1            later_1.4.2             </span></span>
+<span><span class="co">#&gt;  [79] splines_4.5.0            lattice_0.22-6           rtracklayer_1.68.0      </span></span>
+<span><span class="co">#&gt;  [82] gmp_0.7-5                bit_4.6.0                tidyselect_1.2.1        </span></span>
+<span><span class="co">#&gt;  [85] registry_0.5-1           miniUI_0.1.2             knitr_1.50              </span></span>
+<span><span class="co">#&gt;  [88] xfun_0.52                devtools_2.4.5           scam_1.2-18             </span></span>
+<span><span class="co">#&gt;  [91] stringi_1.8.7            UCSC.utils_1.4.0         yaml_2.3.10             </span></span>
+<span><span class="co">#&gt;  [94] evaluate_1.0.3           codetools_0.2-20         BiocManager_1.30.25     </span></span>
+<span><span class="co">#&gt;  [97] cli_3.6.4                xtable_1.8-4             systemfonts_1.2.2       </span></span>
+<span><span class="co">#&gt; [100] munsell_0.5.1            jquerylib_0.1.4          Rcpp_1.0.14             </span></span>
+<span><span class="co">#&gt; [103] XML_3.99-0.18            parallel_4.5.0           ellipsis_0.3.2          </span></span>
+<span><span class="co">#&gt; [106] pkgdown_2.1.1            blob_1.2.4               profvis_0.4.0           </span></span>
+<span><span class="co">#&gt; [109] urlchecker_1.0.1         bitops_1.0-9             Rmpfr_1.0-0             </span></span>
+<span><span class="co">#&gt; [112] scales_1.3.0             purrr_1.0.4              crayon_1.5.3            </span></span>
+<span><span class="co">#&gt; [115] rlang_1.1.6              cowplot_1.1.3            KEGGREST_1.48.0         </span></span>
+<span><span class="co">#&gt; [118] TSP_1.2-4</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

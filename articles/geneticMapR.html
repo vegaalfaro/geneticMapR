@@ -80,17 +80,16 @@ plant genetic research.</p>
 <p>Functions in <code>geneticMapR</code> and key mapping steps will be
 illustrated using a real dataset from <em>Beta vulgaris</em> (table
 beet), an outcrossing species. The F<sub>2</sub> population was derived
-from crosses between Conical × Round and Cylindrical × Round inbred
-lines, representing distinct root shapes. The challenges posed by the
-outcrossing nature of <em>Beta vulgaris</em> will help highlight
-practical solutions for common problems in genetic mapping.</p>
+from crosses between Cylindrical × Round (inbred) lines, representing
+distinct root shapes. The challenges posed by the outcrossing nature of
+<em>Beta vulgaris</em> will help highlight practical solutions for
+common problems in genetic mapping.</p>
 <p>My early genetic maps were difficult to reproduce and prone to
 mistakes. I hope <code>geneticMapR</code> supports your journey toward
 reliable and reproducible genetic maps.</p>
-<div class="float">
-<img src="../reference/figures/flatxcyl.png" alt="Flat x Cylindrical table beet cross. Image credit. Dr. Maddy Oravec"><div class="figcaption">Flat x Cylindrical table beet cross. Image
-credit. Dr. Maddy Oravec</div>
-</div>
+<p><img src="geneticMapR_files/figure-html/r%20recode%20fig-1.png" width="585.6"></p>
+<p>Flat x Cylindrical table beet cross. Image credit. Dr. Maddy
+Oravec</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -101,9 +100,45 @@ credit. Dr. Maddy Oravec</div>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co">#Install geneticMapR</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"vegaalfaro/geneticMapR"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"vegaalfaro/geneticMapR"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="recommendations">Recommendations<a class="anchor" aria-label="anchor" href="#recommendations"></a>
+</h2>
+<p>When genotyping, it is critical to include DNA from the parental
+lines and the F<sub>1</sub> individuals. Ideally, this should be from
+the actual plants used to create the population, especially in
+outcrossing species like carrot or beet.</p>
+<p>If tissue from the original parents or F<sub>1</sub> is unavailable,
+use samples from other plants of the same genotype. However, in
+outcrossing species, even inbred lines may show unexpected
+intra-genotype diversity. I’ve seen this firsthand in carrots.</p>
+<p>Parental genotypes are essential for <em>recoding</em> or
+<em>phasing</em> markers to reflect parental inheritance, a core step in
+genetic mapping. They’re also helpful for resolving problematic markers
+and understanding residual heterozygosity, which is common in many
+populations.</p>
+<p>Having the parents and F<sub>1</sub> genotyped will prove invaluable
+for a genetic mapping project.</p>
+</div>
+<div class="section level2">
+<h2 id="using-your-own-data">Using Your Own Data<a class="anchor" aria-label="anchor" href="#using-your-own-data"></a>
+</h2>
+<p>Ther purpose of this package is for you to use your own data. You can
+use your own genotype matrix with <code>geneticMapR</code>. Functions
+like <code><a href="../reference/convert_to_dosage.html">convert_to_dosage()</a></code> and
+<code><a href="../reference/convert_to_dosage_flex.html">convert_to_dosage_flex()</a></code> help format raw genotype calls
+into phased numeric values compatible with the package.</p>
+<p>For unfiltered VCF-derived matrices, make sure to:</p>
+<ul>
+<li>Filter for bi-allelic SNPs.</li>
+<li>Remove non-polymorphic markers.</li>
+<li>Keep only SNPs with sufficient depth and genotype quality scores, it
+varies for each project or population.</li>
+</ul>
+<p>If you need help in this <strong>pre-mapping</strong> step, check the
+<code>bcftools_tutorial</code> in my github <a href="https://github.com/vegaalfaro/bcftoolsR" class="external-link">vegaalfaro/bcftoolsR</a>.
+Still under development.</p>
 </div>
 <div class="section level2">
 <h2 id="where-to-start">Where to start?<a class="anchor" aria-label="anchor" href="#where-to-start"></a>
@@ -125,46 +160,10 @@ which is the typical output of next generation sequencing platforms like
 genotyping by sequencing (<a href="https://en.wikipedia.org/wiki/Genotyping_by_sequencing" class="external-link">GBS</a>)</p>
 </div>
 <div class="section level2">
-<h2 id="recommendations">Recommendations<a class="anchor" aria-label="anchor" href="#recommendations"></a>
-</h2>
-<p>When genotyping, it is critical to include DNA from the parental
-lines and the F<sub>1</sub> individuals. Ideally, this should be from
-the actual plants used to create the population, especially in
-outcrossing species like carrot or beet.</p>
-<p>If tissue from the original parents or F<sub>1</sub> is unavailable,
-use samples from other plants of the same genotype. However, in
-outcrossing species, even inbred lines may show unexpected diversity.
-I’ve seen this firsthand in carrots.</p>
-<p>Parental genotypes are essential for <em>recoding</em> or
-<em>phasing</em> markers to reflect parental inheritance, a core step in
-genetic mapping. They’re also helpful for resolving problematic markers
-and understanding residual heterozygosity, which is common in many
-populations.</p>
-<p>Having the parents and F<sub>1</sub> genotyped will prove invaluable
-for a genetic mapping project.</p>
-</div>
-<div class="section level2">
-<h2 id="using-your-own-data">Using Your Own Data<a class="anchor" aria-label="anchor" href="#using-your-own-data"></a>
-</h2>
-<p>You can use your own genotype matrix (from a VCF or GBS pipeline)
-with <code>geneticMapR</code>. Functions like
-<code><a href="../reference/convert_to_dosage.html">convert_to_dosage()</a></code> and
-<code><a href="../reference/convert_to_dosage_flex.html">convert_to_dosage_flex()</a></code> help format raw genotype calls
-into phased numeric values compatible with the package.</p>
-<p>For unfiltered VCF-derived matrices, make sure to:</p>
-<ul>
-<li>Filter for bi-allelic SNPs.</li>
-<li>Remove non-polymorphic markers.</li>
-<li>Keep only SNPs with sufficient depth and genotype quality scores, it
-varies for each project or population.</li>
-</ul>
-<p>If you need help in this step, check the
-<code>bcftools_tutorial</code> in my github <a href="https://github.com/vegaalfaro/bcftoolsR" class="external-link">vegaalfaro/bcftoolsR</a>.
-Still under development.</p>
-</div>
-<div class="section level2">
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h2>
+<p>Check the articles tab for a systematic example from VCF to Effect
+Plots.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
