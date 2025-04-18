@@ -37,6 +37,12 @@
       <ul class="navbar-nav me-auto">
 <li class="active nav-item"><a class="nav-link" href="../articles/geneticMapR.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/Recode.html">Recode Markers</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -81,6 +87,10 @@ practical solutions for common problems in genetic mapping.</p>
 <p>My early genetic maps were difficult to reproduce and prone to
 mistakes. I hope <code>geneticMapR</code> supports your journey toward
 reliable and reproducible genetic maps.</p>
+<div class="float">
+<img src="../reference/figures/flatxcyl.png" alt="Flat x Cylindrical table beet cross. Image credit. Dr. Maddy Oravec"><div class="figcaption">Flat x Cylindrical table beet cross. Image
+credit. Dr. Maddy Oravec</div>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -91,7 +101,9 @@ reliable and reproducible genetic maps.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co">#Install geneticMapR</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"vegaalfaro/geneticMapR"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"vegaalfaro/geneticMapR"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="where-to-start">Where to start?<a class="anchor" aria-label="anchor" href="#where-to-start"></a>
@@ -153,7 +165,6 @@ Still under development.</p>
 <div class="section level2">
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h2>
-<p>s</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
