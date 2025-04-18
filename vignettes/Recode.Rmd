@@ -457,12 +457,13 @@ Below we see that our filtering paramaters have left us with a typical 1:2:1 seg
 
 ```{r filtering comparison, fig.height=4.3, fig.width=8.0, message=FALSE, warning=FALSE}
 v <- plot_genotype_histogram(het_phased_geno_1629_filt) +
-  ggtitle("Homo + filtered het markers")
+  ggtitle("Homozygous + filtered het markers")
 
 w <-  plot_genotype_histogram(hom_phased_geno_1629) +
-  ggtitle("Hom markers")
+  ggtitle("Homomozygous markers")
 
-ggarrange(v, w)
+ggarrange(v, w,
+          nrow = 2)
 
 ```
 
