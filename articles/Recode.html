@@ -563,8 +563,9 @@ genotype frequencies for later filtering.</p>
 <span></span>
 <span><span class="co"># Arrange</span></span>
 <span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="va">hom_plot</span>,</span>
-<span>          <span class="va">het_plot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Recode_files/figure-html/hom%20v%20het%20plot-1.png" width="768" style="display: block; margin: auto;"></p>
+<span>          <span class="va">het_plot</span>,</span>
+<span>          nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Recode_files/figure-html/hom%20v%20het%20plot-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>From the plots above we see that there is an abundance of markers at
 frequencies of 0 and 1 across all gentoypes (i.e., 0, 1, 2). We can use
 the function <code><a href="../reference/filter_geno_by_freq.html">filter_geno_by_freq()</a></code> to filter markers out by
@@ -595,16 +596,13 @@ typical 1:2:1 segregation ratio even for markers that included
 heterozygous markers that were properly filtered.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_genotype_histogram.html">plot_genotype_histogram</a></span><span class="op">(</span><span class="va">het_phased_geno_1629_filt</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Homo + filtered het markers"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Homozygous + filtered het markers"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">w</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/plot_genotype_histogram.html">plot_genotype_histogram</a></span><span class="op">(</span><span class="va">hom_phased_geno_1629</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Hom markers"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Homomozygous markers"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="va">v</span>, <span class="va">w</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 435 rows containing non-finite outside the scale range</span></span>
-<span><span class="co">#&gt; (`stat_bin()`).</span></span>
-<span><span class="co">#&gt; Warning: Removed 193 rows containing non-finite outside the scale range</span></span>
-<span><span class="co">#&gt; (`stat_bin()`).</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="va">v</span>, <span class="va">w</span>,</span>
+<span>          nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Recode_files/figure-html/filtering%20comparison-1.png" width="768"></p>
 </div>
 <div class="section level2">
