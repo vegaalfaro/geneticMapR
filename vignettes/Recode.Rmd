@@ -1,0 +1,458 @@
+---
+title: "Recode Markers"
+output: rmarkdown::html_vignette
+date: "2025-04-18"
+author: "Andrey Vega Alfaro"
+vignette: >
+  %\VignetteIndexEntry{Recode Markers}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+## Introduction
+
+This article demonstrates how to process, clean, and recode (phase) SNP markers from a VCF file to generate genotype matrices compatible with genetic mapping workflows. We will use helper functions from the `geneticMapR` package as well as dependencies such as `MapRtools`, `VariantAnnotation`, and `Rsamtools`. The example focuses on an F2 population, where genotype recoding is based on founder descent.
+
+## Setup
+
+We will need a series of packages, below we show how to install them if needed.
+
+
+```{r setup, message=FALSE, warning=FALSE}
+
+# Install required packages (if not already installed)
+if (!requireNamespace("geneticMapR", quietly = TRUE)) devtools::install_github("vegaalfaro/geneticMapR")
+if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
+if (!requireNamespace("MapRtools", quietly = TRUE)) devtools::install_github("jendelman/MapRtools")
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+#BiocManager::install(c("VariantAnnotation", "Rsamtools"))
+
+# Load libraries
+library(geneticMapR) 
+library(MapRtools)
+library(VariantAnnotation)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(ggplot2)
+library(Rsamtools)
+library(ggpubr)
+```
+
+## Load and Explore VCF File
+The VCF file is somewhat large (19.8 MB) to be included as a system file. The repository [geneticMapRFiles](https://github.com/vegaalfaro/geneticMapRFiles) is a data-only repository that will help us save data and run through examples without much issues. Let's get a local copy of the VCF file using `utils::download.file()`
+
+```{r path, message=FALSE}
+# Let's define our URL from the data repository that accompanies this R package
+vcf_url <- "https://raw.githubusercontent.com/vegaalfaro/geneticMapRFiles/main/vcf/SNP_updated_IDs_sorted2.vcf.gz"
+
+# Download file
+if (!file.exists("local_copy.vcf.gz")) {
+  download.file(vcf_url, destfile = "local_copy.vcf.gz")
+}
+```
+
+The code below loads the vcf file using the function readVcf. 
+
+```{r Load data}
+# Let's read the vcf into our environment
+vcf2 <- VariantAnnotation::readVcf("local_copy.vcf.gz", genome = "unknown")
+```
+
+Let's explore the vcf file. The VCF contains several fields including GT (genotype), DP (depth), GQ (genotype quality) and PL (sample-level annotations)
+
+```{r vcf_overview}
+# Overview
+sapply(geno(vcf2), class)
+```
+
+
+## Extract Genotype and Coverage Information
+Let's extract the genotype and depth which are saved in the GT and DP fields using VariantAnnotation's geno function.
+
+```{r GT and DP, message=FALSE}
+GT <- geno(vcf2)$GT
+DP <- geno(vcf2)$DP
+```
+
+Once extracted, we can estimate depth statistics.
+
+```{r DP stats}
+summary(as.numeric(DP))
+```
+
+
+## Convert Genotype Call to Dosage
+
+If we inspect the `GT` object,
+
+```{r GT overview}
+GT[1:3, 1:3]
+```
+
+genotypes are coded as `"0/0"`, `"0/1"`, or `"1/1"`, representing the maximum likelihood call: `0` for the reference (REF) allele and `1` for the alternate (ALT) allele. For example, `"0/0"` means a dosage of 0 ALT alleles, `"0/1"` or `"1/0"` is a dosage of 1 ALT allele and `"1/1"` corresponds to a dosage of 2.
+
+The `convert_to_dosage` family of functions in **geneticMapR** handles this conversion easily. For polyploids (e.g., `"0/0/0/0"`), check out `convert_to_dosage_advanced` and `convert_to_dosage_flex`.
+
+Let's convert the genotype calls into dosages:
+
+```{r convert to dosage}
+geno_1629 <- convert_to_dosage_flex(GT)
+```
+
+Let's take a look at the conversion.
+```{r dosage geno overview}
+geno_1629[1:3, 1:3]
+```
+
+We have converted to dosage from allele format call.
+
+## Filter Markers and Individuals by Missing Data
+
+The function `filter_missing_geno()` takes a genotype matrix with rows representing genetic markers and columns representing individuals. The `geno_matrix` argument specifies the genotype matrix.
+
+The `threshold` argument allows to specify the max proportion of missing data before an individual or marker is removed. Ranges from 0 to 1 and the default is 0.10.
+
+Let's filter by `markers` first and accept 10% missing data.
+
+```{r missing data filter}
+result <- filter_missing_geno(geno_matrix = geno_1629, 
+                              threshold = 0.10,
+                              filter_by = "markers")
+
+# Extract our result
+filtered_geno <- result$filtered_geno
+```
+
+We can see that no marker was removed. Our markers have all less than 10% missing data. We can confirm it using a plot.
+
+```{r plot missing data markers, fig.align='center',fig.alt = "plot missing", fig.height=4.3, fig.width=6.1, message=FALSE, warning=FALSE}
+# Prepare data
+missing_values <- base::as.data.frame(result$pct_missing)
+colnames(missing_values) <- "missing"
+
+# Visualize missingness
+ggplot(missing_values, aes(x = missing)) +
+  geom_histogram()
+
+```
+
+We can also filter by missing data per `individuals`.
+
+```{r  missing data per individuals}
+geno_missing_filtered <- filter_missing_geno(filtered_geno,
+                                             threshold = 0.10,
+                                             filter_by = "individuals")
+filtered_geno <- geno_missing_filtered$filtered_geno
+```
+
+The function created a message letting us know that 7 individuals were removed as they have data that exceeds the 0.1 threshold.
+
+Let's see an example on how to access the results.
+
+```{r filter data}
+# Access outputs
+filtered_geno <- geno_missing_filtered$filtered_geno
+missing_values <- base::as.data.frame(geno_missing_filtered$pct_missing)
+colnames(missing_values) <- "missing"
+removed_individuals <- data.frame(ind = geno_missing_filtered$removed_individuals)
+
+```
+
+Let's see which individuals were removed
+
+```{r ind removed, message=FALSE, warning=FALSE}
+print(removed_individuals)
+```
+
+We can visualize how much missing data we still have in the kept individuals. It is no greater than 7% which is in agreement with our filtering parameters.
+
+```{r plot missing data individuals, fig.height=4.3, fig.width=6.1, fig.align='center', warning=FALSE, message=FALSE, fig.alt="missing data plot"}
+# Visualize missing data
+ggplot(missing_values, aes(x = missing)) +
+  geom_histogram()
+```
+
+## Visualize Genotype Data
+
+We can also plot a histogram of genotypic values using `plot_genotype_histogram()`.
+
+```{r viz genotype data, fig.align='center', fig.height=4.3, fig.width=6.1, warning=FALSE, message=FALSE}
+plot_genotype_histogram(filtered_geno)
+```
+
+Let's also take a look at the coverage of the markers across the genome and chromosomes. This function is based on MapRtool's `plot_coverage.` I just added a few customization. Check it out [here](https://github.com/jendelman/MapRtools/tree/master/R). 
+
+Because our filtered genotype matrix has the marker names in the row names in the format "CHR7_192222" we can use the function `extract_map()` from `geneticMapR` to easily create a physical map with columns "marker" "chrom" and "position".
+
+The function `extract_map()` is very flexible but the row names should contain components (chromosome, position) separated by a symbol (e.g., _, -, .). Use arguments `chrom_index` and `pos_index` to specify their positions, and split_symbol to define the delimiter.
+
+In our previous example **"CHR7_192222"**, `chrom_index = 1` as the chromosome is the first field before the delimiter  "_". If our markers were coded as **W257B_"CHR7_192222"** then `chrom_index = 2` and `pos_index = 3` as chromosome and position are in the second and third field respectively.
+
+```{r extract map}
+# Extract physical map
+map <- extract_map(genotype_matrix = filtered_geno,
+                   chrom_index = 1, # Index for Chromosome 
+                   pos_index = 2, 
+                    markers = FALSE,  # If TRUE, includes original marker names
+                    split_symbol = "_") 
+```
+
+Let's see the first few lines of the map
+
+```{r map head, message=FALSE, warning=FALSE}
+# See map heading
+head(map)
+```
+
+
+Now we are ready for plotting:
+
+```{r plot coverage 1, fig.align='center', fig.width=6.1, fig.height=4.3, fig.alt="coverage plot"}
+geneticMapR::plot_coverage(map=map, customize = TRUE)
+```
+
+
+## Genotype Frequency 
+
+We can evaluate homozygosity levels in genotype data using the `freq()` function. The function computes the relative frequency of each genotype (typically coded as 0, 1, or 2) across markers or individuals.
+
+#### Genotype Frequency by Marker
+To evaluate how homozygous the parents (or any sample) are across markers, we first calculate genotype frequencies by marker:
+
+```{r freq 1}
+geno.freq.mar <- freq(filtered_geno, input_format = "numeric", by = "markers")
+```
+
+This returns the relative frequency of each genotype (0, 1, 2) at each marker locus across all individuals, allowing identification of loci with high homozygosity or heterozygosity.
+
+Let's take a look
+```{r freq head markers}
+head(geno.freq.mar)
+```
+
+
+#### Genotype Frequency by Marker
+
+To evaluate the homozygosity within individuals across all markers:
+
+```{r freq 2}
+geno.freq.ind <- freq(filtered_geno, input_format = "numeric", by = "individuals")
+```
+
+This produces the relative frequency of each genotype for every individual, helping to pinpoint individuals with unusually high or low homozygosity levels.
+
+Let's take a look
+```{r freq head inds}
+head(geno.freq.ind)
+```
+
+## Marker Type Analysis
+
+Markers can be classified based on the genotypes of two parents:
+
+- **Homozygous**: P1 = 0 & P2 = 2 (or vice versa)
+- **Non-polymorphic**: Both parents have the same genotype (e.g., P1 = P2 = 0, 1, or 2)
+- **Heterozygous**: One or both parents are heterozygous (e.g., P1 = 1 & P2 = 0)
+
+Non-polymorphic markers should always be removed. Heterozygous markers can optionally be excluded depending on your analysis goals.
+
+To filter for homozygous markers only use:
+
+```{r filter geno by parents}
+# Declare the name of the parents as they appear in the column of your geno
+P1 <- "P2550-Cylindra-P1-Theta-A9"
+P2 <- "P2493-Mono-P2-Theta-B9"
+
+# Run our function to fiter out heterozygous markers
+geno_homozygous <- filter_geno_by_parents(filtered_geno, P1, P2)
+```
+
+`P1` and `P2` are the column names for the parental genotypes. `filter_geno_by_parents` retains only homozygous polymorphic markers between two specified parents. 
+
+**Note**: The `recode() `function also performs this filtering automatically. The use can specify also if `recode()`should keep het markers.
+
+  
+## Recode Genotypes
+
+`geneticMapR::recode()` is the heart of the package. This powerful function phases or recodes genotype marker data based on two parental references (parent1 and parent2).
+
+Recoding markers is one of the key steps in genetic mapping. The markers are coded in a way that the haplotypes coming from either parent can be tracked in the F~2~ progeny. 
+
+```{r recode fig, echo=FALSE, fig.height=3.7, fig.width=10, message=FALSE, warning=FALSE}
+library(ggpubr)
+library(png)       # Needed for readPNG
+library(grid)      # Needed for rasterGrob if you want to manipulate image directly
+library(ggplot2)   # Needed for ggplot and theme
+
+img1 <- readPNG("../man/figures/RECODE.png")
+im_A <- ggplot() + 
+    background_image(img1) 
+    # This ensures that the image leaves some space at the edges
+  
+ggarrange(im_A)
+```
+
+
+### Typical representation
+
+In the figure above panel A is a typical representation of an intercross to derive an  F~2~ mapping population. The parental lines are usually shown as fully homozygous:
+
+- P1.a carries *only* the reference allele (blue, dosage = 0).
+- P2.b carries *only* the alternate allele (orange, dosage = 2).
+
+The resulting F1 is heterozygous (green, dosage = 1) at all loci.
+
+F~2~ individuals show a segregating mix of genotypes (0, 1, 2). This representation is valid when one your parents is the *reference genome used to call SNPs*. If that is the case then no recoding needs to occur. However, that is a rather rare case. 
+
+### Alternative representation
+
+Parental genotypes, are assumed to be homozygous but are fixed for different alleles across loci, allowing for more complex and realistic representations:
+
+- P1.b and P2.b carry *both* homozygous dosage values (0, or 2). Still homozygous but fixed for different alleles.
+
+### Outcrossing species
+
+Most often and in outcrossing species like carrot and table beets or others with high heterozygosity, the (inbred) parents may have mixed genotypes with not totally homozygous genotypes.
+This is because some loci are lethal on either homozygous configuration.
+
+- P1.c and P2.c carry *some* heterozygous markers (1) in a low proportion, with homozygous dosage values of 0 or 2.
+
+ F~1s~ are mostly heterozygous, but due to genotyping error or residual heterozygosity some dosages of 0 and 2 are typically observed in these individuals
+
+
+## Recode function
+
+`recode()` was created to help with the task of recoding the markers so that they reflect a the "typical representation. The function is qute flexible and helps the user:
+
+- Drop markers where either of the parent is NA
+- Remove non-polymorphic markers automatically (both parents have the same genotype)
+- If `handle_het_markers` = TRUE, allows parental heterozygous markers to be kept.
+
+Designed to work for F~2~ populations.
+
+
+```{r recode}
+# Retains only homozygous markers
+hom_phased_geno_1629 <- geneticMapR::recode(geno = filtered_geno,
+                                parent1 = P1,
+                                parent2 = P2,
+                                numeric_output = TRUE,
+                                handle_het_markers = FALSE)
+
+# Allows for heterozygous markers
+het_phased_geno_1629 <- geneticMapR::recode(geno = filtered_geno,
+                               parent1 = P1,
+                               parent2 = P2,
+                               numeric_output = TRUE,
+                               handle_het_markers = TRUE)
+```
+
+## Tradeoff Between Marker Type and Genome Coverage
+
+In outcrossing species I have noticed a tradeoff between coverage and the quantity of heterozygous markers.
+
+Including heterozygous markers increases genome coverage compared to using only homozygous markers, but comes with tradeoffs. While heterozygous markers can improve coverage, especially in regions with segregation distortion or deleterious alleles, they may complicate downstream linkage group estimation due to their different segregation patterns.
+
+The following section illustrates this tradeoff between marker type and genome coverage.
+
+```{r tradeoff marker type v coverage, fig.align='center', fig.height=8, fig.width=8}
+a <- plot_coverage(map = extract_map(hom_phased_geno_1629)) + ggtitle("Homozygous markers only")
+b <- plot_coverage(map = extract_map(het_phased_geno_1629)) + ggtitle("Homozygous and heterozygous markers")
+c <- plot_genotype_histogram(hom_phased_geno_1629)
+d <- plot_genotype_histogram(het_phased_geno_1629)
+
+ggarrange(a, b, c, d, 
+          nrow = 2,
+          ncol = 2
+          )
+```
+
+
+
+## Genotype Frequencies and Filtering
+
+`geneticMapR` includes functions to estimate frequencies like `freq()` in an easy way. The function allows to estimate genotype frequencies for later filtering.
+
+```{r hom v het plot, warning=FALSE, message=FALSE, fig.align='center',  fig.height=4, fig.width=8}
+
+# Get Frequencies
+geno.freq.hom <- freq(hom_phased_geno_1629,  input_format = "numeric", by ="markers") 
+geno.freq.het <- freq(het_phased_geno_1629, input_format = "numeric", by = "markers")
+
+# Plots
+het_plot <- frequency_plot(geno.freq.het) + ggtitle("Het markers, unfiltered")
+hom_plot <- frequency_plot(geno.freq.hom) + ggtitle("Hom markers, unfiltered")
+
+# Arrange
+ggarrange(hom_plot,
+          het_plot)
+```
+
+From the plots above we see that there is an abundance of markers at frequencies of 0 and 1 across all gentoypes (i.e., 0, 1, 2).
+We can use the function `filter_geno_by_freq()` to filter markers out by maximum genotype frequency and keeping a range of heterozygous frequencies, say no lower than 0.1 or hiher than 0.70. Which is reasonable for an F~2~ mapping populations.
+
+The resulting plot shows a filtered marker set and the overabundance of markers at frequencies of 0 and 1 have been filtered out.
+
+```{r freq filtering, fig.align='center', fig.height=4.3, fig.width=6.1}
+# Heterozygous marker curation
+het_phased_geno_1629_filt <- filter_geno_by_freq(het_phased_geno_1629, 
+                                                 max_geno_freq = 0.90, 
+                                                 het_freq_range = c(0.1, 0.70) 
+)
+
+# Create a dataset of frequencies based on the filtered data
+geno.freq.het.filtered <- freq(het_phased_geno_1629_filt, 
+                               input_format = "numeric", 
+                               by ="markers") 
+
+
+# Create plot
+frequency_plot(geno.freq.het.filtered) + ggtitle("Het markers, unfiltered")
+
+```
+
+
+Below we see that our filtering paramaters have left us with a typical 1:2:1 segregation ratio even for markers that included heterozygous markers that were properly filtered.
+
+```{r filtering comparison, fig.height=4.3, fig.width=8.0}
+v <- plot_genotype_histogram(het_phased_geno_1629_filt) +
+  ggtitle("Homozygous + filtered heterozygous markers")
+
+w <-  plot_genotype_histogram(hom_phased_geno_1629) +
+  ggtitle("Homozygous markers")
+
+ggarrange(v, w)
+
+```
+
+
+## Save Results
+
+```{r results save, eval=FALSE}
+save(hom_phased_geno_1629,
+     het_phased_geno_1629,
+     het_phased_geno_1629_filt,
+     file = "processed_data/R_data/filtered_geno_matrices_1629.RData")
+```
+
+
+## Conclusion
+A lot of genetic map construction revolves around the type of markers you have and how you make good use of them. Very many filtering steps are taken specially using GBS data to make sure the curated set of markers are markers you can trust and informative. 
+
+This vignette provides a workflow for preparing and phasing genotypic data for genetic mapping analyses in an F~2~ population using tools from `geneticMapR` and other bioinformatics packages. Let's continue in the next article the genetic map construction.
+
+## Session Information
+
+```{r session }
+sessionInfo()
+```
+

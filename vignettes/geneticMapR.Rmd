@@ -22,6 +22,9 @@ Functions in `geneticMapR` and key mapping steps will be illustrated using a rea
 
 My early genetic maps were difficult to reproduce and prone to mistakes. I hope `geneticMapR` supports your journey toward reliable and reproducible genetic maps.
 
+![Flat x Cylindrical table beet cross. Image credit. Dr. Maddy Oravec](../man/figures/flatxcyl.png) 
+
+
 ## Installation
 
 ```{r setup, eval=FALSE}
@@ -33,6 +36,7 @@ if (!requireNamespace("devtools", quietly = TRUE)) {
 #Install geneticMapR
 devtools::install_github("vegaalfaro/geneticMapR")
 
+getwd()
 ```
 
 ## Where to start?
@@ -46,7 +50,6 @@ To get started, you’ll need a few essential files:
 * **Phenotype file**: One or more traits measured across individuals, possibly across time or environments (multi-environment trials), depending on your species.
 
 `geneticMapR` provides example data to walk you through the mapping process. We'll start with an example `VCF`[https://samtools.github.io/hts-specs/VCFv4.2.pdf] file which is the typical output of next generation sequencing platforms like genotyping by sequencing ([GBS](https://en.wikipedia.org/wiki/Genotyping_by_sequencing))
-
 
 
 ## Recommendations
@@ -71,9 +74,10 @@ For unfiltered VCF-derived matrices, make sure to:
 
 If you need help in this step, check the `bcftools_tutorial` in my github [vegaalfaro/bcftoolsR](https://github.com/vegaalfaro/bcftoolsR). Still under development. 
 
+
 ## Documentation
 
-s
+
 
 ```{r, include=FALSE}
 library(utils)
