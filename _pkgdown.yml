@@ -6,6 +6,8 @@ reference:
   - title: Core Functions
     contents:
       - convert_to_dosage_advanced
+      - convert_to_dosage
+      - convert_to_dosage_flex
       - effect_plot
       - estimate_map
       - extract_map
@@ -31,6 +33,7 @@ reference:
       - plotMap_gg
       - plot_qtl_trace
       - plot_coverage
+      - plot_coverage_annotate
       - plot_genotype_histogram
       - plot_marey
       - plot_reconstructed_haplo
@@ -42,8 +45,6 @@ reference:
 
   - title: Utility Functions
     contents:
-      - convert_to_dosage
-      - convert_to_dosage_flex
       - drop_parents
       - melt_freq
       - rename_geno_matrix

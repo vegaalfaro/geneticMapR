@@ -16,19 +16,40 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-This vignette demonstrates how to bin SNP markers based on linkage disequilibrium (LD) and detect genetic duplicates in a population using the `geneticMapR` package and its dependencies. Specially useful is [MapRtools](https://github.com/jendelman/MapRtools).
+This vignette demonstrates how to bin SNP markers based on linkage disequilibrium (LD) and detect genetic duplicates in a linkage map F~2~ table beet population using the `geneticMapR` package and its dependencies. Specially useful is [MapRtools](https://github.com/jendelman/MapRtools).
 
 ### Setup
+
 ```{r setup, message=FALSE, warning=FALSE}
-library(geneticMapR)
-library(ggplot2)
-if (!require(ggdendro)) {
-  install.packages("ggdendro")
-  library(ggdendro)
-} else {
-  library(ggdendro)
+
+# Helper function to install from CRAN if not available
+load_or_install_cran <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg)
+  }
+  library(pkg, character.only = TRUE)
 }
-library(stringr)  # For truncating names
+
+# Helper function to install from GitHub if not available
+load_or_install_github <- function(pkg, repo) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    devtools::install_github(repo, quiet = TRUE)
+  }
+  library(pkg, character.only = TRUE)
+}
+
+# Ensure devtools is available for GitHub installs
+load_or_install_cran("devtools")
+
+# Install/load GitHub packages
+load_or_install_github("MapRtools", "jendelman/MapRtools")
+load_or_install_github("geneticMapR", "vegaalfaro/geneticMapR")
+
+# Install/load CRAN packages
+load_or_install_cran("ggdendro")
+load_or_install_cran("stringr")
+load_or_install_cran("ggplot2")
+
 ```
 
 ### Load Data
@@ -43,13 +64,15 @@ if (!file.exists("local_copy.filtered_geno_matrices_1629.RData")) {
   download.file(geno_matrices_url, 
                 destfile = "local_copy.filtered_geno_matrices_1629.RData")
 }
+
+load("local_copy.filtered_geno_matrices_1629.RData")
 ```
 
 ## Identify Genetic Duplicates
 
-It’s often useful to include known duplicates in your dataset to assess GBS quality or for fun. Here, I included a duplicate of the F1 individual. Occasionally, there is human error and some genetic duplicates are included in the experiment inadvertently.  
+It’s often useful to include known duplicates in your dataset to assess GBS quality. Generally it's good to have a system that allows you to figure out if you inadvertently included a genetic duplicate. In this data, I included a duplicate of the F1 individual. Occasionally, there is human error and some genetic duplicates are included in the experiment inadvertently.  
 
-Here, we search for and assign a name to the F1 and parental individuals.
+For convenience in the code below, we search for and assign a name to the F1 and parental individuals.
 
 ```{r, message=FALSE, warning=FALSE}
 # Assign names
@@ -58,18 +81,19 @@ P2 <- "P2493-Mono-P2-Theta-B9"
 F1s <- c("7001-F1-Beta-H9", "7002-F1-Gamma-F11") 
 ```
 
-`rename_geno_matrix()` standardizes the column names of a genotype matrix by renaming parental genotypes (P1, P2), F1 individuals (F1.1, F1.2, ...), and F~2~ individuals (F2.1, F2.2, ...). This shortens the names as they are quite large in the example (real) data and they get in the way of visualization. We'll change the names temporarily for visualization purposes.
+`rename_geno_matrix()` standardizes the column names of a genotype matrix by renaming parental genotypes (P1, P2), F1 individuals (F1.1, F1.2, ...), and F~2~ individuals (F2.1, F2.2, ...). This shortens the names as they are quite large in the real data example and they get in the way of visualization. We'll change the names temporarily for visualization purposes.
 
 ```{r, message=FALSE, warning=FALSE}
+# First make copy of geno
+geno <- het_phased_geno_1629_filt
 # Rename
 geno <- rename_geno_matrix(geno, P1, P2, F1s)
 ```
 
-The closer two samples are to the lowest branches of the tree, the more likely they are duplicates. In this case, the two F1s (on the far right hand side) are on the second-lowest branches, while F24 and F25 appear to be even more more closely related and may also be duplicates.
+We will use a dendrogram to determine genetic duplicates. The closer two samples are to the lowest branches of the dedrogram, the more related they are more likely to be duplicates. In this case, we can see the two identical F1s (on the far right hand side) are on the second-lowest branches. In addition, F24 and F25 appear to be even more more closely related and are likely duplicates included in the experiment because of human error. In most projects I have worked on, surprises like this are not uncommon. 
 
 ```{r, message=FALSE, warning=FALSE, fig.align='center', fig.height=4.3, fig.width=8.1, fig.alt="dendro plot"}
-
-# # Estimate distance matrix using  genotype matrix
+# Estimate distance matrix using  genotype matrix
 distance_matrix <- dist(t(geno))
 
 # Perform hierarchical clustering
@@ -96,10 +120,85 @@ dendro
 
 
 ### Filter Parents and F1 from the Dataset
+
 To avoid bias during LD binning, we remove the `parents` and F~1~ individuals. We'll keep the two F~2s~ which seem to be genetic duplicates for now.
 
 ```{r}
+hom_phased_geno_1629 <- drop_parents(hom_phased_geno_1629, P1, P2, F1 = F1s)
+het_phased_geno_1629_filt <- drop_parents(het_phased_geno_1629_filt, P1, P2, F1 = F1s)
+```
+
+## Bin Homozygous Markers
+
+We begin by cleaning the homozygous matrix and removing non-informative markers.
+
+```{r}
+# Identify monomorphic markers
+mono_markers <- apply(hom_phased_geno_1629, 1, function(x) length(unique(na.omit(x))) == 1)
+# Identify zero variance markers
+hom_phased_geno_1629 <- hom_phased_geno_1629[apply(hom_phased_geno_1629, 1, var) > 0, ]
+# Filter them out from matrix
+hom_phased_geno_1629 <- hom_phased_geno_1629[!mono_markers, ]
+# If genotype matrix contains missing genotypes, remove them
+hom_phased_geno_1629 <- hom_phased_geno_1629[complete.cases(hom_phased_geno_1629), ]
+
+# bin markers using MapRtools::LDbin
+LDbin_hom <- LDbin(hom_phased_geno_1629, r2.thresh = 0.99)
+# Extract binned genotype matrix
+geno.hom.bin <- LDbin_hom$geno
+
+# Check dimensions of binned genotype
+dim(geno.hom.bin)
 
 ```
 
+### Visualize Binned Homozygous Markers
 
+```{r,  warning=FALSE, fig.align='center', fig.height=4.3, fig.width=6.13, fig.alt= 'coverageplot'}
+map_hom <- extract_map(geno.hom.bin)
+plot_coverage(map = map_hom, customize = TRUE) + 
+  ggtitle("Binned Homozygous Markers")
+
+```
+
+## Bin Heterozygous Markers
+We now repeat the binning process for heterozygous markers.
+
+```{r}
+LDbin_het <- LDbin(het_phased_geno_1629_filt, r2.thresh = 0.99)
+geno.het.bin <- LDbin_het$geno
+dim(geno.het.bin)
+
+```
+
+### Visualize Binned Heterozygous Markers
+
+```{r, warning=FALSE, fig.align='center', fig.height=4.3, fig.width=6.13, fig.alt="coverageplot"}
+map_het <- extract_map(geno.het.bin)
+plot_coverage(map = map_het, customize = TRUE) + 
+  ggtitle("Binned Heterozygous Markers")
+
+```
+
+## Mrker Filtering Tradeoff
+This real-data example shows once more how filtering for homozygous vs. heterozygous markers affects genome coverage. The balance between marker type and map resolution.
+
+## Save Results
+
+```{r, eval=FALSE}
+save(geno.het.bin, 
+     geno.hom.bin,  
+     dendro,
+     file = "processed_data/R_data/binned_geno_1629.RData")
+
+```
+
+## Conclusion
+
+This vignette illustrates how to identify duplicate individuals in your dataset and perform LD-based marker binning using tools available in the geneticMapR workflow.
+
+## Session Information
+
+```{r session }
+sessionInfo()
+```
