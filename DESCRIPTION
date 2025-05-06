@@ -22,7 +22,8 @@ Imports:
     ggdist,
     ggpubr,
     qtl,
-    utils
+    utils,
+    png
 Remotes: jendelman/MapRtools
 Suggests: 
     knitr,

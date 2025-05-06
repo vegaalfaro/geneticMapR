@@ -1,0 +1,49 @@
+---
+title: "Linkage_Groups"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Linkage_Groups}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+## Setup
+```{r setup, message=FALSE, warning=FALSE}}
+library(geneticMapR)
+# Helper function to install from CRAN if not available
+load_or_install_cran <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg)
+  }
+  library(pkg, character.only = TRUE)
+}
+
+# Helper function to install from GitHub if not available
+load_or_install_github <- function(pkg, repo) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    devtools::install_github(repo, quiet = TRUE)
+  }
+  library(pkg, character.only = TRUE)
+}
+
+# Ensure devtools is available for GitHub installs
+load_or_install_cran("devtools")
+
+# Install/load GitHub packages
+load_or_install_github("MapRtools", "jendelman/MapRtools")
+load_or_install_github("geneticMapR", "vegaalfaro/geneticMapR")
+
+# Install/load CRAN packages
+load_or_install_cran("ggdendro")
+load_or_install_cran("stringr")
+load_or_install_cran("ggplot2")
+
+```
