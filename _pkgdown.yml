@@ -14,7 +14,7 @@ reference:
       - freq
       - get_LOD_int
       - haplotype_reconstruction
-      - recode
+      - recode_markers
       - simple_effect_plot
       - trim_LG
 
