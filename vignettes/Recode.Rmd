@@ -292,12 +292,12 @@ geno_homozygous <- filter_geno_by_parents(filtered_geno, P1, P2)
 
 `P1` and `P2` are the column names for the parental genotypes. `filter_geno_by_parents` retains only homozygous polymorphic markers between two specified parents. 
 
-**Note**: The `recode() `function also performs this filtering automatically. The user can specify also if `recode()`should keep het markers or not. Let's see.
+**Note**: The `recode_markers() `function also performs this filtering automatically. The user can specify also if `recode_markers()`should keep het markers or not. Let's see.
 
   
 ## Recode Genotypes
 
-`geneticMapR::recode()` is the heart of the package. This powerful function phases or recodes genotype marker data based on two parental references (arguments `parent1` and `parent2`).
+`geneticMapR::recode_markers()` is the heart of the package. This powerful function phases or recodes genotype marker data based on two parental references (arguments `parent1` and `parent2`).
 
 Recoding markers is one of the key steps in genetic mapping. The markers are coded in a way such that the haplotypes coming from either parent can be tracked in the F~2~ progeny. 
 
@@ -347,7 +347,7 @@ This is because some loci are lethal on either homozygous configuration.
 
 ## Recode function
 
-`recode()` was created to help with the task of recoding the markers so that they reflect a the "typical representation". This helps the user track the origin of the haplotypes in the F~2~. **Essential for genetic mapping.**  The function is quite flexible and its main functionality is:
+`recode_markers()` was created to help with the task of recoding the markers so that they reflect a the "typical representation". This helps the user track the origin of the haplotypes in the F~2~. **Essential for genetic mapping.**  The function is quite flexible and its main functionality is:
 
 - Drop markers where either of the parent is NA
 - Remove non-polymorphic markers automatically (both parents have the same genotype)
@@ -358,21 +358,21 @@ This is because some loci are lethal on either homozygous configuration.
 
 ```{r recode}
 # Retains only homozygous markers
-hom_phased_geno_1629 <- geneticMapR::recode(geno = filtered_geno,
+hom_phased_geno_1629 <- geneticMapR::recode_markers(geno = filtered_geno,
                                 parent1 = P1,
                                 parent2 = P2,
                                 numeric_output = TRUE,
                                 handle_het_markers = FALSE)
 
 # Allows for heterozygous markers
-het_phased_geno_1629 <- geneticMapR::recode(geno = filtered_geno,
+het_phased_geno_1629 <- geneticMapR::recode_markers(geno = filtered_geno,
                                parent1 = P1,
                                parent2 = P2,
                                numeric_output = TRUE,
                                handle_het_markers = TRUE)
 ```
 
-Below is an example of how `recode()` works. Is based on simulated data for convenience. 
+Below is an example of how `recode_markers()` works. Is based on simulated data for convenience. 
 
 ```{r}
 # Load the example dataset
@@ -381,8 +381,8 @@ data("simulated_geno")
 # Check markers previous to recoding
 print(simulated_geno)
 
-# Recode the markers using the recode() function
-phased <- geneticMapR::recode(simulated_geno, parent1 = "Parent1", parent2 = "Parent2")
+# Recode the markers using the recode_markers() function
+phased <- geneticMapR::recode_markers(simulated_geno, parent1 = "Parent1", parent2 = "Parent2")
 
 # Print the output
 print(phased)
@@ -455,7 +455,7 @@ frequency_plot(geno.freq.het.filtered) + ggtitle("Het markers, filtered")
 
 Below we see that our filtering paramaters have left us with a typical 1:2:1 segregation ratio even for markers that included heterozygous markers that were properly filtered.
 
-```{r filtering comparison, fig.height=4.3, fig.width=8.0, message=FALSE, warning=FALSE}
+```{r filtering comparison, fig.height=8.0, fig.width=6.0, message=FALSE, warning=FALSE}
 v <- plot_genotype_histogram(het_phased_geno_1629_filt) +
   ggtitle("Homozygous + filtered het markers")
 

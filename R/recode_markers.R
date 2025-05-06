@@ -1,7 +1,7 @@
 #' Phase Genotype Marker Data Based on Parental References
 #'
 #' @description
-#' `recode` is the heart of the package. This powerful function phases genotype marker
+#' `recode_markers` is the heart of the package. This powerful function phases genotype marker
 #' data based on two parental references (`parent1` and `parent2`).
 #'
 #' It phases markers according to parental allele inheritance.
@@ -44,12 +44,12 @@
 #'   Parent2 = c(2, 0, 0, 2, 0)
 #' )
 #'
-#' # Recode genotype markers (default: numeric output)
-#' phased_geno <- recode(geno_data, "Parent1", "Parent2")
+#' # recode_markers genotype markers (default: numeric output)
+#' phased_geno <- recode_markers(geno_data, "Parent1", "Parent2")
 #' print(phased_geno)
 #'
 #' # Recode genotype markers with heterozygous marker handling
-#' phased_geno_het <- recode(geno_data, "Parent1", "Parent2",
+#' phased_geno_het <- recode_markers(geno_data, "Parent1", "Parent2",
 #'                           handle_het_markers = TRUE,
 #'                           het_marker_types = c("AxH", "HxB"))
 #' print(phased_geno_het)
@@ -59,7 +59,7 @@
 #'
 #' @importFrom dplyr mutate across all_of case_when
 #' @export
-recode <- function(geno, parent1,
+recode_markers <- function(geno, parent1,
                    parent2,
                    numeric_output = TRUE,
                    handle_het_markers = FALSE,

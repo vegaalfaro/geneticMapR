@@ -1,0 +1,105 @@
+---
+title: "Binning SNP Markers by Linkage Disequilibrium"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Binning SNP Markers by Linkage Disequilibrium}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+This vignette demonstrates how to bin SNP markers based on linkage disequilibrium (LD) and detect genetic duplicates in a population using the `geneticMapR` package and its dependencies. Specially useful is [MapRtools](https://github.com/jendelman/MapRtools).
+
+### Setup
+```{r setup, message=FALSE, warning=FALSE}
+library(geneticMapR)
+library(ggplot2)
+if (!require(ggdendro)) {
+  install.packages("ggdendro")
+  library(ggdendro)
+} else {
+  library(ggdendro)
+}
+library(stringr)  # For truncating names
+```
+
+### Load Data
+
+We begin by loading a preprocessed genotype dataset from our data repository [geneticMapRFiles](https://github.com/vegaalfaro/geneticMapRFiles) 
+
+```{r, message=FALSE, warning=FALSE}
+geno_matrices_url <- "https://raw.githubusercontent.com/vegaalfaro/geneticMapRFiles/main/R_data/filtered_geno_matrices_1629.RData"
+
+# Download file
+if (!file.exists("local_copy.filtered_geno_matrices_1629.RData")) {
+  download.file(geno_matrices_url, 
+                destfile = "local_copy.filtered_geno_matrices_1629.RData")
+}
+```
+
+## Identify Genetic Duplicates
+
+It’s often useful to include known duplicates in your dataset to assess GBS quality or for fun. Here, I included a duplicate of the F1 individual. Occasionally, there is human error and some genetic duplicates are included in the experiment inadvertently.  
+
+Here, we search for and assign a name to the F1 and parental individuals.
+
+```{r, message=FALSE, warning=FALSE}
+# Assign names
+P1 <- "P2550-Cylindra-P1-Theta-A9"
+P2 <- "P2493-Mono-P2-Theta-B9"
+F1s <- c("7001-F1-Beta-H9", "7002-F1-Gamma-F11") 
+```
+
+`rename_geno_matrix()` standardizes the column names of a genotype matrix by renaming parental genotypes (P1, P2), F1 individuals (F1.1, F1.2, ...), and F~2~ individuals (F2.1, F2.2, ...). This shortens the names as they are quite large in the example (real) data and they get in the way of visualization. We'll change the names temporarily for visualization purposes.
+
+```{r, message=FALSE, warning=FALSE}
+# Rename
+geno <- rename_geno_matrix(geno, P1, P2, F1s)
+```
+
+The closer two samples are to the lowest branches of the tree, the more likely they are duplicates. In this case, the two F1s (on the far right hand side) are on the second-lowest branches, while F24 and F25 appear to be even more more closely related and may also be duplicates.
+
+```{r, message=FALSE, warning=FALSE, fig.align='center', fig.height=4.3, fig.width=8.1, fig.alt="dendro plot"}
+
+# # Estimate distance matrix using  genotype matrix
+distance_matrix <- dist(t(geno))
+
+# Perform hierarchical clustering
+hclust_result <- hclust(distance_matrix, method = "single")
+
+# Convert hclust object to dendrogram data for better visualization
+dendro_data <- ggdendro::dendro_data(hclust_result)
+
+# Plot dendrogram using ggplot2
+dendro <- ggplot() +
+  geom_segment(data = dendro_data$segments, 
+               aes(x = x, y = y, xend = xend, yend = yend), 
+               color = "blue") +
+  geom_text(data = dendro_data$labels, 
+            aes(x = x, y = y, label = label), 
+            hjust = 1, angle = 90, size = 2) +
+  labs(title = "Hierarchical Clustering Dendrogram",
+       x = "Samples", y = "Distance") +
+  theme_test() +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+
+dendro
+```
+
+
+### Filter Parents and F1 from the Dataset
+To avoid bias during LD binning, we remove the `parents` and F~1~ individuals. We'll keep the two F~2s~ which seem to be genetic duplicates for now.
+
+```{r}
+
+```
+
+
