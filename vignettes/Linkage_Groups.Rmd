@@ -1,8 +1,10 @@
 ---
-title: "Linkage_Groups"
+title: "Linkage Groups and Marker Order"
 output: rmarkdown::html_vignette
+date: "2025-05-05"
+author: "Andrey Vega Alfaro"
 vignette: >
-  %\VignetteIndexEntry{Linkage_Groups}
+  %\VignetteIndexEntry{Linkage Groups and Marker Order}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,11 +16,16 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Intro
+
+This vignette provides an overview on how to estimate linkage groups, and order markers using functions in the `geneticMapR` and `MapRtools` packages.
+We continue to use genotype data from a biparental F~2~ table beet population.
 
 ## Setup
-```{r setup, message=FALSE, warning=FALSE}}
-library(geneticMapR)
-# Helper function to install from CRAN if not available
+
+```{r, message=FALSE, warning=FALSE }
+
+# Helper function to install from CRAN 
 load_or_install_cran <- function(pkg) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
     install.packages(pkg)
@@ -26,7 +33,7 @@ load_or_install_cran <- function(pkg) {
   library(pkg, character.only = TRUE)
 }
 
-# Helper function to install from GitHub if not available
+# Helper function to install from GitHub 
 load_or_install_github <- function(pkg, repo) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
     devtools::install_github(repo, quiet = TRUE)
@@ -42,8 +49,151 @@ load_or_install_github("MapRtools", "jendelman/MapRtools")
 load_or_install_github("geneticMapR", "vegaalfaro/geneticMapR")
 
 # Install/load CRAN packages
-load_or_install_cran("ggdendro")
-load_or_install_cran("stringr")
 load_or_install_cran("ggplot2")
+load_or_install_cran("tidyr")
+load_or_install_cran("tidyverse")
+load_or_install_cran("parallel")
 
 ```
+
+
+## 1. Data
+
+To avoid long runtimes, precomputed genotype data and LOD matrices are loaded from `geneticMapRFiles`. The two genotype files loaded are `geno.het.bin` and `geno.hom.bin`.
+
+- `geno.het.bin`  is a genotype matrix of 2480 marker bins by 100 individuals. Includes heterozygous and homozygous markers. Rows are markers and rows are named (e.g.,CHR7_192222).
+Columns are individuals and columns are named (e.g., 2002-F2-Beta-B10).
+
+- `geno.hom.bin` is genotype matrix of 998 marker bins by 100 individuals. Includes homozygous markers only. Rows are markers with rownames and individuals are columns with column names.
+
+
+```{r, message=FALSE, warning=FALSE}
+# Binned Genotype
+url1 <- "https://raw.githubusercontent.com/vegaalfaro/geneticMapRFiles/main/R_data/binned_geno_1629.RData"
+
+# Download file
+if (!file.exists("binned_geno_1629.RData")) {
+  download.file(url1, destfile = "local_copy.binned_geno_1629.RData")}
+
+# Load
+load("local_copy.binned_geno_1629.RData")
+
+```
+
+### LOD matrices
+
+LOD matrices will be loaded because they take a while to run. The uploaded LOD matrices are:
+
+- `LODmat.het` Large matrix containing LOD scores for each marker pair. Heterozygous markers and Homozygous markers.
+
+- `LODmat.hom` Large matrix containing LOD scores for each marker pair. Homozygous markers.
+
+```{r}
+# LOD matrices
+url2 <- "https://raw.githubusercontent.com/vegaalfaro/geneticMapRFiles/main/R_data/LODmats_1629-2025-03-12.RData"
+
+# Download file
+if (!file.exists("binned_geno_1629.RData")) {
+  download.file(url2, destfile = "LODmats_1629-2025-03-12.RData")}
+
+# Load
+load("LODmats_1629-2025-03-12.RData")
+```
+
+#### Your own LOD matrix
+
+If you need to run your own LOD matrices, below I show an example on how to do so using `MapRtools`
+and the MLEL function. Make sure to check how many cores you have available in your machine.
+```{r, eval=FALSE}
+# Geno matrix with only homozygous markers
+LODmat.hom <- MLEL(geno = geno.hom.bin, pop.type = "F2", LOD=TRUE, n.core = 7)
+
+# Geno matrix with homozygous and heterozygous markers
+LODmat.het <- MLEL(geno = geno.het.bin, pop.type = "F2", LOD=TRUE, n.core = 7) 
+```
+
+
+## 2. Linkage Groups
+
+The objective in determining linkage groups is to identify the smallest LOD (logarithm of odds) threshold at which all chromosomes are correctly separated. Linkage groups are clusters of genetic markers that are inherited together and correspond to physical chromosomes. The goal is to identify these groups by assessing how often markers are co-inherited across progeny of, in this case, F2 mapping populations. So:
+
+Markers that are:
+
+Close together on the same chromosome tend to be inherited together (low recombination → high linkage).
+
+Far apart or on different chromosomes are inherited independently (high recombination → low or no linkage).
+
+### LOD threshold tradeoffs
+
+The LOD threshold determines how stringently you connect markers into groups:
+
+- Too low: Spurious linkage → falsely merges different chromosomes.
+
+- Too high: Real linkage missed → splits chromosomes, especially if:
+
+There are long arms with low marker density (low resolution), or recombination hotspots create perceived gaps.
+
+So, for beet (2n=18; 9 chromosomes), we're trying to tune the LOD threshold so that exactly 9 linkage groups emerge, matching the known number of chromosomes.
+
+This is often done empirically:
+
+- Estimate pairwise LOD scores between all markers.
+
+- Build a graph or a figure to visualize linked markers.
+
+- Adjust the threshold to get the correct number of groups (for example, by counting connected components in a graph).
+
+### Some math behind LOD scores
+
+The LOD score compares two hypotheses:
+
+- H1: The two markers are linked at a certain recombination frequency (θ < 0.5).
+- H0: The two markers are not linked (θ = 0.5, i.e., independent assortment).
+
+The formula is:
+
+$$LOD=log_{10}\left(\frac{P(data∣linked)}{P(data∣unlinked)}\right) $$
+
+A higher LOD means stronger evidence that the markers belong to the same group. Usually a treshold is set to define linkage groups.
+
+To visualize linkage group separation, you can use the `MapRtools` package to generate a candy stripe bar plot. This plot helps assess whether chromosomes have been cleanly split.
+
+### Linkage group separation
+
+Let's use `MapRtools` `LG` function to estimate linkage group separation. You can toggle with the threshold. You can try different thresholds for example start 2 to 20 and move up iteratively. By counting the stripes we can figure out which threshold is appropriate. The black line on top represent misplaced markers or markers in Linkage Groups outside the largest first 9.
+
+
+```{r, fig.height=4.3, fig.width=6.5, message=FALSE, warning=FALSE}
+LG(LODmat.hom, thresh = seq(5, 30, by = 1)) + ggtitle("Homozygous markers only")
+LG(LODmat.het, thresh = seq(5, 30, by = 1)) + ggtitle("Heterozygous + Homozygous SNPs")
+
+```
+
+For **homozygous markers**, nine linkage groups are first formed at a LOD score of 12. This configuration remains stable up to a LOD of 18, which is support for the grouping structure and suggests reliable marker clustering.
+
+When **heterozygous markers** are included alongside homozygous markers, the pattern shifts slightly. In this combined dataset, nine linkage groups are formed at a higher LOD score of 19. However, the grouping is less clear-cut than in the homozygous-only scenario. 
+
+## 3. Linkage Group Separation
+
+We're going to demonstrate the next steps with the set of homozygous markers for convenience. 
+
+```{r}
+map <- extract_map(geno.hom.bin, markers = TRUE) # Extracts physical map
+LGhom <- LG(LODmat.hom, thresh = 12) # Returns assiged linkage group
+LGhom$chrom <- map$chrom 
+LGhom <- LGhom[LGhom$LG <= 9, ] # Keeps largest 9 linkage groups
+map <- merge(LGhom, map, by = c("marker", "chrom")) # Merge to connect CHR to LGs
+tab <- table(map$chrom, map$LG) # Make a table of CHR and LGs
+tab <- tab[, order(max.col(t(tab), ties.method = "first"))] # Order table
+knitr::kable(tab) # Print table
+
+```
+
+When the thresh argument of the `MapRtools::LG()` function is provided as a single numeric value, the function returns a data frame with the assigned linkage group for each marker. 
+
+Small groups with only a few markers are likely artifacts of sparse coverage or noise. To focus on biologically meaningful results, we subset the largest nine linkage groups, which correspond to the expected number of chromosomes in beet.
+
+### Linkage Trimming
+
+**Linkage trimming** refers to remove markers from linkage groups that do not correspond there. 
+

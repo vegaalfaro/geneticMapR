@@ -1,6 +1,8 @@
 ---
 title: "Binning SNP Markers by Linkage Disequilibrium"
 output: rmarkdown::html_vignette
+date: "2025-05-05"
+author: "Andrey Vega Alfaro"
 vignette: >
   %\VignetteIndexEntry{Binning SNP Markers by Linkage Disequilibrium}
   %\VignetteEngine{knitr::rmarkdown}

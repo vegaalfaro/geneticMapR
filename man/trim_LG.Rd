@@ -10,89 +10,45 @@ trim_LG(
   geno,
   pop_type = "F2",
   drop_outliers = TRUE,
-  n_cores = NULL
+  n_cores = NULL,
+  interactive = TRUE,
+  initial_LOD = NULL,
+  end_LOD = NULL,
+  step_LOD = NULL,
+  selected_thresh = NULL
 )
 }
 \arguments{
 \item{chromosome}{Character. The chromosome ID to be processed.}
 
-\item{map}{A data frame containing marker map information with at least the following columns:
-\itemize{
-\item \code{"marker"}: Marker names.
-\item \code{"chrom"}: Chromosome identifier.
-\item \code{"position"}: Physical position of markers.
-}}
+\item{map}{A data frame with at least columns \code{"marker"}, \code{"chrom"}, and \code{"position"}.}
 
-\item{geno}{A genotype matrix where:
-\itemize{
-\item Rows represent genetic markers.
-\item Columns represent individuals.
-\item Values represent genotype calls.
-Preferably, a binned genotype matrix. Binning can be performed using \code{MapRtools::LDbin}.
-}}
+\item{geno}{A genotype matrix (rows = markers, columns = individuals). Preferably binned.}
 
-\item{pop_type}{Character. The population type used for linkage estimation. Default is \code{"F2"}. Would work with any of the following "DH","BC","F2","S1","RIL.self","RIL.sib". Based on \code{MapRtools::MLEL()}}
+\item{pop_type}{Character. Population type for LOD estimation. Default is \code{"F2"}.}
 
-\item{drop_outliers}{Logical. If \code{TRUE}, removes markers identified as outliers based on haplotype frequency. Default is \code{TRUE}.}
+\item{drop_outliers}{Logical. Whether to remove outliers based on haplotype frequency. Default is \code{TRUE}.}
 
-\item{n_cores}{Integer. The number of CPU cores to use for linkage estimation.
-If \code{NULL}, the function selects the maximum available minus one.}
+\item{n_cores}{Integer. Number of cores to use. If \code{NULL}, uses maximum available minus one.}
+
+\item{interactive}{Logical. If \code{TRUE}, asks user for LOD thresholds. If \code{FALSE}, requires threshold arguments.}
+
+\item{initial_LOD}{Numeric. Initial LOD value (required if \code{interactive = FALSE}).}
+
+\item{end_LOD}{Numeric. Final LOD value (required if \code{interactive = FALSE}).}
+
+\item{step_LOD}{Numeric. Step size for LOD sequence (required if \code{interactive = FALSE}).}
+
+\item{selected_thresh}{Numeric. Final LOD threshold to use (required if \code{interactive = FALSE}).}
 }
 \value{
-A list containing:
-\itemize{
-\item \code{"trimmed_genotype"}: The filtered genotype matrix.
-\item \code{"final_map"}: The updated marker map after filtering.
-\item \code{"initial_haplo_plot"}: A \code{ggplot2} object showing the initial haplotype plot.
-\item \code{"filtered_freq_plot"}: A \code{ggplot2} object showing the haplotype plot after filtering.
-\item \code{"final_freq_plot"}: A \code{ggplot2} object showing the haplotype frequency after removing outliers.
-\item \code{"starting_LOD"}: A record of the user-specified initial LOD threshold.
-\item \code{"ending_LOD"}: A record of the the user-specified final LOD threshold.
-\item \code{"step"}: A record of the LOD sequence step size.
-\item \code{"selected_LOD_thresh"}: The final LOD threshold used for filtering markers.
-\item \code{"outliers"}: Markers removed as outliers saved as character vector.
-}
+A list with filtered genotypes, final map, plots, and LOD settings.
 }
 \description{
-\code{trim_LG}  is an interactive function that helps the user filter markers within a specified chromosome based on linkage
-group (LG) assignment using LOD score thresholds. \code{trim_LG}  should make the process easy by allowing the user
-to choose the thresholds interactively, visualize haplotype frequency before and after filtering,
-and  remove outliers. Inspired by functions by Professor Jeffrey B. Endelman's \href{https://github.com/jendelman/MapRtools}{MapRtools}
-available in Github. \code{trim_LG} provides a simple interphase for trimming LGs easily.
+\code{trim_LG} is an interactive or scripted function that helps the user filter markers within a specified chromosome
+based on linkage group (LG) assignment using LOD score thresholds. The user can interactively choose LOD thresholds
+or provide them via arguments, visualize haplotype frequency before and after filtering, and remove outliers.
 }
 \details{
-\itemize{
-\item Computes LOD scores for marker pairs using \code{MapRtools::MLEL()}, parallelized with multiple cores.
-\item Displays an interactive "candy stripe" plot for visualizing linkage groups using \code{MapRtools::LG()}.
-\item Asks the user to define a LOD range and a final LOD threshold for marker filtering.
-\item If \code{drop_outliers = TRUE}, removes markers identified as outliers based on haplotype frequency.
-}
-}
-\note{
-Requires a previous installation of \href{https://github.com/jendelman/MapRtools}{MapRtools}.
-}
-\examples{
-\dontrun{
-# Example dataset (user should provide actual data)
-map_data <- data.frame(
-  marker = c("M1", "M2", "M3", "M4"),
-  chrom = c("CHR1", "CHR1", "CHR1", "CHR1"),
-  position = c(10, 20, 30, 40)
-)
-geno_matrix <- matrix(sample(0:1, 16, replace = TRUE),
-                      nrow = 4, ncol = 4,
-                      dimnames = list(c("M1", "M2", "M3", "M4"),
-                                      c("Ind1", "Ind2", "Ind3", "Ind4")))
-
-# Run trimming function (with user input required for LOD selection)
-result <- trim_LG(chromosome = "CHR1",
-                  map = map_data,
-                  geno = geno_matrix,
-                  pop_type = "F2",
-                  drop_outliers = TRUE,
-                  n_cores = 2)
-
-# Access trimmed genotype matrix
-print(result$trimmed_genotype)
-}
+Inspired by functions by Professor Jeffrey B. Endelman’s \href{https://github.com/jendelman/MapRtools}{MapRtools}.
 }
