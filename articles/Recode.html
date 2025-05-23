@@ -6,12 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Recode Markers • geneticMapR</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -40,7 +39,9 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/Recode.html">Recode Markers</a></li>
+<li><a class="dropdown-item" href="../articles/LD_binning.html">Binning SNP Markers by Linkage Disequilibrium</a></li>
+    <li><a class="dropdown-item" href="../articles/Linkage_Groups.html">Linkage Groups and Marker Order</a></li>
+    <li><a class="dropdown-item" href="../articles/Recode.html">Recode Markers</a></li>
   </ul>
 </li>
       </ul>
@@ -394,16 +395,17 @@ we can use <code><a href="../reference/filter_geno_by_parents.html">filter_geno_
 <p><code>P1</code> and <code>P2</code> are the column names for the
 parental genotypes. <code>filter_geno_by_parents</code> retains only
 homozygous polymorphic markers between two specified parents.</p>
-<p><strong>Note</strong>: The <code><a href="../reference/recode.html">recode()</a></code>function also
+<p><strong>Note</strong>: The <code><a href="../reference/recode_markers.html">recode_markers()</a></code>function also
 performs this filtering automatically. The user can specify also if
-<code><a href="../reference/recode.html">recode()</a></code>should keep het markers or not. Let’s see.</p>
+<code><a href="../reference/recode_markers.html">recode_markers()</a></code>should keep het markers or not. Let’s
+see.</p>
 </div>
 <div class="section level2">
 <h2 id="recode-genotypes">Recode Genotypes<a class="anchor" aria-label="anchor" href="#recode-genotypes"></a>
 </h2>
-<p><code><a href="../reference/recode.html">geneticMapR::recode()</a></code> is the heart of the package. This
-powerful function phases or recodes genotype marker data based on two
-parental references (arguments <code>parent1</code> and
+<p><code><a href="../reference/recode_markers.html">geneticMapR::recode_markers()</a></code> is the heart of the
+package. This powerful function phases or recodes genotype marker data
+based on two parental references (arguments <code>parent1</code> and
 <code>parent2</code>).</p>
 <p>Recoding markers is one of the key steps in genetic mapping. The
 markers are coded in a way such that the haplotypes coming from either
@@ -458,11 +460,11 @@ observed in these individuals</p>
 <div class="section level2">
 <h2 id="recode-function">Recode function<a class="anchor" aria-label="anchor" href="#recode-function"></a>
 </h2>
-<p><code><a href="../reference/recode.html">recode()</a></code> was created to help with the task of recoding
-the markers so that they reflect a the “typical representation”. This
-helps the user track the origin of the haplotypes in the F<sub>2</sub>.
-<strong>Essential for genetic mapping.</strong> The function is quite
-flexible and its main functionality is:</p>
+<p><code><a href="../reference/recode_markers.html">recode_markers()</a></code> was created to help with the task of
+recoding the markers so that they reflect a the “typical
+representation”. This helps the user track the origin of the haplotypes
+in the F<sub>2</sub>. <strong>Essential for genetic mapping.</strong>
+The function is quite flexible and its main functionality is:</p>
 <ul>
 <li>Drop markers where either of the parent is NA</li>
 <li>Remove non-polymorphic markers automatically (both parents have the
@@ -475,7 +477,7 @@ Please see the <a href="https://vegaalfaro.github.io/geneticMapR/reference/index
 documentation</a> for more information.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Retains only homozygous markers</span></span>
-<span><span class="va">hom_phased_geno_1629</span> <span class="op">&lt;-</span> <span class="fu">geneticMapR</span><span class="fu">::</span><span class="fu"><a href="../reference/recode.html">recode</a></span><span class="op">(</span>geno <span class="op">=</span> <span class="va">filtered_geno</span>,</span>
+<span><span class="va">hom_phased_geno_1629</span> <span class="op">&lt;-</span> <span class="fu">geneticMapR</span><span class="fu">::</span><span class="fu"><a href="../reference/recode_markers.html">recode_markers</a></span><span class="op">(</span>geno <span class="op">=</span> <span class="va">filtered_geno</span>,</span>
 <span>                                parent1 <span class="op">=</span> <span class="va">P1</span>,</span>
 <span>                                parent2 <span class="op">=</span> <span class="va">P2</span>,</span>
 <span>                                numeric_output <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -484,15 +486,15 @@ documentation</a> for more information.</p>
 <span><span class="co">#&gt; Dropping non-polymorphic markers. Your genotype matrix contains markers that are identical in the two parents.</span></span>
 <span></span>
 <span><span class="co"># Allows for heterozygous markers</span></span>
-<span><span class="va">het_phased_geno_1629</span> <span class="op">&lt;-</span> <span class="fu">geneticMapR</span><span class="fu">::</span><span class="fu"><a href="../reference/recode.html">recode</a></span><span class="op">(</span>geno <span class="op">=</span> <span class="va">filtered_geno</span>,</span>
+<span><span class="va">het_phased_geno_1629</span> <span class="op">&lt;-</span> <span class="fu">geneticMapR</span><span class="fu">::</span><span class="fu"><a href="../reference/recode_markers.html">recode_markers</a></span><span class="op">(</span>geno <span class="op">=</span> <span class="va">filtered_geno</span>,</span>
 <span>                               parent1 <span class="op">=</span> <span class="va">P1</span>,</span>
 <span>                               parent2 <span class="op">=</span> <span class="va">P2</span>,</span>
 <span>                               numeric_output <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                               handle_het_markers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Dropping markers with NA in at least one of the parents. Your genotype matrix contains missing parental genotypes.</span></span>
 <span><span class="co">#&gt; Dropping non-polymorphic markers. Your genotype matrix contains markers that are identical in the two parents.</span></span></code></pre></div>
-<p>Below is an example of how <code><a href="../reference/recode.html">recode()</a></code> works. Is based on
-simulated data for convenience.</p>
+<p>Below is an example of how <code><a href="../reference/recode_markers.html">recode_markers()</a></code> works. Is
+based on simulated data for convenience.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load the example dataset</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"simulated_geno"</span><span class="op">)</span></span>
@@ -507,8 +509,8 @@ simulated data for convenience.</p>
 <span><span class="co">#&gt; Marker5       0       2    0    2    1</span></span>
 <span><span class="co">#&gt; Marker6       2       0    2    0    0</span></span>
 <span></span>
-<span><span class="co"># Recode the markers using the recode() function</span></span>
-<span><span class="va">phased</span> <span class="op">&lt;-</span> <span class="fu">geneticMapR</span><span class="fu">::</span><span class="fu"><a href="../reference/recode.html">recode</a></span><span class="op">(</span><span class="va">simulated_geno</span>, parent1 <span class="op">=</span> <span class="st">"Parent1"</span>, parent2 <span class="op">=</span> <span class="st">"Parent2"</span><span class="op">)</span></span>
+<span><span class="co"># Recode the markers using the recode_markers() function</span></span>
+<span><span class="va">phased</span> <span class="op">&lt;-</span> <span class="fu">geneticMapR</span><span class="fu">::</span><span class="fu"><a href="../reference/recode_markers.html">recode_markers</a></span><span class="op">(</span><span class="va">simulated_geno</span>, parent1 <span class="op">=</span> <span class="st">"Parent1"</span>, parent2 <span class="op">=</span> <span class="st">"Parent2"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Print the output</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">phased</span><span class="op">)</span></span>
@@ -603,7 +605,7 @@ heterozygous markers that were properly filtered.</p>
 <span></span>
 <span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="va">v</span>, <span class="va">w</span>,</span>
 <span>          nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Recode_files/figure-html/filtering%20comparison-1.png" width="768"></p>
+<p><img src="Recode_files/figure-html/filtering%20comparison-1.png" width="576"></p>
 </div>
 <div class="section level2">
 <h2 id="save-results">Save Results<a class="anchor" aria-label="anchor" href="#save-results"></a>
@@ -656,56 +658,55 @@ Let’s continue in the next article the genetic map construction.</p>
 <span><span class="co">#&gt;  [1] png_0.1-8                   ggpubr_0.6.0               </span></span>
 <span><span class="co">#&gt;  [3] ggplot2_3.5.2               tibble_3.2.1               </span></span>
 <span><span class="co">#&gt;  [5] tidyr_1.3.1                 dplyr_1.1.4                </span></span>
-<span><span class="co">#&gt;  [7] VariantAnnotation_1.54.0    Rsamtools_2.24.0           </span></span>
+<span><span class="co">#&gt;  [7] VariantAnnotation_1.54.1    Rsamtools_2.24.0           </span></span>
 <span><span class="co">#&gt;  [9] Biostrings_2.76.0           XVector_0.48.0             </span></span>
-<span><span class="co">#&gt; [11] SummarizedExperiment_1.38.0 Biobase_2.68.0             </span></span>
+<span><span class="co">#&gt; [11] SummarizedExperiment_1.38.1 Biobase_2.68.0             </span></span>
 <span><span class="co">#&gt; [13] GenomicRanges_1.60.0        GenomeInfoDb_1.44.0        </span></span>
 <span><span class="co">#&gt; [15] IRanges_2.42.0              S4Vectors_0.46.0           </span></span>
 <span><span class="co">#&gt; [17] MatrixGenerics_1.20.0       matrixStats_1.5.0          </span></span>
-<span><span class="co">#&gt; [19] BiocGenerics_0.54.0         generics_0.1.3             </span></span>
+<span><span class="co">#&gt; [19] BiocGenerics_0.54.0         generics_0.1.4             </span></span>
 <span><span class="co">#&gt; [21] MapRtools_0.36              geneticMapR_0.0.0.9000     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;   [1] jsonlite_2.0.0           magrittr_2.0.3           GenomicFeatures_1.60.0  </span></span>
-<span><span class="co">#&gt;   [4] farver_2.1.2             rmarkdown_2.29           BiocIO_1.18.0           </span></span>
-<span><span class="co">#&gt;   [7] fs_1.6.6                 ragg_1.4.0               vctrs_0.6.5             </span></span>
-<span><span class="co">#&gt;  [10] splines2_0.5.4           memoise_2.0.1            RCurl_1.98-1.17         </span></span>
-<span><span class="co">#&gt;  [13] rstatix_0.7.2            htmltools_0.5.8.1        S4Arrays_1.8.0          </span></span>
-<span><span class="co">#&gt;  [16] usethis_3.1.0            curl_6.2.2               distributional_0.5.0    </span></span>
-<span><span class="co">#&gt;  [19] broom_1.0.8              SparseArray_1.8.0        Formula_1.2-5           </span></span>
-<span><span class="co">#&gt;  [22] sass_0.4.10              bslib_0.9.0              htmlwidgets_1.6.4       </span></span>
-<span><span class="co">#&gt;  [25] desc_1.4.3               cachem_1.1.0             GenomicAlignments_1.44.0</span></span>
-<span><span class="co">#&gt;  [28] mime_0.13                lifecycle_1.0.4          iterators_1.0.14        </span></span>
-<span><span class="co">#&gt;  [31] pkgconfig_2.0.3          Matrix_1.7-3             R6_2.6.1                </span></span>
-<span><span class="co">#&gt;  [34] fastmap_1.2.0            GenomeInfoDbData_1.2.14  shiny_1.10.0            </span></span>
-<span><span class="co">#&gt;  [37] digest_0.6.37            colorspace_2.1-1         AnnotationDbi_1.70.0    </span></span>
-<span><span class="co">#&gt;  [40] pkgload_1.4.0            textshaping_1.0.0        RSQLite_2.3.9           </span></span>
+<span><span class="co">#&gt;   [1] RColorBrewer_1.1-3       jsonlite_2.0.0           magrittr_2.0.3          </span></span>
+<span><span class="co">#&gt;   [4] GenomicFeatures_1.60.0   farver_2.1.2             rmarkdown_2.29          </span></span>
+<span><span class="co">#&gt;   [7] BiocIO_1.18.0            fs_1.6.6                 ragg_1.4.0              </span></span>
+<span><span class="co">#&gt;  [10] vctrs_0.6.5              splines2_0.5.4           memoise_2.0.1           </span></span>
+<span><span class="co">#&gt;  [13] RCurl_1.98-1.17          rstatix_0.7.2            htmltools_0.5.8.1       </span></span>
+<span><span class="co">#&gt;  [16] S4Arrays_1.8.0           usethis_3.1.0            curl_6.2.2              </span></span>
+<span><span class="co">#&gt;  [19] distributional_0.5.0     broom_1.0.8              SparseArray_1.8.0       </span></span>
+<span><span class="co">#&gt;  [22] Formula_1.2-5            sass_0.4.10              bslib_0.9.0             </span></span>
+<span><span class="co">#&gt;  [25] htmlwidgets_1.6.4        desc_1.4.3               cachem_1.1.0            </span></span>
+<span><span class="co">#&gt;  [28] GenomicAlignments_1.44.0 mime_0.13                lifecycle_1.0.4         </span></span>
+<span><span class="co">#&gt;  [31] iterators_1.0.14         pkgconfig_2.0.3          Matrix_1.7-3            </span></span>
+<span><span class="co">#&gt;  [34] R6_2.6.1                 fastmap_1.2.0            GenomeInfoDbData_1.2.14 </span></span>
+<span><span class="co">#&gt;  [37] shiny_1.10.0             digest_0.6.37            AnnotationDbi_1.70.0    </span></span>
+<span><span class="co">#&gt;  [40] pkgload_1.4.0            textshaping_1.0.1        RSQLite_2.3.11          </span></span>
 <span><span class="co">#&gt;  [43] seriation_1.5.7          labeling_0.4.3           httr_1.4.7              </span></span>
 <span><span class="co">#&gt;  [46] abind_1.4-8              mgcv_1.9-1               compiler_4.5.0          </span></span>
 <span><span class="co">#&gt;  [49] remotes_2.5.0            withr_3.0.2              bit64_4.6.0-1           </span></span>
-<span><span class="co">#&gt;  [52] HMM_1.0.1                backports_1.5.0          BiocParallel_1.42.0     </span></span>
+<span><span class="co">#&gt;  [52] HMM_1.0.2                backports_1.5.0          BiocParallel_1.42.0     </span></span>
 <span><span class="co">#&gt;  [55] carData_3.0-5            DBI_1.2.3                pkgbuild_1.4.7          </span></span>
-<span><span class="co">#&gt;  [58] ggsignif_0.6.4           DelayedArray_0.34.0      sessioninfo_1.2.3       </span></span>
+<span><span class="co">#&gt;  [58] ggsignif_0.6.4           DelayedArray_0.34.1      sessioninfo_1.2.3       </span></span>
 <span><span class="co">#&gt;  [61] rjson_0.2.23             CVXR_1.0-15              tools_4.5.0             </span></span>
 <span><span class="co">#&gt;  [64] httpuv_1.6.16            glue_1.8.0               restfulr_0.0.15         </span></span>
 <span><span class="co">#&gt;  [67] nlme_3.1-168             promises_1.3.2           BSgenome_1.76.0         </span></span>
-<span><span class="co">#&gt;  [70] gtable_0.3.6             qtl_1.70                 ca_0.71.1               </span></span>
-<span><span class="co">#&gt;  [73] car_3.1-3                foreach_1.5.2            pillar_1.10.2           </span></span>
-<span><span class="co">#&gt;  [76] ggdist_3.3.2             stringr_1.5.1            later_1.4.2             </span></span>
-<span><span class="co">#&gt;  [79] splines_4.5.0            lattice_0.22-6           rtracklayer_1.68.0      </span></span>
-<span><span class="co">#&gt;  [82] gmp_0.7-5                bit_4.6.0                tidyselect_1.2.1        </span></span>
-<span><span class="co">#&gt;  [85] registry_0.5-1           miniUI_0.1.2             knitr_1.50              </span></span>
-<span><span class="co">#&gt;  [88] xfun_0.52                devtools_2.4.5           scam_1.2-18             </span></span>
-<span><span class="co">#&gt;  [91] stringi_1.8.7            UCSC.utils_1.4.0         yaml_2.3.10             </span></span>
-<span><span class="co">#&gt;  [94] evaluate_1.0.3           codetools_0.2-20         BiocManager_1.30.25     </span></span>
-<span><span class="co">#&gt;  [97] cli_3.6.4                xtable_1.8-4             systemfonts_1.2.2       </span></span>
-<span><span class="co">#&gt; [100] munsell_0.5.1            jquerylib_0.1.4          Rcpp_1.0.14             </span></span>
-<span><span class="co">#&gt; [103] XML_3.99-0.18            parallel_4.5.0           ellipsis_0.3.2          </span></span>
-<span><span class="co">#&gt; [106] pkgdown_2.1.1            blob_1.2.4               profvis_0.4.0           </span></span>
-<span><span class="co">#&gt; [109] urlchecker_1.0.1         bitops_1.0-9             Rmpfr_1.0-0             </span></span>
-<span><span class="co">#&gt; [112] scales_1.3.0             purrr_1.0.4              crayon_1.5.3            </span></span>
-<span><span class="co">#&gt; [115] rlang_1.1.6              cowplot_1.1.3            KEGGREST_1.48.0         </span></span>
-<span><span class="co">#&gt; [118] TSP_1.2-4</span></span></code></pre></div>
+<span><span class="co">#&gt;  [70] gtable_0.3.6             ca_0.71.1                car_3.1-3               </span></span>
+<span><span class="co">#&gt;  [73] foreach_1.5.2            pillar_1.10.2            ggdist_3.3.3            </span></span>
+<span><span class="co">#&gt;  [76] stringr_1.5.1            later_1.4.2              splines_4.5.0           </span></span>
+<span><span class="co">#&gt;  [79] lattice_0.22-6           rtracklayer_1.68.0       gmp_0.7-5               </span></span>
+<span><span class="co">#&gt;  [82] bit_4.6.0                tidyselect_1.2.1         registry_0.5-1          </span></span>
+<span><span class="co">#&gt;  [85] miniUI_0.1.2             knitr_1.50               xfun_0.52               </span></span>
+<span><span class="co">#&gt;  [88] devtools_2.4.5           scam_1.2-18              stringi_1.8.7           </span></span>
+<span><span class="co">#&gt;  [91] UCSC.utils_1.4.0         yaml_2.3.10              evaluate_1.0.3          </span></span>
+<span><span class="co">#&gt;  [94] codetools_0.2-20         BiocManager_1.30.25      cli_3.6.5               </span></span>
+<span><span class="co">#&gt;  [97] xtable_1.8-4             systemfonts_1.2.3        jquerylib_0.1.4         </span></span>
+<span><span class="co">#&gt; [100] Rcpp_1.0.14              XML_3.99-0.18            parallel_4.5.0          </span></span>
+<span><span class="co">#&gt; [103] ellipsis_0.3.2           blob_1.2.4               pkgdown_2.1.2           </span></span>
+<span><span class="co">#&gt; [106] profvis_0.4.0            urlchecker_1.0.1         bitops_1.0-9            </span></span>
+<span><span class="co">#&gt; [109] Rmpfr_1.1-0              scales_1.4.0             purrr_1.0.4             </span></span>
+<span><span class="co">#&gt; [112] crayon_1.5.3             rlang_1.1.6              cowplot_1.1.3           </span></span>
+<span><span class="co">#&gt; [115] KEGGREST_1.48.0          TSP_1.2-4</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -718,7 +719,7 @@ Let’s continue in the next article the genetic map construction.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
     </footer>

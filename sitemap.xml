@@ -2,6 +2,8 @@
 <url><loc>https://vegaalfaro.github.io/geneticMapR/404.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/LICENSE-text.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/LICENSE.html</loc></url>
+<url><loc>https://vegaalfaro.github.io/geneticMapR/articles/LD_binning.html</loc></url>
+<url><loc>https://vegaalfaro.github.io/geneticMapR/articles/Linkage_Groups.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/articles/Recode.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/articles/geneticMapR.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/articles/index.html</loc></url>
@@ -32,12 +34,13 @@
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/order_and_plot.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/plotMap_gg.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/plot_coverage.html</loc></url>
+<url><loc>https://vegaalfaro.github.io/geneticMapR/reference/plot_coverage_annotate.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/plot_genotype_histogram.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/plot_marey.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/plot_qtl_trace.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/plot_reconstructed_haplo.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/qtl_example.html</loc></url>
-<url><loc>https://vegaalfaro.github.io/geneticMapR/reference/recode.html</loc></url>
+<url><loc>https://vegaalfaro.github.io/geneticMapR/reference/recode_markers.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/rename_geno_matrix.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/simple_effect_plot.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/simulated_geno.html</loc></url>
