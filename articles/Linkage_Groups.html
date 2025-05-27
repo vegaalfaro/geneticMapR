@@ -39,7 +39,7 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/LD_binning.html">Binning SNP Markers by Linkage Disequilibrium</a></li>
+<li><a class="dropdown-item" href="../articles/LD_binning.html">Binning SNP Markers</a></li>
     <li><a class="dropdown-item" href="../articles/Linkage_Groups.html">Linkage Groups and Marker Order</a></li>
     <li><a class="dropdown-item" href="../articles/Recode.html">Recode Markers</a></li>
   </ul>
@@ -105,7 +105,6 @@ biparental F<sub>2</sub> table beet population.</p>
 <span></span>
 <span><span class="co"># Ensure devtools is available for GitHub installs</span></span>
 <span><span class="fu">load_or_install_cran</span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span></span>
 <span><span class="co"># Install/load GitHub packages</span></span>
 <span><span class="fu">load_or_install_github</span><span class="op">(</span><span class="st">"MapRtools"</span>, <span class="st">"jendelman/MapRtools"</span><span class="op">)</span></span>
 <span><span class="fu">load_or_install_github</span><span class="op">(</span><span class="st">"geneticMapR"</span>, <span class="st">"vegaalfaro/geneticMapR"</span><span class="op">)</span></span>
@@ -129,7 +128,8 @@ Rows are markers and rows are named (e.g.,CHR7_192222). Columns are
 individuals and columns are named (e.g., 2002-F2-Beta-B10).</p></li>
 <li><p><code>geno.hom.bin</code> is genotype matrix of 998 marker bins
 by 100 individuals. Includes homozygous markers only. Rows are markers
-with rownames and individuals are columns with column names.</p></li>
+with rownames (e.g.,CHR7_192222) and individuals are columns with column
+names (e.g., 2002-F2-Beta-B10)..</p></li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Binned Genotype</span></span>
@@ -144,14 +144,17 @@ with rownames and individuals are columns with column names.</p></li>
 <div class="section level3">
 <h3 id="lod-matrices">LOD matrices<a class="anchor" aria-label="anchor" href="#lod-matrices"></a>
 </h3>
-<p>LOD matrices will be loaded because they take a while to run. The
-uploaded LOD matrices are:</p>
+<p>Precomputed LOD matrices will be loaded because they take a while to
+run. The uploaded LOD matrices are:</p>
 <ul>
 <li><p><code>LODmat.het</code> Large matrix containing LOD scores for
-each marker pair. Heterozygous markers and Homozygous markers.</p></li>
+each marker pair. Includes Heterozygous markers and Homozygous
+markers.</p></li>
 <li><p><code>LODmat.hom</code> Large matrix containing LOD scores for
-each marker pair. Homozygous markers.</p></li>
+each marker pair. Includes Homozygous markers only.</p></li>
 </ul>
+<p>(<strong>For info on marker types</strong>See marker type analysis
+from the article “Recode Markers” under the Articles tab)</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># LOD matrices</span></span>
 <span><span class="va">url2</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/vegaalfaro/geneticMapRFiles/main/R_data/LODmats_1629-2025-03-12.RData"</span></span>
@@ -167,7 +170,9 @@ each marker pair. Homozygous markers.</p></li>
 </h4>
 <p>If you need to run your own LOD matrices, below I show an example on
 how to do so using <code>MapRtools</code> and the MLEL function. Make
-sure to check how many cores you have available in your machine.</p>
+sure to check how many cores you have available in your machine. The
+example is for an F<sub>2</sub> population from two (inbred) parents.
+However, MLEL supports several population types.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Geno matrix with only homozygous markers</span></span>
 <span><span class="va">LODmat.hom</span> <span class="op">&lt;-</span> <span class="fu">MLEL</span><span class="op">(</span>geno <span class="op">=</span> <span class="va">geno.hom.bin</span>, pop.type <span class="op">=</span> <span class="st">"F2"</span>, LOD<span class="op">=</span><span class="cn">TRUE</span>, n.core <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
@@ -182,11 +187,11 @@ sure to check how many cores you have available in your machine.</p>
 </h2>
 <p>The objective in determining linkage groups is to identify the
 smallest LOD (logarithm of odds) threshold at which all chromosomes are
-correctly separated. Linkage groups are clusters of genetic markers that
-are inherited together and correspond to physical chromosomes. The goal
-is to identify these groups by assessing how often markers are
-co-inherited across progeny of, in this case, F2 mapping populations.
-So:</p>
+correctly separated into their own linkage groups. Linkage groups are
+clusters of genetic markers that are inherited together and correspond
+to physical chromosomes. The goal is to identify these groups by
+assessing how often markers are co-inherited across progeny of, in this
+case, an F<sub>2</sub> mapping population. So:</p>
 <p>Markers that are:</p>
 <p>Close together on the same chromosome tend to be inherited together
 (low recombination → high linkage).</p>
@@ -215,6 +220,8 @@ number of chromosomes.</p>
 <li><p>Adjust the threshold to get the correct number of groups (for
 example, by counting connected components in a graph).</p></li>
 </ul>
+<p>We will get to this shortly, but before let me show you some theory
+behind it.</p>
 </div>
 <div class="section level3">
 <h3 id="some-math-behind-lod-scores">Some math behind LOD scores<a class="anchor" aria-label="anchor" href="#some-math-behind-lod-scores"></a>
@@ -264,7 +271,10 @@ scenario.</p>
 <h2 id="linkage-group-separation-1">3. Linkage Group Separation<a class="anchor" aria-label="anchor" href="#linkage-group-separation-1"></a>
 </h2>
 <p>We’re going to demonstrate the next steps with the set of homozygous
-markers for convenience.</p>
+markers for convenience. In reality you may have a combination of
+homozygous and heterozygous markers. It all depends on your marker set
+and which steps you took to filter them. Other articles of this package
+show ways to filter markers. Make sure to check them out.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_map.html">extract_map</a></span><span class="op">(</span><span class="va">geno.hom.bin</span>, markers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Extracts physical map</span></span>
 <span><span class="va">LGhom</span> <span class="op">&lt;-</span> <span class="fu">LG</span><span class="op">(</span><span class="va">LODmat.hom</span>, thresh <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="co"># Returns assiged linkage group</span></span>
@@ -402,15 +412,164 @@ markers for convenience.</p>
 is provided as a single numeric value, the function returns a data frame
 with the assigned linkage group for each marker.</p>
 <p>Small groups with only a few markers are likely artifacts of sparse
-coverage or noise. To focus on biologically meaningful results, we
+coverage or noise. For example chromosome 1 has most markers on linkage
+group 6, however, linkage group 6 also encompasses a few markers from
+chromosomes 2, 7 and 9. To focus on biologically meaningful results, we
 subset the largest nine linkage groups, which correspond to the expected
 number of chromosomes in beet.</p>
-<div class="section level3">
-<h3 id="linkage-trimming">Linkage Trimming<a class="anchor" aria-label="anchor" href="#linkage-trimming"></a>
-</h3>
-<p><strong>Linkage trimming</strong> refers to remove markers from
-linkage groups that do not correspond there.</p>
 </div>
+<div class="section level2">
+<h2 id="linkage-trimming-with-trim_lg">4. Linkage Trimming with <code>trim_LG()</code><a class="anchor" aria-label="anchor" href="#linkage-trimming-with-trim_lg"></a>
+</h2>
+<p>When working with high-density genotype datasets, it’s important to
+identify and remove markers that do not belong to the same linkage group
+(LG) as the majority. Take for example our example of LG 6 which should
+contain only markers belonging to chromosome 1. This process, called
+linkage trimming, helps improve the accuracy of genetic map
+construction.</p>
+<p>We developed the function <code><a href="../reference/trim_LG.html">trim_LG()</a></code> to streamline this
+process. It builds on <code>MapRtools</code> and allows you to:</p>
+<ul>
+<li><p>Filter markers based on LOD score thresholds for LG
+assignment</p></li>
+<li><p>Visualize haplotype frequencies before and after
+trimming</p></li>
+<li><p>Interactively define LOD parameters, or automate them by
+providing the values directly</p></li>
+<li><p>Remove outlier markers based on haplotype frequencies</p></li>
+</ul>
+<p>If you’re working with several chromosomes, or populations, and
+already have a reference genome that provides marker order, this
+function helps you <em>trim away spurious markers</em> without the need
+to re-order them. However, if no reference is available, we recommend
+ordering the markers first (e.g., with order_markers() from
+MapRtools).</p>
+<p>The code chunk below will:</p>
+<ul>
+<li><p>Estimate LOD scores for markers in CHR1</p></li>
+<li><p>Plot the initial haplotype frequency</p></li>
+<li><p>Generate a plot across a LOD range (5 to 35, in steps of
+1)</p></li>
+<li><p>Apply a final threshold of 18 to assign markers to the primary
+LG</p></li>
+<li><p>Optionally remove outlier markers</p></li>
+<li><p>Return a trimmed genotype matrix, filtered map, LOD parameters
+used, and both plots</p></li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># CHR1</span></span>
+<span><span class="va">result_chr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trim_LG.html">trim_LG</a></span><span class="op">(</span>chromosome <span class="op">=</span> <span class="st">"CHR1"</span>, </span>
+<span>                                  map <span class="op">=</span> <span class="va">map</span>, </span>
+<span>                                  pop_type <span class="op">=</span> <span class="st">"F2"</span>,</span>
+<span>                                  geno <span class="op">=</span> <span class="va">geno.hom.bin</span>, <span class="co"># geno from the ordering step</span></span>
+<span>                       interactive <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                       drop_outliers <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                       n_cores <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>                       initial_LOD <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>                       end_LOD <span class="op">=</span> <span class="fl">35</span>,</span>
+<span>                       step_LOD <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                       selected_thresh <span class="op">=</span> <span class="fl">18</span></span>
+<span>                       </span>
+<span>                                  <span class="op">)</span></span>
+<span><span class="co">#&gt; Processing chromosome: CHR1</span></span>
+<span><span class="co">#&gt; Plotting initial haplotype frequency...</span></span></code></pre></div>
+<p><img src="Linkage_Groups_files/figure-html/unnamed-chunk-8-1.png" width="624"></p>
+<pre><code><span><span class="co">#&gt; Estimating LOD matrix using 3 cores...</span></span>
+<span><span class="co">#&gt; Generating linkage group plot...</span></span></code></pre>
+<p><img src="Linkage_Groups_files/figure-html/unnamed-chunk-8-2.png" width="624"></p>
+<pre><code><span><span class="co">#&gt; Filtering markers at LOD threshold = 18</span></span>
+<span><span class="co">#&gt; Removing outliers...</span></span></code></pre>
+<p>This function is also interactive! if you you set the argument
+<code>interactive = TRUE</code> then the function requests the input of
+the user and you can type in the console the initial LOD, end LOD and
+the step. It will show you a plot and then you can select a threshold
+for linkage grouping.</p>
+<p>The goal is to select a threshold that represents most of the markers
+as one linkage group and pushes away spurious markers that do not
+belong.</p>
+</div>
+<div class="section level2">
+<h2 id="ordering-markers-with-order_and_plot">5. Ordering Markers with <code>order_and_plot()</code><a class="anchor" aria-label="anchor" href="#ordering-markers-with-order_and_plot"></a>
+</h2>
+<p>After trimming spurious markers from each chromosome, it’s important
+to optimize their order based on recombination frequencies. The function
+<code><a href="../reference/order_and_plot.html">order_and_plot()</a></code> helps streamline this step by combining
+marker ordering and haplotype visualization into a single workflow.</p>
+<p>This function:</p>
+<ul>
+<li><p>Estimates the recombination frequency (RF) matrix with
+<code><a href="https://rdrr.io/pkg/MapRtools/man/MLEL.html" class="external-link">MapRtools::MLEL()</a></code></p></li>
+<li><p>Performs multiple iterations of
+<code><a href="https://rdrr.io/pkg/MapRtools/man/order_markers.html" class="external-link">MapRtools::order_markers()</a></code></p></li>
+<li><p>Selects the best marker order based on the smallest Sum of
+Adjusted Recombination Fractions (SARF)</p></li>
+<li><p>Generates a faceted plot of all ordering attempts for visual
+inspection</p></li>
+<li><p>Displays a haplotype plot for a subset of individuals in the
+ordered matrix</p></li>
+</ul>
+<p>It is designed to operate on trimmed genotype matrices, typically one
+chromosome at a time.</p>
+<div class="section level3">
+<h3 id="example-ordering-markers-in-a-single-chromosome">Example: Ordering markers in a single chromosome<a class="anchor" aria-label="anchor" href="#example-ordering-markers-in-a-single-chromosome"></a>
+</h3>
+<p>This code chunk will:</p>
+<ul>
+<li><p>Attempt 6 marker orderings for CHR1</p></li>
+<li><p>Plot the original vs. optimized order for each iteration</p></li>
+<li><p>Select the best order (lowest SARF)</p></li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Chromosome 1</span></span>
+<span><span class="va">chr1_order</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/order_and_plot.html">order_and_plot</a></span><span class="op">(</span><span class="va">result_chr1</span><span class="op">$</span><span class="va">trimmed_genotype</span>, </span>
+<span>                             n.iter <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>                             CHR <span class="op">=</span> <span class="st">"CHR1"</span></span>
+<span>                             <span class="op">)</span></span></code></pre></div>
+<p><img src="Linkage_Groups_files/figure-html/unnamed-chunk-9-1.png" width="624"></p>
+<p>We can observe some correspondence between the original marker order
+and the optimized order. Occasionally, the order may appear reversed.
+These plots help identify potential inversions or other chromosomal
+features. In this section, the focus is on demonstrating the process of
+marker ordering. The biological interpretation depends on the crop’s
+genome structure and the quality of the reference genome. Use your
+intuition and understanding of the underlying biology to interpret the
+patterns in the plots.</p>
+</div>
+<div class="section level3">
+<h3 id="efficient-multiple-chromosome-ordering">Efficient multiple chromosome ordering<a class="anchor" aria-label="anchor" href="#efficient-multiple-chromosome-ordering"></a>
+</h3>
+<p>If you’ve trimmed and stored genotype matrices for each chromosome in
+a named list, you can apply order_and_plot() in a loop:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  CHR1 <span class="op">=</span> <span class="va">result_chr1</span><span class="op">$</span><span class="va">trimmed_genotype</span>,</span>
+<span>  CHR2 <span class="op">=</span> <span class="va">result_chr2</span><span class="op">$</span><span class="va">trimmed_genotype</span>,</span>
+<span>  <span class="co"># ...</span></span>
+<span>  CHR9 <span class="op">=</span> <span class="va">result_chr9</span><span class="op">$</span><span class="va">trimmed_genotype</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ordered_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">result_list</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">chr</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/order_and_plot.html">order_and_plot</a></span><span class="op">(</span><span class="va">result_list</span><span class="op">[[</span><span class="va">chr</span><span class="op">]</span><span class="op">]</span>, n.iter <span class="op">=</span> <span class="fl">6</span>, CHR <span class="op">=</span> <span class="va">chr</span>, prop <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ordered_results</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">result_list</span><span class="op">)</span></span></code></pre></div>
+<p>This approach allows efficient and reproducible marker ordering
+across your entire genome.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="save-progress">Save progress<a class="anchor" aria-label="anchor" href="#save-progress"></a>
+</h2>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Save results as RDA</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">ordered_results</span>, file <span class="op">=</span> <span class="st">"processed_data/R_data/ordered_markers_pop2_list-2025-03-12.RData"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
+</h2>
+<p>This vignette outlines a complete workflow for LOD estimation,
+linkage group assignment, and marker ordering for an F2 population using
+SNPs.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -423,7 +582,7 @@ linkage groups that do not correspond there.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>
