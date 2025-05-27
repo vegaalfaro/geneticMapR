@@ -43,7 +43,6 @@ load_or_install_github <- function(pkg, repo) {
 
 # Ensure devtools is available for GitHub installs
 load_or_install_cran("devtools")
-
 # Install/load GitHub packages
 load_or_install_github("MapRtools", "jendelman/MapRtools")
 load_or_install_github("geneticMapR", "vegaalfaro/geneticMapR")
@@ -64,7 +63,7 @@ To avoid long runtimes, precomputed genotype data and LOD matrices are loaded fr
 - `geno.het.bin`  is a genotype matrix of 2480 marker bins by 100 individuals. Includes heterozygous and homozygous markers. Rows are markers and rows are named (e.g.,CHR7_192222).
 Columns are individuals and columns are named (e.g., 2002-F2-Beta-B10).
 
-- `geno.hom.bin` is genotype matrix of 998 marker bins by 100 individuals. Includes homozygous markers only. Rows are markers with rownames and individuals are columns with column names.
+- `geno.hom.bin` is genotype matrix of 998 marker bins by 100 individuals. Includes homozygous markers only. Rows are markers with rownames  (e.g.,CHR7_192222) and individuals are columns with column names  (e.g., 2002-F2-Beta-B10)..
 
 
 ```{r, message=FALSE, warning=FALSE}
@@ -82,11 +81,13 @@ load("local_copy.binned_geno_1629.RData")
 
 ### LOD matrices
 
-LOD matrices will be loaded because they take a while to run. The uploaded LOD matrices are:
+Precomputed LOD matrices will be loaded because they take a while to run. The uploaded LOD matrices are:
 
-- `LODmat.het` Large matrix containing LOD scores for each marker pair. Heterozygous markers and Homozygous markers.
+- `LODmat.het` Large matrix containing LOD scores for each marker pair. Includes Heterozygous markers and Homozygous markers.
 
-- `LODmat.hom` Large matrix containing LOD scores for each marker pair. Homozygous markers.
+- `LODmat.hom` Large matrix containing LOD scores for each marker pair. Includes Homozygous markers only.
+
+(**For info on marker types**See marker type analysis from the article "Recode Markers" under the Articles tab)
 
 ```{r}
 # LOD matrices
@@ -103,7 +104,7 @@ load("LODmats_1629-2025-03-12.RData")
 #### Your own LOD matrix
 
 If you need to run your own LOD matrices, below I show an example on how to do so using `MapRtools`
-and the MLEL function. Make sure to check how many cores you have available in your machine.
+and the MLEL function. Make sure to check how many cores you have available in your machine. The example is for an F~2~ population from two (inbred) parents. However, MLEL supports several population types.
 ```{r, eval=FALSE}
 # Geno matrix with only homozygous markers
 LODmat.hom <- MLEL(geno = geno.hom.bin, pop.type = "F2", LOD=TRUE, n.core = 7)
@@ -115,7 +116,7 @@ LODmat.het <- MLEL(geno = geno.het.bin, pop.type = "F2", LOD=TRUE, n.core = 7)
 
 ## 2. Linkage Groups
 
-The objective in determining linkage groups is to identify the smallest LOD (logarithm of odds) threshold at which all chromosomes are correctly separated. Linkage groups are clusters of genetic markers that are inherited together and correspond to physical chromosomes. The goal is to identify these groups by assessing how often markers are co-inherited across progeny of, in this case, F2 mapping populations. So:
+The objective in determining linkage groups is to identify the smallest LOD (logarithm of odds) threshold at which all chromosomes are correctly separated into their own linkage groups. Linkage groups are clusters of genetic markers that are inherited together and correspond to physical chromosomes. The goal is to identify these groups by assessing how often markers are co-inherited across progeny of, in this case, an F~2~ mapping population. So:
 
 Markers that are:
 
@@ -142,6 +143,8 @@ This is often done empirically:
 - Build a graph or a figure to visualize linked markers.
 
 - Adjust the threshold to get the correct number of groups (for example, by counting connected components in a graph).
+
+We will get to this shortly, but before let me show you some theory behind it.
 
 ### Some math behind LOD scores
 
@@ -175,7 +178,7 @@ When **heterozygous markers** are included alongside homozygous markers, the pat
 
 ## 3. Linkage Group Separation
 
-We're going to demonstrate the next steps with the set of homozygous markers for convenience. 
+We're going to demonstrate the next steps with the set of homozygous markers for convenience. In reality you may have a combination of homozygous and heterozygous markers. It all depends on your marker set and which steps you took to filter them. Other articles of this package show ways to filter markers. Make sure to check them out. 
 
 ```{r}
 map <- extract_map(geno.hom.bin, markers = TRUE) # Extracts physical map
@@ -191,9 +194,129 @@ knitr::kable(tab) # Print table
 
 When the thresh argument of the `MapRtools::LG()` function is provided as a single numeric value, the function returns a data frame with the assigned linkage group for each marker. 
 
-Small groups with only a few markers are likely artifacts of sparse coverage or noise. To focus on biologically meaningful results, we subset the largest nine linkage groups, which correspond to the expected number of chromosomes in beet.
+Small groups with only a few markers are likely artifacts of sparse coverage or noise. For example chromosome 1 has most markers on linkage group 6, however, linkage group 6 also encompasses a few markers from chromosomes 2, 7 and 9. To focus on biologically meaningful results, we subset the largest nine linkage groups, which correspond to the expected number of chromosomes in beet.
 
-### Linkage Trimming
+## 4. Linkage Trimming with `trim_LG()`
 
-**Linkage trimming** refers to remove markers from linkage groups that do not correspond there. 
+When working with high-density genotype datasets, it's important to identify and remove markers that do not belong to the same linkage group (LG) as the majority. Take for example our example of LG 6 which should contain only markers belonging to chromosome 1. This process, called linkage trimming, helps improve the accuracy of genetic map construction.
 
+We developed the function `trim_LG()` to streamline this process. It builds on `MapRtools` and allows you to:
+
+* Filter markers based on LOD score thresholds for LG assignment
+
+* Visualize haplotype frequencies before and after trimming
+
+* Interactively define LOD parameters, or automate them by providing the values directly
+
+* Remove outlier markers based on haplotype frequencies
+
+If you're working with several chromosomes, or populations, and already have a reference genome that provides marker order, this function helps you *trim away spurious markers* without the need to re-order them. However, if no reference is available, we recommend ordering the markers first (e.g., with order_markers() from MapRtools).
+
+The code chunk below will:
+
+* Estimate LOD scores for markers in CHR1
+
+* Plot the initial haplotype frequency
+
+* Generate a plot across a LOD range (5 to 35, in steps of 1)
+
+* Apply a final threshold of 18 to assign markers to the primary LG
+
+* Optionally remove outlier markers
+
+* Return a trimmed genotype matrix, filtered map, LOD parameters used, and both plots
+
+```{r, fig.height=4.3, fig.width=6.5,}
+# CHR1
+result_chr1 <- trim_LG(chromosome = "CHR1", 
+                                  map = map, 
+                                  pop_type = "F2",
+                                  geno = geno.hom.bin, # geno from the ordering step
+                       interactive = FALSE,
+                       drop_outliers = TRUE,
+                       n_cores = 6,
+                       initial_LOD = 5,
+                       end_LOD = 35,
+                       step_LOD = 1,
+                       selected_thresh = 18
+                       
+                                  )
+
+```
+
+This function is also interactive! if you you set the argument `interactive = TRUE` then the function requests the input of the user and you can type in the console the initial LOD, end LOD and the step. It will show you a plot and then you can select a threshold for linkage grouping.
+
+The goal is to select a threshold that represents most of the markers as one linkage group and pushes away spurious markers that do not belong.  
+
+
+## 5. Ordering Markers with `order_and_plot()`
+
+After trimming spurious markers from each chromosome, it's important to optimize their order based on recombination frequencies. The function `order_and_plot()` helps streamline this step by combining marker ordering and haplotype visualization into a single workflow.
+
+This function:
+
+* Estimates the recombination frequency (RF) matrix with `MapRtools::MLEL()`
+
+* Performs multiple iterations of `MapRtools::order_markers()`
+
+* Selects the best marker order based on the smallest Sum of Adjusted Recombination Fractions (SARF)
+
+* Generates a faceted plot of all ordering attempts for visual inspection
+
+* Displays a haplotype plot for a subset of individuals in the ordered matrix
+
+It is designed to operate on trimmed genotype matrices, typically one chromosome at a time.
+
+### Example: Ordering markers in a single chromosome
+
+This code chunk will:
+
+* Attempt 6 marker orderings for CHR1
+
+* Plot the original vs. optimized order for each iteration
+
+* Select the best order (lowest SARF)
+
+```{r, fig.height=6.3, fig.width=6.5,}
+# Chromosome 1
+chr1_order <- order_and_plot(result_chr1$trimmed_genotype, 
+                             n.iter = 6,
+                             CHR = "CHR1"
+                             )
+```
+
+We can observe some correspondence between the original marker order and the optimized order. Occasionally, the order may appear reversed. These plots help identify potential inversions or other chromosomal features. In this section, the focus is on demonstrating the process of marker ordering. The biological interpretation depends on the crop's genome structure and the quality of the reference genome. Use your intuition and understanding of the underlying biology to interpret the patterns in the plots.
+
+### Efficient multiple chromosome ordering
+  
+If you've trimmed and stored genotype matrices for each chromosome in a named list, you can apply order_and_plot() in a loop:
+
+```{r, eval=FALSE}
+result_list <- list(
+  CHR1 = result_chr1$trimmed_genotype,
+  CHR2 = result_chr2$trimmed_genotype,
+  # ...
+  CHR9 = result_chr9$trimmed_genotype
+)
+
+ordered_results <- lapply(names(result_list), function(chr) {
+  order_and_plot(result_list[[chr]], n.iter = 6, CHR = chr, prop = 0.25)
+})
+
+names(ordered_results) <- names(result_list)
+
+```
+
+This approach allows efficient and reproducible marker ordering across your entire genome.
+
+## Save progress
+
+```{r,eval=FALSE}
+# Save results as RDA
+save(ordered_results, file = "processed_data/R_data/ordered_markers_pop2_list-2025-03-12.RData")
+
+```
+
+## Conclusion
+
+This vignette outlines a complete workflow for LOD estimation, linkage group assignment, and marker ordering for an F2 population using SNPs. 
