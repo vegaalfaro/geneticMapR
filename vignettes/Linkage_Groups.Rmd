@@ -287,6 +287,8 @@ chr1_order <- order_and_plot(result_chr1$trimmed_genotype,
 
 We can observe some correspondence between the original marker order and the optimized order. Occasionally, the order may appear reversed. These plots help identify potential inversions or other chromosomal features. In this section, the focus is on demonstrating the process of marker ordering. The biological interpretation depends on the crop's genome structure and the quality of the reference genome. Use your intuition and understanding of the underlying biology to interpret the patterns in the plots.
 
+`order_and_plot()` uses MapRtools `order_markers()` which is based on solving the traveling salesperson problem. 
+
 ### Efficient multiple chromosome ordering
   
 If you've trimmed and stored genotype matrices for each chromosome in a named list, you can apply order_and_plot() in a loop:

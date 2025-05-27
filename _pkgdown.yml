@@ -2,6 +2,28 @@ url: https://vegaalfaro.github.io/geneticMapR/
 template:
   bootstrap: 5
 
+  navbar:
+  title: geneticMapR
+  left:
+  - icon:
+    text: Home
+    href: index.html
+  - icon:
+    text: Reference
+    href: reference/index.html
+  - icon:
+    text: Articles
+    menu:
+      - text: Recode Markers
+        href: vignettes/Recode.html
+      - text: Modeling
+        href: articles/canopy-model.html
+      - text: Binning SNP Markers
+        href: vignettes/LD_binning.Rmd
+      - text: Linkage Groups and Marker Order
+        href: vignettes/Linkage_Groups.html
+
+
 reference:
   - title: Core Functions
     contents:
