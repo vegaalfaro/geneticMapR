@@ -44,7 +44,7 @@ reference:
       - order_and_plot
       - plotMap_gg
       - plot_qtl_trace
-      - plot_coverage
+      - plot_cover
       - plot_coverage_annotate
       - plot_genotype_histogram
       - plot_marey

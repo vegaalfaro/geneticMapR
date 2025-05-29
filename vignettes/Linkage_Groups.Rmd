@@ -39,7 +39,9 @@ load_or_install_cran("tidyr")
 load_or_install_cran("tidyverse")
 load_or_install_cran("parallel")
 ```
-## Packages or Libraries
+
+## Load Libraries
+
 ```{r, message=FALSE, warning=FALSE}
 library(geneticMapR)
 library(MapRtools)

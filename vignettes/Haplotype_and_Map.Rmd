@@ -14,6 +14,24 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Introduction
+
+This vignette outlines the process of haplotype reconstruction and genetic map estimation for an F~2~ population, using Hidden Markov Models (HMM) and recombination frequency (RF) data. The primary goal is to reconstruct haplotypes from genotype data, estimate genotyping error rates, and generate high-quality genetic maps based on recombination frequency matrices.
+
+By leveraging the `MapRtools` and `HMM` R packages, this analysis allows for the optimization of marker order and the visualization of haplotype and genetic maps. Additionally, the workflow includes the plotting of Marey plots to explore the relationship between physical and genetic distances.
+
+This approach is applied across multiple chromosomes, using both reference genome order and optimized marker order.
+
+## Libraries
+
+```{r, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(MapRtools)
+library(tidyr)
+library(tidyverse)
+library(HMM)
+
+```
 
 
 
