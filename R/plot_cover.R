@@ -1,6 +1,7 @@
 #' Plot Genome-wide Coverage
 #'
 #' @description
+#'
 #' Generates a genome-wide coverage plot, displaying the positions
 #' of markers across chromosomes. It is a customized version of `plot_cover`
 #' from **MapRtools** and allows additional aesthetic modifications.
