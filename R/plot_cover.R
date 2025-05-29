@@ -98,3 +98,7 @@ plot_cover <- function(map, limits = NULL, customize = TRUE) {
   return(p)
 }
 
+
+
+
+
