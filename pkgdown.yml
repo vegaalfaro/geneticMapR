@@ -3,10 +3,11 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   geneticMapR: geneticMapR.html
+  Haplotype_and_Map: Haplotype_and_Map.html
   LD_binning: LD_binning.html
   Linkage_Groups: Linkage_Groups.html
   Recode: Recode.html
-last_built: 2025-05-27T20:41Z
+last_built: 2025-05-29T19:47Z
 urls:
   reference: https://vegaalfaro.github.io/geneticMapR/reference
   article: https://vegaalfaro.github.io/geneticMapR/articles

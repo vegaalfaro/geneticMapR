@@ -2,6 +2,7 @@
 <url><loc>https://vegaalfaro.github.io/geneticMapR/404.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/LICENSE-text.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/LICENSE.html</loc></url>
+<url><loc>https://vegaalfaro.github.io/geneticMapR/articles/Haplotype_and_Map.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/articles/LD_binning.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/articles/Linkage_Groups.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/articles/Recode.html</loc></url>
@@ -30,10 +31,12 @@
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/get_LOD_int.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/haplotype_reconstruction.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/index.html</loc></url>
+<url><loc>https://vegaalfaro.github.io/geneticMapR/reference/load_or_install_cran.html</loc></url>
+<url><loc>https://vegaalfaro.github.io/geneticMapR/reference/load_or_install_github.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/melt_freq.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/order_and_plot.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/plotMap_gg.html</loc></url>
-<url><loc>https://vegaalfaro.github.io/geneticMapR/reference/plot_coverage.html</loc></url>
+<url><loc>https://vegaalfaro.github.io/geneticMapR/reference/plot_cover.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/plot_coverage_annotate.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/plot_genotype_histogram.html</loc></url>
 <url><loc>https://vegaalfaro.github.io/geneticMapR/reference/plot_marey.html</loc></url>

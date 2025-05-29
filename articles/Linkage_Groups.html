@@ -39,7 +39,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/LD_binning.html">Binning SNP Markers</a></li>
+<li><a class="dropdown-item" href="../articles/Haplotype_and_Map.html">Genetic Map</a></li>
+    <li><a class="dropdown-item" href="../articles/LD_binning.html">Binning SNP Markers</a></li>
     <li><a class="dropdown-item" href="../articles/Linkage_Groups.html">Linkage Groups and Marker Order</a></li>
     <li><a class="dropdown-item" href="../articles/Recode.html">Recode Markers</a></li>
   </ul>
@@ -85,35 +86,35 @@ biparental F<sub>2</sub> table beet population.</p>
 <div class="section level2">
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
+<p>The package includes helper functions to check and install from CRAN
+or GitHub. Feel free to use them as shown below if you need to install
+packages needed for following along this article.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Helper function to install from CRAN </span></span>
-<span><span class="va">load_or_install_cran</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">pkg</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="va">pkg</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="va">pkg</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">pkg</span>, character.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
+<code class="sourceCode R"><span><span class="co"># Ensure devtools is available for GitHub installs</span></span>
+<span><span class="fu"><a href="../reference/load_or_install_cran.html">load_or_install_cran</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Helper function to install from GitHub </span></span>
-<span><span class="va">load_or_install_github</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">pkg</span>, <span class="va">repo</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="va">pkg</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="va">repo</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">pkg</span>, character.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="co"># Ensure devtools is available for GitHub installs</span></span>
-<span><span class="fu">load_or_install_cran</span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
 <span><span class="co"># Install/load GitHub packages</span></span>
-<span><span class="fu">load_or_install_github</span><span class="op">(</span><span class="st">"MapRtools"</span>, <span class="st">"jendelman/MapRtools"</span><span class="op">)</span></span>
-<span><span class="fu">load_or_install_github</span><span class="op">(</span><span class="st">"geneticMapR"</span>, <span class="st">"vegaalfaro/geneticMapR"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/load_or_install_github.html">load_or_install_github</a></span><span class="op">(</span><span class="st">"MapRtools"</span>, <span class="st">"jendelman/MapRtools"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/load_or_install_github.html">load_or_install_github</a></span><span class="op">(</span><span class="st">"geneticMapR"</span>, <span class="st">"vegaalfaro/geneticMapR"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Install/load CRAN packages</span></span>
-<span><span class="fu">load_or_install_cran</span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span></span>
-<span><span class="fu">load_or_install_cran</span><span class="op">(</span><span class="st">"tidyr"</span><span class="op">)</span></span>
-<span><span class="fu">load_or_install_cran</span><span class="op">(</span><span class="st">"tidyverse"</span><span class="op">)</span></span>
-<span><span class="fu">load_or_install_cran</span><span class="op">(</span><span class="st">"parallel"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/load_or_install_cran.html">load_or_install_cran</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/load_or_install_cran.html">load_or_install_cran</a></span><span class="op">(</span><span class="st">"tidyr"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/load_or_install_cran.html">load_or_install_cran</a></span><span class="op">(</span><span class="st">"tidyverse"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/load_or_install_cran.html">load_or_install_cran</a></span><span class="op">(</span><span class="st">"parallel"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="load-libraries">Load Libraries<a class="anchor" aria-label="anchor" href="#load-libraries"></a>
+</h2>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vegaalfaro/geneticMapR" class="external-link">geneticMapR</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">MapRtools</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://andrie.github.io/ggdendro/" class="external-link">ggdendro</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="data">1. Data<a class="anchor" aria-label="anchor" href="#data"></a>
@@ -131,7 +132,7 @@ by 100 individuals. Includes homozygous markers only. Rows are markers
 with rownames (e.g.,CHR7_192222) and individuals are columns with column
 names (e.g., 2002-F2-Beta-B10)..</p></li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Binned Genotype</span></span>
 <span><span class="va">url1</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/vegaalfaro/geneticMapRFiles/main/R_data/binned_geno_1629.RData"</span></span>
 <span></span>
@@ -155,7 +156,7 @@ each marker pair. Includes Homozygous markers only.</p></li>
 </ul>
 <p>(<strong>For info on marker types</strong>See marker type analysis
 from the article “Recode Markers” under the Articles tab)</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># LOD matrices</span></span>
 <span><span class="va">url2</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/vegaalfaro/geneticMapRFiles/main/R_data/LODmats_1629-2025-03-12.RData"</span></span>
 <span></span>
@@ -173,12 +174,12 @@ how to do so using <code>MapRtools</code> and the MLEL function. Make
 sure to check how many cores you have available in your machine. The
 example is for an F<sub>2</sub> population from two (inbred) parents.
 However, MLEL supports several population types.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Geno matrix with only homozygous markers</span></span>
-<span><span class="va">LODmat.hom</span> <span class="op">&lt;-</span> <span class="fu">MLEL</span><span class="op">(</span>geno <span class="op">=</span> <span class="va">geno.hom.bin</span>, pop.type <span class="op">=</span> <span class="st">"F2"</span>, LOD<span class="op">=</span><span class="cn">TRUE</span>, n.core <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
+<span><span class="va">LODmat.hom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MapRtools/man/MLEL.html" class="external-link">MLEL</a></span><span class="op">(</span>geno <span class="op">=</span> <span class="va">geno.hom.bin</span>, pop.type <span class="op">=</span> <span class="st">"F2"</span>, LOD<span class="op">=</span><span class="cn">TRUE</span>, n.core <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Geno matrix with homozygous and heterozygous markers</span></span>
-<span><span class="va">LODmat.het</span> <span class="op">&lt;-</span> <span class="fu">MLEL</span><span class="op">(</span>geno <span class="op">=</span> <span class="va">geno.het.bin</span>, pop.type <span class="op">=</span> <span class="st">"F2"</span>, LOD<span class="op">=</span><span class="cn">TRUE</span>, n.core <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> </span></code></pre></div>
+<span><span class="va">LODmat.het</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MapRtools/man/MLEL.html" class="external-link">MLEL</a></span><span class="op">(</span>geno <span class="op">=</span> <span class="va">geno.het.bin</span>, pop.type <span class="op">=</span> <span class="st">"F2"</span>, LOD<span class="op">=</span><span class="cn">TRUE</span>, n.core <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> </span></code></pre></div>
 </div>
 </div>
 </div>
@@ -250,12 +251,12 @@ different thresholds for example start 2 to 20 and move up iteratively.
 By counting the stripes we can figure out which threshold is
 appropriate. The black line on top represent misplaced markers or
 markers in Linkage Groups outside the largest first 9.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">LG</span><span class="op">(</span><span class="va">LODmat.hom</span>, thresh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">30</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Homozygous markers only"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Linkage_Groups_files/figure-html/unnamed-chunk-6-1.png" width="624"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">LG</span><span class="op">(</span><span class="va">LODmat.het</span>, thresh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">30</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Heterozygous + Homozygous SNPs"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Linkage_Groups_files/figure-html/unnamed-chunk-6-2.png" width="624"></p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MapRtools/man/LG.html" class="external-link">LG</a></span><span class="op">(</span><span class="va">LODmat.hom</span>, thresh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">30</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Homozygous markers only"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Linkage_Groups_files/figure-html/unnamed-chunk-7-1.png" width="624"></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MapRtools/man/LG.html" class="external-link">LG</a></span><span class="op">(</span><span class="va">LODmat.het</span>, thresh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">30</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Heterozygous + Homozygous SNPs"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Linkage_Groups_files/figure-html/unnamed-chunk-7-2.png" width="624"></p>
 <p>For <strong>homozygous markers</strong>, nine linkage groups are
 first formed at a LOD score of 12. This configuration remains stable up
 to a LOD of 18, which is support for the grouping structure and suggests
@@ -275,9 +276,9 @@ markers for convenience. In reality you may have a combination of
 homozygous and heterozygous markers. It all depends on your marker set
 and which steps you took to filter them. Other articles of this package
 show ways to filter markers. Make sure to check them out.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_map.html">extract_map</a></span><span class="op">(</span><span class="va">geno.hom.bin</span>, markers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Extracts physical map</span></span>
-<span><span class="va">LGhom</span> <span class="op">&lt;-</span> <span class="fu">LG</span><span class="op">(</span><span class="va">LODmat.hom</span>, thresh <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="co"># Returns assiged linkage group</span></span>
+<span><span class="va">LGhom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MapRtools/man/LG.html" class="external-link">LG</a></span><span class="op">(</span><span class="va">LODmat.hom</span>, thresh <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="co"># Returns assiged linkage group</span></span>
 <span><span class="va">LGhom</span><span class="op">$</span><span class="va">chrom</span> <span class="op">&lt;-</span> <span class="va">map</span><span class="op">$</span><span class="va">chrom</span> </span>
 <span><span class="va">LGhom</span> <span class="op">&lt;-</span> <span class="va">LGhom</span><span class="op">[</span><span class="va">LGhom</span><span class="op">$</span><span class="va">LG</span> <span class="op">&lt;=</span> <span class="fl">9</span>, <span class="op">]</span> <span class="co"># Keeps largest 9 linkage groups</span></span>
 <span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">LGhom</span>, <span class="va">map</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"marker"</span>, <span class="st">"chrom"</span><span class="op">)</span><span class="op">)</span> <span class="co"># Merge to connect CHR to LGs</span></span>
@@ -456,7 +457,7 @@ LG</p></li>
 <li><p>Return a trimmed genotype matrix, filtered map, LOD parameters
 used, and both plots</p></li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># CHR1</span></span>
 <span><span class="va">result_chr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trim_LG.html">trim_LG</a></span><span class="op">(</span>chromosome <span class="op">=</span> <span class="st">"CHR1"</span>, </span>
 <span>                                  map <span class="op">=</span> <span class="va">map</span>, </span>
@@ -473,10 +474,10 @@ used, and both plots</p></li>
 <span>                                  <span class="op">)</span></span>
 <span><span class="co">#&gt; Processing chromosome: CHR1</span></span>
 <span><span class="co">#&gt; Plotting initial haplotype frequency...</span></span></code></pre></div>
-<p><img src="Linkage_Groups_files/figure-html/unnamed-chunk-8-1.png" width="624"></p>
+<p><img src="Linkage_Groups_files/figure-html/unnamed-chunk-9-1.png" width="624"></p>
 <pre><code><span><span class="co">#&gt; Estimating LOD matrix using 3 cores...</span></span>
 <span><span class="co">#&gt; Generating linkage group plot...</span></span></code></pre>
-<p><img src="Linkage_Groups_files/figure-html/unnamed-chunk-8-2.png" width="624"></p>
+<p><img src="Linkage_Groups_files/figure-html/unnamed-chunk-9-2.png" width="624"></p>
 <pre><code><span><span class="co">#&gt; Filtering markers at LOD threshold = 18</span></span>
 <span><span class="co">#&gt; Removing outliers...</span></span></code></pre>
 <p>This function is also interactive! if you you set the argument
@@ -519,13 +520,13 @@ chromosome at a time.</p>
 <li><p>Plot the original vs. optimized order for each iteration</p></li>
 <li><p>Select the best order (lowest SARF)</p></li>
 </ul>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Chromosome 1</span></span>
 <span><span class="va">chr1_order</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/order_and_plot.html">order_and_plot</a></span><span class="op">(</span><span class="va">result_chr1</span><span class="op">$</span><span class="va">trimmed_genotype</span>, </span>
 <span>                             n.iter <span class="op">=</span> <span class="fl">6</span>,</span>
 <span>                             CHR <span class="op">=</span> <span class="st">"CHR1"</span></span>
 <span>                             <span class="op">)</span></span></code></pre></div>
-<p><img src="Linkage_Groups_files/figure-html/unnamed-chunk-9-1.png" width="624"></p>
+<p><img src="Linkage_Groups_files/figure-html/unnamed-chunk-10-1.png" width="624"></p>
 <p>We can observe some correspondence between the original marker order
 and the optimized order. Occasionally, the order may appear reversed.
 These plots help identify potential inversions or other chromosomal
@@ -535,7 +536,7 @@ genome structure and the quality of the reference genome. Use your
 intuition and understanding of the underlying biology to interpret the
 patterns in the plots.</p>
 <p><code><a href="../reference/order_and_plot.html">order_and_plot()</a></code> uses MapRtools
-<code>order_markers()</code> which is based on solving the traveling
+<code><a href="https://rdrr.io/pkg/MapRtools/man/order_markers.html" class="external-link">order_markers()</a></code> which is based on solving the traveling
 salesperson problem.</p>
 </div>
 <div class="section level3">
@@ -543,7 +544,7 @@ salesperson problem.</p>
 </h3>
 <p>If you’ve trimmed and stored genotype matrices for each chromosome in
 a named list, you can apply order_and_plot() in a loop:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  CHR1 <span class="op">=</span> <span class="va">result_chr1</span><span class="op">$</span><span class="va">trimmed_genotype</span>,</span>
 <span>  CHR2 <span class="op">=</span> <span class="va">result_chr2</span><span class="op">$</span><span class="va">trimmed_genotype</span>,</span>
@@ -563,7 +564,7 @@ across your entire genome.</p>
 <div class="section level2">
 <h2 id="save-progress">Save progress<a class="anchor" aria-label="anchor" href="#save-progress"></a>
 </h2>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Save results as RDA</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">ordered_results</span>, file <span class="op">=</span> <span class="st">"processed_data/R_data/ordered_markers_pop2_list-2025-03-12.RData"</span><span class="op">)</span></span></code></pre></div>
 </div>
