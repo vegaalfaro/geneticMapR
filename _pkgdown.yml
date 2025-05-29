@@ -61,3 +61,5 @@ reference:
       - melt_freq
       - rename_geno_matrix
       - estimate_error
+      - load_or_install_cran
+      - load_or_install_github
