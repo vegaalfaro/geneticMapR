@@ -34,5 +34,64 @@ library(HMM)
 ```
 
 
+## Load Data
+
+```{r, message=FALSE, warning=FALSE}
+# Ordered Markers
+url1 <- "https://raw.githubusercontent.com/vegaalfaro/geneticMapRFiles/main/R_data/ordered_markers.RData"
+
+# Download file
+if (!file.exists("ordered_markers.RData")) {
+  download.file(url1, destfile = "local_copy.ordered_markers.RData")}
+
+# Load
+load("local_copy.ordered_markers.RData")
+```
+
+
+## Functions
+
+#### Transition Matrix for F2
+
+This function calculates the transition matrix for a recombination frequency r based on the F~2~ population model:
+
+```{r, message=FALSE, warning=FALSE}
+
+T.mat <- function(r){
+  s <- 1 - r
+  mat <- rbind(
+    c(s^2, 2*r* s, r^2),
+    c(r*s, s^2 + r^2, r*s),
+    c(r^2, 2*r*s, s^2)
+  )
+  rownames(mat) <- colnames(mat) <- c("0", "1", "2")
+  return(mat)
+}
+
+
+```
+
+### Emission Probability Matrix
+
+This function computes the emission probability matrix, which depends on the error rate and missing data in the genotyping process:
+
+```{r}
+E.mat <- function(error, missing = 0) {
+  mat <- rbind(c(1-error, error/2, error/2),
+               c(error/2, 1-error, error/2),
+               c(error/2, error/2, 1-error)
+               )
+  mat <- cbind(mat - missing/3, rep(missing, 3))
+  rownames(mat) <- c("0", "1", "2")
+  colnames(mat) <- c("0", "1", "2", "NA")
+  return(mat)
+}
+
+```
+
+
+## Haplotype Reconstruction and Error Estimation
+
+We start by reconstructing haplotypes for the first chromosome (CHR1). We estimate the missing rate, initialize the HMM, and run the viterbi algorithm to find the most likely sequence of genotypes:
 
 

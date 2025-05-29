@@ -1,6 +1,6 @@
 #' Plot Genome-wide Coverage
 #'
-#'@description
+#' @description
 #' Generates a genome-wide coverage plot, displaying the positions
 #' of markers across chromosomes. It is a customized version of `plot_cover`
 #' from **MapRtools** and allows additional aesthetic modifications.
@@ -26,7 +26,6 @@
 #' @note
 #' Inspired by functions of Professor Jeffrey Endelman's MapRtools
 #'
-#'
 #' @examples
 #' # Example dataset
 #' map_data <- data.frame(
@@ -46,9 +45,10 @@ plot_cover <- function(map, limits = NULL, customize = TRUE) {
   colnames(map) <- c("chrom", "position")
   map$position <- map$position / 1e6
 
+  # If limits are not provided, calculate the chromosome limits from the map
   if (is.null(limits)) {
-    tmp <- tapply(map$position, map$chrom, max)
-    limits <- data.frame(chrom = names(tmp), position = as.numeric(tmp))
+    chrom_limits <- tapply(map$position, map$chrom, max)
+    limits <- data.frame(chrom = names(chrom_limits), position = as.numeric(chrom_limits))
   } else {
     limits$position <- limits$position / 1e6
   }
@@ -70,12 +70,14 @@ plot_cover <- function(map, limits = NULL, customize = TRUE) {
               aes(x = x, y = y, xend = xend, yend = yend)) +
     geom_segment()
 
+  # Apply custom aesthetics if requested
   if (customize) {
     p <- p +
       theme_minimal(base_size = 14) +
       labs(
         x = "Position (Mb)",
-        y = "Chromosome") +
+        y = "Chromosome"
+      ) +
       scale_y_continuous(breaks = 1:n.chrom, labels = chroms, minor_breaks = NULL) +
       theme(
         plot.title = element_text(size = 13),
@@ -95,6 +97,4 @@ plot_cover <- function(map, limits = NULL, customize = TRUE) {
 
   return(p)
 }
-
-
 
