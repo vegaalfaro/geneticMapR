@@ -23,20 +23,31 @@ This article demonstrates how to process, clean, and recode (phase) SNP markers 
 
 ## Setup
 
-We will need a series of packages, below we show how to install them if needed.
+We will need a series of packages, below we show how to install them if needed. (geneticMapR needs to be installed)
 
+```{r setup, message=FALSE, warning=FALSE, eval=FALSE}
 
-```{r setup, message=FALSE, warning=FALSE}
-# Load or install packages if needed 
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager", quiet = TRUE)
-if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools", quiet = TRUE)
+# Ensure devtools is available for GitHub installs
+load_or_install_cran("devtools")
 
-if (!requireNamespace("geneticMapR", quietly = TRUE)) devtools::install_github("vegaalfaro/geneticMapR", quiet = TRUE)
-if (!requireNamespace("MapRtools", quietly = TRUE)) devtools::install_github("jendelman/MapRtools", quiet = TRUE)
+# Install/load GitHub packages
+load_or_install_github("MapRtools", "jendelman/MapRtools")
 
-if (!requireNamespace("VariantAnnotation", quietly = TRUE)) BiocManager::install("VariantAnnotation", quiet = TRUE)
-if (!requireNamespace("Rsamtools", quietly = TRUE)) BiocManager::install("Rsamtools", quiet = TRUE)
+# Install/load CRAN packages
+load_or_install_cran("ggplot2")
+load_or_install_cran("tidyr")
+load_or_install_cran("tidyverse")
+load_or_install_cran("parallel")
+load_or_install_cran("BiocManager")
 
+# Variant Annotation Package
+BiocManager::install("VariantAnnotation")
+
+```
+
+## Load Libraries
+
+```{r message=FALSE, warning=FALSE}
 # Load libraries
 library(geneticMapR)
 library(MapRtools)
@@ -228,7 +239,7 @@ head(map)
 Now we are ready for plotting:
 
 ```{r plot coverage 1, fig.align='center', fig.width=6.1, fig.height=4.3, fig.alt="coverage plot"}
-geneticMapR::plot_coverage(map=map, customize = TRUE)
+geneticMapR::plot_cover(map=map, customize = TRUE)
 ```
 
 
@@ -398,8 +409,8 @@ Including heterozygous markers increases genome coverage compared to using only 
 The following section illustrates this tradeoff between marker type and genome coverage.
 
 ```{r tradeoff marker type v coverage, fig.align='center', fig.height=8, fig.width=8, warning=FALSE, message=FALSE}
-a <- plot_coverage(map = extract_map(hom_phased_geno_1629)) + ggtitle("Homozygous")
-b <- plot_coverage(map = extract_map(het_phased_geno_1629)) + ggtitle("Homozygous + heterozygous")
+a <- plot_cover(map = extract_map(hom_phased_geno_1629)) + ggtitle("Homozygous")
+b <- plot_cover(map = extract_map(het_phased_geno_1629)) + ggtitle("Homozygous + heterozygous")
 c <- plot_genotype_histogram(hom_phased_geno_1629)
 d <- plot_genotype_histogram(het_phased_geno_1629)
 

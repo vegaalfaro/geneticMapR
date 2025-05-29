@@ -49,9 +49,6 @@ plot_coverage_annotate(
 A \code{ggplot} object showing the annotated chromosome map.
 }
 \description{
-Plot Coverage Map with Candidate Gene Annotations
-}
-\details{
 Visualizes chromosome positions, QTLs, and gene of interest annotations on a multi-chromosome physical map.
 Useful for displaying genomic regions of interest, highlighting genetic features such as
 QTLs and candidate genes or protein families.

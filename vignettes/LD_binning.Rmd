@@ -22,24 +22,10 @@ This vignette demonstrates how to bin SNP markers based on linkage disequilibriu
 
 ### Setup
 
-```{r setup, message=FALSE, warning=FALSE}
+In case you need to install packages, here's how to do it!
+The package includes helper functions to check and install from CRAN or GitHub. Feel free to use them as shown below if you need to install packages needed for following along this article. 
 
-# Helper function to install from CRAN if not available
-load_or_install_cran <- function(pkg) {
-  if (!requireNamespace(pkg, quietly = TRUE)) {
-    install.packages(pkg)
-  }
-  library(pkg, character.only = TRUE)
-}
-
-# Helper function to install from GitHub if not available
-load_or_install_github <- function(pkg, repo) {
-  if (!requireNamespace(pkg, quietly = TRUE)) {
-    devtools::install_github(repo, quiet = TRUE)
-  }
-  library(pkg, character.only = TRUE)
-}
-
+```{r setup, message=FALSE, warning=FALSE, eval=FALSE}
 # Ensure devtools is available for GitHub installs
 load_or_install_cran("devtools")
 
@@ -53,6 +39,20 @@ load_or_install_cran("stringr")
 load_or_install_cran("ggplot2")
 
 ```
+
+## Load Libraries
+
+```{r message=FALSE, warning=FALSE}
+library(geneticMapR)
+library(MapRtools)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(ggplot2)
+library(ggdendro)
+library(stringr)
+```
+
 
 ### Load Data
 
@@ -158,7 +158,7 @@ dim(geno.hom.bin)
 
 ```{r,  warning=FALSE, fig.align='center', fig.height=4.3, fig.width=6.13, fig.alt= 'coverageplot'}
 map_hom <- extract_map(geno.hom.bin)
-plot_coverage(map = map_hom, customize = TRUE) + 
+geneticMapR::plot_cover(map = map_hom, customize = TRUE) + 
   ggtitle("Binned Homozygous Markers")
 
 ```
@@ -177,7 +177,7 @@ dim(geno.het.bin)
 
 ```{r, warning=FALSE, fig.align='center', fig.height=4.3, fig.width=6.13, fig.alt="coverageplot"}
 map_het <- extract_map(geno.het.bin)
-plot_coverage(map = map_het, customize = TRUE) + 
+geneticMapR::plot_cover(map = map_het, customize = TRUE) + 
   ggtitle("Binned Heterozygous Markers")
 
 ```

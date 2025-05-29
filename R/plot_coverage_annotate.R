@@ -1,6 +1,7 @@
 #' Plot Coverage Map with Candidate Gene Annotations
 #'
 #'
+#' @description
 #'
 #' Visualizes chromosome positions, QTLs, and gene of interest annotations on a multi-chromosome physical map.
 #' Useful for displaying genomic regions of interest, highlighting genetic features such as

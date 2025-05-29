@@ -23,26 +23,12 @@ We continue to use genotype data from a biparental F~2~ table beet population.
 
 ## Setup
 
-```{r, message=FALSE, warning=FALSE }
+The package includes helper functions to check and install from CRAN or GitHub. Feel free to use them as shown below if you need to install packages needed for following along this article. 
 
-# Helper function to install from CRAN 
-load_or_install_cran <- function(pkg) {
-  if (!requireNamespace(pkg, quietly = TRUE)) {
-    install.packages(pkg)
-  }
-  library(pkg, character.only = TRUE)
-}
-
-# Helper function to install from GitHub 
-load_or_install_github <- function(pkg, repo) {
-  if (!requireNamespace(pkg, quietly = TRUE)) {
-    devtools::install_github(repo, quiet = TRUE)
-  }
-  library(pkg, character.only = TRUE)
-}
-
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
 # Ensure devtools is available for GitHub installs
 load_or_install_cran("devtools")
+
 # Install/load GitHub packages
 load_or_install_github("MapRtools", "jendelman/MapRtools")
 load_or_install_github("geneticMapR", "vegaalfaro/geneticMapR")
@@ -52,7 +38,17 @@ load_or_install_cran("ggplot2")
 load_or_install_cran("tidyr")
 load_or_install_cran("tidyverse")
 load_or_install_cran("parallel")
-
+```
+## Packages or Libraries
+```{r, message=FALSE, warning=FALSE}
+library(geneticMapR)
+library(MapRtools)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(ggplot2)
+library(ggdendro)
+library(stringr)
 ```
 
 
