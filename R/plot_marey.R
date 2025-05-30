@@ -5,7 +5,7 @@
 #' single chromosome.
 #'
 #' @param map A data frame containing marker mapping information with at least the following columns:
-#'   - `"position_Mb"`: Physical position of markers (in base pairs).
+#'   - `"position_Mb"`: Physical position of markers (best in Mb).
 #'   - `"position_cM"`: Genetic distance in centimorgans (cM).
 #' @param chrom Character or numeric. The chromosome identifier to be displayed in the plot title.
 #'
@@ -25,7 +25,7 @@
 #' @importFrom ggplot2 ggplot aes geom_point labs
 #' @export
 plot_marey <- function(map, chrom) {
-  p <- ggplot(map, aes(position_Mb / 1e6, position_cM)) +
+  p <- ggplot(map, aes(position_Mb, position_cM)) +
     geom_point(shape = 21, fill = "black", color = "black", size = 1.8) +
     labs(
       x = "Physical position (Mb)",
