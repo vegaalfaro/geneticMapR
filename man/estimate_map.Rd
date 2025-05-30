@@ -4,49 +4,36 @@
 \alias{estimate_map}
 \title{Estimate Genetic Map Positions}
 \usage{
-estimate_map(
-  geno_matrix,
-  model = "Kosambi",
-  n_points = seq(10, 20, by = 5),
-  pop.type = "F2"
-)
+estimate_map(geno_matrix, model = "Kosambi", n_point = 20, pop.type = "F2")
 }
 \arguments{
-\item{geno_matrix}{A genotype matrix where rows represent markers and columns represent individuals.
-This matrix must be in a format compatible with \code{MapRtools::MLEL} and with markers for only one chromosome or Linkage Group.}
+\item{geno_matrix}{A genotype matrix (markers as rows, individuals as columns) for one chromosome or linkage group.}
 
-\item{model}{Character string specifying the mapping function to use. Options are \code{"Kosambi"} (default)
-or \code{"Haldane"}.}
+\item{model}{Character. Mapping function to use: \code{"Kosambi"} (default) or \code{"Haldane"}.}
 
-\item{n_points}{A numeric vector indicating the different values of \code{n.point} to be used
-for estimating genetic positions. Default is \code{seq(10, 20, by = 5)}.}
+\item{n_point}{Integer. The \code{n.point} value for interpolation when estimating genetic positions. Default is \code{20}.}
 
-\item{pop.type}{Character string specifying the population type. Supported options are
-\code{"DH"}, \code{"BC"}, \code{"F2"} (default), \code{"S1"}, \code{"RIL.self"}, and \code{"RIL.sib"}.}
+\item{pop.type}{Character. Population type: \code{"DH"}, \code{"BC"}, \code{"F2"} (default), \code{"S1"}, \code{"RIL.self"}, \code{"RIL.sib"}.}
 }
 \value{
-A data frame containing the extracted genetic map with additional columns (\code{pN})
-corresponding to the estimated positions for each specified \code{n.point} value.
+A data frame with columns:
+\itemize{
+\item \code{chrom}: Chromosome identifier
+\item \code{position_Mb}: Physical position in megabases
+\item \code{position_cM}: Genetic distance in centimorgans (estimated)
+}
 }
 \description{
-Designed to work with one chromosome at a time. \code{estimate_map} calculates genetic map positions using recombination frequency (RF)
-and LOD scores calculated from a genotype matrix. It applies a selected mapping function
-(Kosambi or Haldane) and outputs map positions (in centi Morgans, cM) at multiple resolutions defined by the user.
+Calculates genetic map positions for a single chromosome using recombination frequency (RF)
+and LOD scores from a genotype matrix. The output is standardized for compatibility with Marey plots.
 }
 \details{
-The function uses \code{MapRtools::MLEL()} to compute RF and LOD matrices and then
-applies the specified mapping function via \code{MapRtools::map_fn()}. For each \code{n.point}
-value, the function appends a new column (\code{pN}) to the map with the estimated genetic positions.
+This function uses \code{MapRtools::MLEL()} and \code{MapRtools::genetic_map()} for estimating genetic positions.
+The output is ready to be used with \code{plot_marey()}.
 }
 \examples{
 \dontrun{
-# Example genotype matrix
-
-geno_matrix <- chr1_geno_matrix
-
-map <- estimate_map(chr1_geno_matrix, model = "Kosambi", n_points = c(10, 15, 20), pop.type = "F2")
-
-# Simply
-genetic_map_chr1 <- estimate_map(chr1_geno_matrix)
+map_chr1 <- estimate_map(geno_matrix = chr1_geno_matrix, n_point = 20)
+plot_marey(map_chr1, chrom = "CHR1")
 }
 }

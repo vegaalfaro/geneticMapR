@@ -76,16 +76,7 @@ T.mat <- function(r){
 This function computes the emission probability matrix, which depends on the error rate and missing data in the genotyping process:
 
 ```{r}
-E.mat <- function(error, missing = 0) {
-  mat <- rbind(c(1-error, error/2, error/2),
-               c(error/2, 1-error, error/2),
-               c(error/2, error/2, 1-error)
-               )
-  mat <- cbind(mat - missing/3, rep(missing, 3))
-  rownames(mat) <- c("0", "1", "2")
-  colnames(mat) <- c("0", "1", "2", "NA")
-  return(mat)
-}
+
 
 ```
 

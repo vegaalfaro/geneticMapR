@@ -1,74 +1,63 @@
 #' Estimate Genetic Map Positions
 #'
-#' Designed to work with one chromosome at a time. `estimate_map` calculates genetic map positions using recombination frequency (RF)
-#' and LOD scores calculated from a genotype matrix. It applies a selected mapping function
-#' (Kosambi or Haldane) and outputs map positions (in centi Morgans, cM) at multiple resolutions defined by the user.
+#' Calculates genetic map positions for a single chromosome using recombination frequency (RF)
+#' and LOD scores from a genotype matrix. The output is standardized for compatibility with Marey plots.
 #'
-#' @param geno_matrix A genotype matrix where rows represent markers and columns represent individuals.
-#'        This matrix must be in a format compatible with `MapRtools::MLEL` and with markers for only one chromosome or Linkage Group.
-#' @param model Character string specifying the mapping function to use. Options are `"Kosambi"` (default)
-#'        or `"Haldane"`.
-#' @param n_points A numeric vector indicating the different values of `n.point` to be used
-#'        for estimating genetic positions. Default is `seq(10, 20, by = 5)`.
-#' @param pop.type Character string specifying the population type. Supported options are
-#'        `"DH"`, `"BC"`, `"F2"` (default), `"S1"`, `"RIL.self"`, and `"RIL.sib"`.
+#' @param geno_matrix A genotype matrix (markers as rows, individuals as columns) for one chromosome or linkage group.
+#' @param model Character. Mapping function to use: `"Kosambi"` (default) or `"Haldane"`.
+#' @param n_point Integer. The `n.point` value for interpolation when estimating genetic positions. Default is `20`.
+#' @param pop.type Character. Population type: `"DH"`, `"BC"`, `"F2"` (default), `"S1"`, `"RIL.self"`, `"RIL.sib"`.
 #'
-#' @return A data frame containing the extracted genetic map with additional columns (`pN`)
-#'         corresponding to the estimated positions for each specified `n.point` value.
+#' @return A data frame with columns:
+#'   - `chrom`: Chromosome identifier
+#'   - `position_Mb`: Physical position in megabases
+#'   - `position_cM`: Genetic distance in centimorgans (estimated)
 #'
-#' @details The function uses `MapRtools::MLEL()` to compute RF and LOD matrices and then
-#'         applies the specified mapping function via `MapRtools::map_fn()`. For each `n.point`
-#'         value, the function appends a new column (`pN`) to the map with the estimated genetic positions.
+#' @details
+#' This function uses `MapRtools::MLEL()` and `MapRtools::genetic_map()` for estimating genetic positions.
+#' The output is ready to be used with `plot_marey()`.
 #'
 #' @examples
 #' \dontrun{
-#' # Example genotype matrix
-#'
-#' geno_matrix <- chr1_geno_matrix
-#'
-#' map <- estimate_map(chr1_geno_matrix, model = "Kosambi", n_points = c(10, 15, 20), pop.type = "F2")
-#'
-#' # Simply
-#' genetic_map_chr1 <- estimate_map(chr1_geno_matrix)
-#'}
+#' map_chr1 <- estimate_map(geno_matrix = chr1_geno_matrix, n_point = 20)
+#' plot_marey(map_chr1, chrom = "CHR1")
+#' }
 #' @export
-
 estimate_map <- function(geno_matrix,
                          model = "Kosambi",
-                         n_points = seq(10, 20, by = 5),
+                         n_point = 20,
                          pop.type = "F2") {
 
   if (!requireNamespace("MapRtools", quietly = TRUE)) {
-    stop("The 'MapRtools' package is required for this function. Please install it from GitHub: https://github.com/jendelman/MapRtools")
+    stop("The 'MapRtools' package is required. Install it from: https://github.com/jendelman/MapRtools")
   }
 
+  # Validate inputs
+  if (!(model %in% c("Kosambi", "Haldane"))) {
+    stop("Invalid model. Choose either 'Kosambi' or 'Haldane'.")
+  }
 
-# Validate model selection
-if (!(model %in% c("Kosambi", "Haldane"))) {
-  stop("Invalid model. Choose either 'Kosambi' or 'Haldane'.")
+  if (!(pop.type %in% c("DH", "BC", "F2", "S1", "RIL.self", "RIL.sib"))) {
+    stop("Invalid pop.type. Choose from: 'DH', 'BC', 'F2', 'S1', 'RIL.self', 'RIL.sib'.")
+  }
+
+  # Extract map (physical positions)
+  map <- extract_map(geno_matrix)
+
+  # Compute recombination frequency (RF) and LOD matrices
+  RFmat <- MapRtools::MLEL(geno = geno_matrix, pop.type = pop.type, LOD = FALSE)
+  LODmat <- MapRtools::MLEL(geno = geno_matrix, pop.type = pop.type, LOD = TRUE)
+
+  # Convert RF to genetic distances
+  x <- apply(RFmat, c(1, 2), FUN = MapRtools::map_fn, model = model)
+
+  # Estimate genetic positions
+  gen_map <- MapRtools::genetic_map(x = x, LOD = LODmat, n.point = n_point)
+
+  # Final output
+  out <- map
+  out$position_Mb <- out$position / 1e6
+  out$position_cM <- gen_map$position
+
+  return(out[, c("chrom", "position_Mb", "position_cM")])
 }
-
-# Validate population selection
-if (!(pop.type %in% c("DH", "BC", "F2", "S1", "RIL.self", "RIL.sib"))) {
-  stop("Invalid population type. Choose one of the following: 'DH', 'BC', 'F2', 'S1', 'RIL.self', 'RIL.sib'.")
-}
-
-# Extract genetic map from genotype matrix
-map <- extract_map(geno_matrix)
-
-# Compute recombination frequency (RF) and LOD scores
-RFmat <- MapRtools::MLEL(geno = geno_matrix, pop.type = pop.type, LOD = FALSE)
-LODmat <- MapRtools::MLEL(geno = geno_matrix, pop.type = pop.type, LOD = TRUE)
-
-# Estimate genetic positions using the chosen mapping function
-x <- apply(RFmat, c(1, 2), FUN = MapRtools::map_fn, model = model)
-
-# Generate genetic positions for different n.point values
-for (n in n_points) {
-  column_name <- paste0("p", n)
-  map[[column_name]] <- MapRtools::genetic_map(x = x, LOD = LODmat, n.point = n)$position
-}
-
-return(map)
-}
-
