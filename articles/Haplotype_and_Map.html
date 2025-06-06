@@ -77,15 +77,7 @@
 </h2>
 <p>This vignette outlines the process of haplotype reconstruction and
 genetic map estimation for an F<sub>2</sub> population, using Hidden
-Markov Models (HMM) and recombination frequency (RF) data. The primary
-goal is to reconstruct haplotypes from genotype data, estimate
-genotyping error rates, and generate high-quality genetic maps based on
-recombination frequency matrices.</p>
-<p>By leveraging the <code>MapRtools</code> and <code>HMM</code> R
-packages, this analysis allows for the optimization of marker order and
-the visualization of haplotype and genetic maps. Additionally, the
-workflow includes the plotting of Marey plots to explore the
-relationship between physical and genetic distances.</p>
+Markov Models (HMM) and recombination frequency (RF) data.</p>
 <p>This approach is applied across multiple chromosomes, using both
 reference genome order and optimized marker order.</p>
 </div>
@@ -94,6 +86,7 @@ reference genome order and optimized marker order.</p>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vegaalfaro/geneticMapR" class="external-link">geneticMapR</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">MapRtools</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
@@ -114,39 +107,390 @@ reference genome order and optimized marker order.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"local_copy.ordered_markers.RData"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
+<h2 id="reconstruction-and-genetic-map-pipeline">Reconstruction and genetic Map pipeline<a class="anchor" aria-label="anchor" href="#reconstruction-and-genetic-map-pipeline"></a>
 </h2>
-<div class="section level4">
-<h4 id="transition-matrix-for-f2">Transition Matrix for F2<a class="anchor" aria-label="anchor" href="#transition-matrix-for-f2"></a>
-</h4>
-<p>This function calculates the transition matrix for a recombination
-frequency r based on the F<sub>2</sub> population model:</p>
+<p>We now apply the full reconstruction and map estimation pipeline to
+each chromosome. This includes:</p>
+<ol style="list-style-type: decimal">
+<li><p>Estimating the recombination frequency and error rate for
+haplotype reconstruction.</p></li>
+<li><p>Performing haplotype reconstruction using a Hidden Markov Model
+(HMM).</p></li>
+<li><p>Estimating the genetic map.</p></li>
+<li><p>Generating diagnostic plots including haplotype patterns and
+Marey maps.</p></li>
+</ol>
+<p>The final output is stored in a list <code>maps_ordered</code>, which
+contains:</p>
+<ul>
+<li><p>The reconstructed genotype matrix
+(<code>geno_hmm</code>)</p></li>
+<li><p>The estimated genetic map (<code>genetic_map</code>)</p></li>
+<li><p>Plots of haplotypes (<code>haplo_plots</code>) and Marey plots
+(<code>marey_plot</code>)</p></li>
+</ul>
+<p>This loop allows us to automate map construction across all
+chromosomes in principle (CHR1 to CHR9). Here we show only an example of
+how it works with three chromosomes.</p>
+<p>If you prefer to work each chromosome independently, the code below
+should be still helpful, take the code out of the loop and make sure to
+work one chromosome at a time by renaming them properly and it should
+work.</p>
+</div>
+<div class="section level2">
+<h2 id="optimized-order">Optimized order<a class="anchor" aria-label="anchor" href="#optimized-order"></a>
+</h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">T.mat</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="va">s</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">r</span></span>
-<span>  <span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">*</span><span class="va">r</span><span class="op">*</span> <span class="va">s</span>, <span class="va">r</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">r</span><span class="op">*</span><span class="va">s</span>, <span class="va">s</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">r</span><span class="op">^</span><span class="fl">2</span>, <span class="va">r</span><span class="op">*</span><span class="va">s</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">r</span><span class="op">^</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">*</span><span class="va">r</span><span class="op">*</span><span class="va">s</span>, <span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span>, <span class="st">"1"</span>, <span class="st">"2"</span><span class="op">)</span></span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
+<span><span class="co">#--- Execution Loop for several Chromosomes ----</span></span>
+<span></span>
+<span><span class="co"># First 3 chromosomes as an example:</span></span>
+<span></span>
+<span><span class="va">chromosomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"CHR"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>  <span class="co"># List of chromosome names modify the number of chromosomes here.</span></span>
+<span><span class="va">maps_ordered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># Store results for each chromosome</span></span>
+<span></span>
+<span><span class="co"># Using optimized order of markers</span></span>
+<span></span>
+<span><span class="co"># Ordered markers---- </span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">chr</span> <span class="kw">in</span> <span class="va">chromosomes</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"\nProcessing"</span>, <span class="va">chr</span>, <span class="st">"...\n"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Extract genotype data</span></span>
+<span>  <span class="va">geno_data</span> <span class="op">&lt;-</span> <span class="va">ordered_results</span><span class="op">[[</span><span class="va">chr</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">ordered_geno</span></span>
+<span>  </span>
+<span>  <span class="co"># Estimate adjacent recombination frequency</span></span>
+<span>  <span class="va">resulti</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MapRtools/man/MLEL.html" class="external-link">MLEL</a></span><span class="op">(</span><span class="va">geno_data</span>, </span>
+<span>                  LOD <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>                  pop.type <span class="op">=</span> <span class="st">"F2"</span>,</span>
+<span>                  adjacent <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                  n.core <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">mean_rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">resulti</span><span class="op">$</span><span class="va">value</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Mean Adjacent Recombination Frequency for"</span>, <span class="va">chr</span>, <span class="st">":"</span>, <span class="va">mean_rf</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Run haplotype reconstruction using estimated RF as transition probability</span></span>
+<span>  <span class="va">geno_hmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/haplotype_reconstruction.html">haplotype_reconstruction</a></span><span class="op">(</span><span class="va">geno_data</span>, r <span class="op">=</span> <span class="va">mean_rf</span><span class="op">)</span></span>
+<span>  </span>
+<span>  </span>
+<span>  <span class="co"># Estimate genotyping error</span></span>
+<span>  <span class="va">error_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/estimate_error.html">estimate_error</a></span><span class="op">(</span><span class="va">geno_data</span>, <span class="va">geno_hmm</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Estimated Genotyping Error for"</span>, <span class="va">chr</span>, <span class="st">":"</span>, <span class="va">error_rate</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Generate genetic map</span></span>
+<span>  <span class="va">genetic_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/estimate_map.html">estimate_map</a></span><span class="op">(</span><span class="va">geno_hmm</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Plot results</span></span>
+<span>  <span class="va">haplo_plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_reconstructed_haplo.html">plot_reconstructed_haplo</a></span><span class="op">(</span><span class="va">geno_data</span>, <span class="va">geno_hmm</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">haplo_plots</span><span class="op">$</span><span class="va">p1</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">haplo_plots</span><span class="op">$</span><span class="va">p2</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Marey Plots</span></span>
+<span>  <span class="va">marey</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_marey.html">plot_marey</a></span><span class="op">(</span><span class="va">genetic_map</span>, <span class="va">chr</span><span class="op">)</span></span>
+<span><span class="co">#  print(marey)</span></span>
+<span>  </span>
+<span>  <span class="co"># Store results</span></span>
+<span>  <span class="va">maps_ordered</span><span class="op">[[</span><span class="va">chr</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>geno_hmm <span class="op">=</span> <span class="va">geno_hmm</span>, </span>
+<span>       </span>
+<span>                      genetic_map <span class="op">=</span> <span class="va">genetic_map</span>, </span>
+<span>                     haplo_plots <span class="op">=</span> <span class="va">haplo_plots</span>,</span>
+<span>                        marey_plot <span class="op">=</span> <span class="va">marey</span><span class="op">)</span></span>
+<span>  </span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Processing CHR1 ...</span></span>
+<span><span class="co">#&gt; Mean Adjacent Recombination Frequency for CHR1 : 0.01714311 </span></span>
+<span><span class="co">#&gt; Estimated Genotyping Error for CHR1 : 0.0107</span></span></code></pre></div>
+<p><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-4-1.png" width="624"><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-4-2.png" width="624"><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-4-3.png" width="624"></p>
+<pre><code><span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Processing CHR2 ...</span></span>
+<span><span class="co">#&gt; Mean Adjacent Recombination Frequency for CHR2 : 0.02049571 </span></span>
+<span><span class="co">#&gt; Estimated Genotyping Error for CHR2 : 0.01113924</span></span></code></pre>
+<p><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-4-4.png" width="624"><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-4-5.png" width="624"><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-4-6.png" width="624"></p>
+<pre><code><span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Processing CHR3 ...</span></span>
+<span><span class="co">#&gt; Mean Adjacent Recombination Frequency for CHR3 : 0.01617712 </span></span>
+<span><span class="co">#&gt; Estimated Genotyping Error for CHR3 : 0.01</span></span></code></pre>
+<p><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-4-7.png" width="624"><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-4-8.png" width="624"><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-4-9.png" width="624"></p>
+<p>There is value in creating a pipeline that automates the process of
+haplotype reconstruction using tools available in
+<code>MapRtools</code>. It allows the user and other researchers to
+reproduce the results. Genetic maps are usually “manually curated” which
+is not best practice although in many cases acceptable. This is a step
+towards reproducible genetic map construction.</p>
+<p>Let’s look at the output. First we have two similar plots that show
+the dosage (genotype) at different positions (SNPs loci). I’d like to
+highlight that even after all the quality control on SNP marker
+filtering, there are still genotyping errors. This shows that in this
+case GBS but really any other genotyping technology is prone to erros.
+But no worries! We can <strong>reconstruct the haplotypes</strong>.</p>
+<p>In experimental populations like F<sub>2s</sub>, it is common to
+observe genotyping errors and missing data. These issues can preclude us
+from observing the underlying true haplotypes. Also, the haplotypes are
+supposed to vary smoothly, quick haplotype switches are likely not true
+biology. Think about it, the chromosome can only recombine so many
+times. To address this, we implement a haplotype reconstruction step
+using a Hidden Markov Model (HMM), which infers the most likely sequence
+of underlying genotypes (states) from the observed marker data.</p>
+<div class="section level3">
+<h3 id="how-do-haplotype-reconstruction-work">How do haplotype reconstruction work?<a class="anchor" aria-label="anchor" href="#how-do-haplotype-reconstruction-work"></a>
+</h3>
+<p>In a nutshell the <code>haplotype_reconstruction</code> function
+performs haplotype reconstruction using an HMM model. It applies the
+Viterbi algorithm to infer the most likely sequence of true genotypic
+states, accounting for genotyping errors and missing data.</p>
+<p>The function <code><a href="../reference/haplotype_reconstruction.html">haplotype_reconstruction()</a></code> uses an HMM with
+the following key components:</p>
+<ul>
+<li><p>States: “0”, “1”, “2” represent homozygous reference,
+heterozygous, and homozygous alternate genotypes, respectively.</p></li>
+<li><p>Symbols: “0”, “1”, “2”, “NA” correspond to observed marker
+values, including missing data.</p></li>
+<li><p>Start Probabilities: Initial probabilities of each state (e.g.,
+1:2:1 for F<sub>2</sub> segregation).</p></li>
+<li><p>Transition Matrix: Defines the probability of moving between
+states, based on a recombination frequency <em>r</em>.</p></li>
+<li><p>Emission Matrix: Defines the probability of observing a symbol
+given a true state, adjusted by a user-specified genotyping error rate
+and the overall proportion of missing data.</p></li>
+</ul>
+<p>Currently this function works only for F<sub>2</sub> populations on
+experimental crosses. We are developing the function to work more
+broadly with other types of populations.</p>
 </div>
 <div class="section level3">
-<h3 id="emission-probability-matrix">Emission Probability Matrix<a class="anchor" aria-label="anchor" href="#emission-probability-matrix"></a>
+<h3 id="why-it-matters">Why it matters?<a class="anchor" aria-label="anchor" href="#why-it-matters"></a>
 </h3>
-<p>This function computes the emission probability matrix, which depends
-on the error rate and missing data in the genotyping process:</p>
+<p>We can clearly see that after reconstructing the haplotypes using the
+HMM approach the haplotypes better reflect biology. Look for example at
+the green line at position 62.5 in chromosome 1 which is likely a
+genotyping error. The HMM recognizes it and fixes it returning a more
+smooth haplotype switch.</p>
+</div>
+<div class="section level3">
+<h3 id="other-considerations">Other considerations<a class="anchor" aria-label="anchor" href="#other-considerations"></a>
+</h3>
+<p>For example, on chromosome 2 around position 18, most rapid haplotype
+switches are corrected, but a cluster remains. These may reflect
+genotyping errors that remain. Increasing manually the error rate that
+was calculated parameter can help resolve them. Plots like this are
+powerful for visualizing which segments of the parental genome each
+progeny inherited and identifying problematic regions.</p>
+<p>The Marey plot of chromosome 2 also shows that some markers may
+potentially be out of order in the reference genome.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="haplotype-reconstruction-and-error-estimation">Haplotype Reconstruction and Error Estimation<a class="anchor" aria-label="anchor" href="#haplotype-reconstruction-and-error-estimation"></a>
+<h2 id="reference-genome-order">Reference genome order<a class="anchor" aria-label="anchor" href="#reference-genome-order"></a>
 </h2>
-<p>We start by reconstructing haplotypes for the first chromosome
-(CHR1). We estimate the missing rate, initialize the HMM, and run the
-viterbi algorithm to find the most likely sequence of genotypes:</p>
+<p>Below is the same pipeline applied using the marker order from the
+reference genome. Some discrepancies appear when compared to the
+optimized order, suggesting that the W357B genome may require
+refinement. Future improvements, such as long-read sequencing and T2T
+assemblies, could help resolve these inconsistencies.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Reference genome order----</span></span>
+<span><span class="va">chromosomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"CHR"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">maps_ref_genome</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># Store results for each chromosome</span></span>
+<span><span class="co"># Using reference genome order or markers</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">chr</span> <span class="kw">in</span> <span class="va">chromosomes</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"\nProcessing"</span>, <span class="va">chr</span>, <span class="st">"...\n"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Extract genotype data</span></span>
+<span>  <span class="va">geno_data</span> <span class="op">&lt;-</span> <span class="va">ordered_results</span><span class="op">[[</span><span class="va">chr</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">original_geno</span></span>
+<span>  </span>
+<span>  <span class="co"># Estimate adjacent recombination frequency</span></span>
+<span>  <span class="va">resulti</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MapRtools/man/MLEL.html" class="external-link">MLEL</a></span><span class="op">(</span><span class="va">geno_data</span>, </span>
+<span>                  LOD <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>                  pop.type <span class="op">=</span> <span class="st">"F2"</span>,</span>
+<span>                  adjacent <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                  n.core <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span>  </span>
+<span></span>
+<span>  <span class="co"># Run haplotype reconstruction again with estimated error rate</span></span>
+<span>  <span class="va">geno_hmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/haplotype_reconstruction.html">haplotype_reconstruction</a></span><span class="op">(</span><span class="va">geno_data</span>, error_rate <span class="op">=</span> <span class="va">error_rate</span><span class="op">)</span></span>
+<span>  </span>
+<span>    <span class="co"># Estimate genotyping error</span></span>
+<span>  <span class="va">error_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/estimate_error.html">estimate_error</a></span><span class="op">(</span><span class="va">geno_data</span>, <span class="va">geno_hmm</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Estimated Genotyping Error for"</span>, <span class="va">chr</span>, <span class="st">":"</span>, <span class="va">error_rate</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  </span>
+<span>  <span class="co"># Generate genetic map</span></span>
+<span>  <span class="va">genetic_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/estimate_map.html">estimate_map</a></span><span class="op">(</span><span class="va">geno_hmm</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Plot results</span></span>
+<span>  <span class="va">haplo_plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_reconstructed_haplo.html">plot_reconstructed_haplo</a></span><span class="op">(</span><span class="va">geno_data</span>, <span class="va">geno_hmm</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">haplo_plots</span><span class="op">$</span><span class="va">p1</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">haplo_plots</span><span class="op">$</span><span class="va">p2</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Marey Plots</span></span>
+<span>  <span class="va">marey</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_marey.html">plot_marey</a></span><span class="op">(</span><span class="va">genetic_map</span>, <span class="va">chr</span><span class="op">)</span></span>
+<span>  <span class="co">#  print(marey)</span></span>
+<span>  </span>
+<span>  <span class="co"># Store results</span></span>
+<span>  <span class="va">maps_ref_genome</span><span class="op">[[</span><span class="va">chr</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>geno_hmm <span class="op">=</span> <span class="va">geno_hmm</span>, </span>
+<span>                         </span>
+<span>                         genetic_map <span class="op">=</span> <span class="va">genetic_map</span>, </span>
+<span>                         haplo_plots <span class="op">=</span> <span class="va">haplo_plots</span>,</span>
+<span>                         marey_plot <span class="op">=</span> <span class="va">marey</span><span class="op">)</span></span>
+<span>  </span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Processing CHR1 ...</span></span>
+<span><span class="co">#&gt; Estimated Genotyping Error for CHR1 : 0.0113</span></span></code></pre></div>
+<p><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-5-1.png" width="624"><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-5-2.png" width="624"><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-5-3.png" width="624"></p>
+<pre><code><span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Processing CHR2 ...</span></span>
+<span><span class="co">#&gt; Estimated Genotyping Error for CHR2 : 0.01468354</span></span></code></pre>
+<p><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-5-4.png" width="624"><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-5-5.png" width="624"><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-5-6.png" width="624"></p>
+<pre><code><span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Processing CHR3 ...</span></span>
+<span><span class="co">#&gt; Estimated Genotyping Error for CHR3 : 0.009</span></span></code></pre>
+<p><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-5-7.png" width="624"><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-5-8.png" width="624"><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-5-9.png" width="624"></p>
+</div>
+<div class="section level2">
+<h2 id="map-visualization">Map Visualization<a class="anchor" aria-label="anchor" href="#map-visualization"></a>
+</h2>
+<p>Now we are going to visualize the maps. In the examples above I am
+showing only 3 chromosomes to keep it simple but the idea to visualize
+the map is better exemplified using all 9 chromosomes of <em>Beta
+vulgaris</em>.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Get the chromosome names </span></span>
+<span><span class="va">chromosomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">maps_ordered</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Combine all genetic maps into a single data frame for Ref Genome Ordered Markers</span></span>
+<span><span class="va">MAP_Ref_Genome_Order</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">chromosomes</span>, <span class="kw">function</span><span class="op">(</span><span class="va">chr</span><span class="op">)</span> <span class="va">maps_ref_genome</span><span class="op">[[</span><span class="va">chr</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">genetic_map</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Combine all genetic maps into a single data frame for  Order Optimized Markers</span></span>
+<span><span class="va">MAP_Optimized_Order</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">chromosomes</span>, <span class="kw">function</span><span class="op">(</span><span class="va">chr</span><span class="op">)</span> <span class="va">maps_ordered</span><span class="op">[[</span><span class="va">chr</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">genetic_map</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="example-with-optimized-order-map">Example with optimized-order map<a class="anchor" aria-label="anchor" href="#example-with-optimized-order-map"></a>
+</h2>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Order-optimized map</span></span>
+<span><span class="va">p_order</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">MAP_Optimized_Order</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">position_Mb</span>, <span class="va">position_cM</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>shape <span class="op">=</span> <span class="fl">21</span>, </span>
+<span>             size <span class="op">=</span> <span class="fl">1.8</span>,</span>
+<span>             fill <span class="op">=</span> <span class="st">"#A680B8"</span>, <span class="co"># Use purple color </span></span>
+<span>             color <span class="op">=</span> <span class="st">"#2C3E50"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="st">"Physical Position"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Genetic distance (cM)"</span></span>
+<span>  <span class="op">)</span><span class="op">+</span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>    plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">13</span><span class="op">)</span>,</span>
+<span>    axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,</span>
+<span>    axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,</span>
+<span>    axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12.5</span><span class="op">)</span>,</span>
+<span>    axis.title.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12.5</span><span class="op">)</span>,</span>
+<span>    panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#FAF3E0"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>    panel.grid.major <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_line</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#D5DBDB"</span>, size <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>    panel.grid.minor <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">chrom</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Optimized Order"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p_order</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-8-1.png" width="624"></p>
+<p>In chromosomes 2 and 8, the optimized genotype matrix (ordered using
+SALOD in previous steps) shows an inversion in the first half. This
+discrepancy is not observed when using the reference genome order, as
+markers are arranged and compared according to the same reference, so no
+deviations are expected.</p>
+<p>I do not have definitive prove that the optimized order is the real
+order but linkage mapping is used in genome assemblies to confirm
+reference genome order.</p>
+</div>
+<div class="section level2">
+<h2 id="example-with-reference-genome-order">Example with reference genome order<a class="anchor" aria-label="anchor" href="#example-with-reference-genome-order"></a>
+</h2>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Reference Genome Order map</span></span>
+<span><span class="va">p_ref</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">MAP_Ref_Genome_Order</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">position_Mb</span>, <span class="va">position_cM</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>shape <span class="op">=</span> <span class="fl">21</span>, </span>
+<span>             size <span class="op">=</span> <span class="fl">1.8</span>,</span>
+<span>             fill <span class="op">=</span> <span class="st">"#A680B8"</span>, <span class="co"># Use purple color </span></span>
+<span>             color <span class="op">=</span> <span class="st">"#2C3E50"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="st">"Physical Position"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Genetic distance (cM)"</span></span>
+<span>  <span class="op">)</span><span class="op">+</span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>    plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">13</span><span class="op">)</span>,</span>
+<span>    axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,</span>
+<span>    axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,</span>
+<span>    axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12.5</span><span class="op">)</span>,</span>
+<span>    axis.title.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12.5</span><span class="op">)</span>,</span>
+<span>    panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#FAF3E0"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>    panel.grid.major <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_line</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#D5DBDB"</span>, size <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>    panel.grid.minor <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">chrom</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Reference Genome Order"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p_ref</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-9-1.png" width="624"></p>
+</div>
+<div class="section level2">
+<h2 id="recover-genotype-matrix-and-plot-the-coverage">Recover genotype matrix and plot the coverage<a class="anchor" aria-label="anchor" href="#recover-genotype-matrix-and-plot-the-coverage"></a>
+</h2>
+<p>This code extracts the names of chromosomes from
+<code>maps_ordered</code>, then builds two genotype matrices that
+combines all the chromosomes: one using the reference genome order
+(<code>geno_genome_order</code>) and another using the optimized order
+(<code>geno_optimized_order</code>).</p>
+<p>Additionally we visualize the coverage of the combined genotype for
+the reference genome order.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#--- Recover Genotype Matrix----</span></span>
+<span></span>
+<span><span class="co">#  Ref Genome Ordered Markers</span></span>
+<span><span class="va">chromosomes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">maps_ordered</span><span class="op">)</span> <span class="co"># get names</span></span>
+<span><span class="va">geno_genome_order</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">chromosomes</span>,</span>
+<span>                                           <span class="kw">function</span><span class="op">(</span><span class="va">chr</span><span class="op">)</span> <span class="va">maps_ref_genome</span><span class="op">[[</span><span class="va">chr</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geno_hmm</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Combine all genotypes data frame for Ref Genome Ordered Markers Order Optimized Markers</span></span>
+<span><span class="va">geno_optimized_order</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">chromosomes</span>,</span>
+<span>                                              <span class="kw">function</span><span class="op">(</span><span class="va">chr</span><span class="op">)</span> <span class="va">maps_ordered</span><span class="op">[[</span><span class="va">chr</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geno_hmm</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="visualize-the-coverage">Visualize the coverage<a class="anchor" aria-label="anchor" href="#visualize-the-coverage"></a>
+</h3>
+<p>This code plots genome-wide marker coverage based on the reference
+genome order, showing marker distribution across chromosomes.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># coverage map of ordered map</span></span>
+<span><span class="va">coverage_map_ordered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_cover.html">plot_cover</a></span><span class="op">(</span><span class="fu"><a href="../reference/extract_map.html">extract_map</a></span><span class="op">(</span><span class="va">geno_genome_order</span><span class="op">)</span>, customize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="va">coverage_map_ordered</span></span></code></pre></div>
+<p><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-11-1.png" width="624"></p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="optional">Optional<a class="anchor" aria-label="anchor" href="#optional"></a>
+</h2>
+<p>If you want you can visuzlice a subset (first 50 individuals) of the
+reference genome-ordered data using <code><a href="https://rdrr.io/pkg/MapRtools/man/plot_geno.html" class="external-link">plot_geno()</a></code> and inspect
+haplotype structure across individuals and all chromosomes</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">haplo_ordered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MapRtools/man/plot_geno.html" class="external-link">plot_geno</a></span><span class="op">(</span>geno <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">geno_genome_order</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">haplo_ordered</span></span></code></pre></div>
+<p><img src="Haplotype_and_Map_files/figure-html/unnamed-chunk-12-1.png" width="624"></p>
+</div>
+<div class="section level2">
+<h2 id="save">Save<a class="anchor" aria-label="anchor" href="#save"></a>
+</h2>
+<p>We will save our progress and continue with genetic mapping.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#--- Save genotypes  </span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">geno_genome_order</span>, </span>
+<span>       <span class="va">geno_optimized_order</span>, file <span class="op">=</span> <span class="st">"processed_data/R_data/genotype_matrices_hmm_pop2-2025-03-12.RData"</span><span class="op">)</span></span>
+<span>  </span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
