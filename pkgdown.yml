@@ -6,9 +6,10 @@ articles:
   Haplotype_and_Map: Haplotype_and_Map.html
   LD_binning: LD_binning.html
   Linkage_Groups: Linkage_Groups.html
+  pheno_part_2: pheno_part_2.html
   pheno: pheno.html
   Recode: Recode.html
-last_built: 2025-06-06T19:19Z
+last_built: 2025-06-06T21:05Z
 urls:
   reference: https://vegaalfaro.github.io/geneticMapR/reference
   article: https://vegaalfaro.github.io/geneticMapR/articles
