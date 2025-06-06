@@ -1,0 +1,297 @@
+---
+title: "Phenotypic Data Part I"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{pheno}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Intro
+
+This script analyzes and prepares phenotype data for genetic mapping. Like any other phenotypic dataset there are some errors that we will go through and fix.
+
+* Notes:
+
+IDs 5053–5060 are missing values in the Geno field; assign "Program-Round-2".
+
+The Geno value "P1-OG-Mcgregor" should be "OG-Mcgregor"—actual parent identity is irrelevant at this stage.
+
+The ID column is numeric; append "-F2" to each entry (e.g., "1001-F2") to match genotype file formatting.
+
+Phenotype IDs match genotype entries, though the latter include extra well/plate info (e.g., "1001-F2-Alpha-A1").
+
+After visualization, remove Parents, F1s, and population 1633 to format the phenotype file for R/qtl.
+
+
+## Libraries
+
+```{r libraries, message=FALSE, warning=FALSE}
+library(geneticMapR)
+library(stringr)
+library(dplyr)
+library(ggdist)
+library(ggplot2)
+library(rlang)
+library(ggpubr)
+library(readxl)
+```
+
+
+
+## Data
+
+```{r data, message=FALSE, warning=FALSE}
+# Ordered Markers
+url1 <- "https://raw.githubusercontent.com/vegaalfaro/geneticMapRFiles/refs/heads/main/phenotype/phenotypes-binary.csv"
+
+# Download file
+if (!file.exists("local_copy_phenotypes-binary.csv")) {
+  download.file(url1, destfile = "local_copy_phenotypes-binary.csv")}
+
+# Read
+pheno <- read.csv("local_copy_phenotypes-binary.csv")
+
+```
+
+Feel free to explore the phenotype file. This file is more than we need because it contains data for 3 populations and we will be only working with one.
+
+## Curation
+
+```{r curation, message=FALSE, warning=FALSE}
+#--- Data curation ----
+
+# 1. Populate correctly the Geno columns for IDs 5053:5060
+pheno$Geno[pheno$ID %in% 5053:5060] <- "Program-Round2"
+
+# 2. Rename parents OGMacgregor and Program Round1
+pheno$Geno <- str_remove(pheno$Geno, "P1-|P2-")
+
+# 3. Change the ID column
+pheno$IDs <- paste(pheno$ID, pheno$Gen, sep = "-")
+
+
+# Most important variables
+vars <- names(pheno)[c(9, 10, 16, 22, 23, 24, 26)]
+response_vars <- vars #make a copy
+
+# Print variables we'll be keeping or working with
+vars
+```
+
+
+
+## Data Exploration
+
+We begin by calculating basic statistics. The `Geno` column indicates the group to which each individual belongs. There are three groups with 107 or more individuals, these correspond to the F~2~ populations. In addition, the dataset includes entries for the parents and F~1s~ of these segregating F~2~ populations.
+
+```{r exploration, warning=FALSE, message=FALSE}
+
+# Means by the column genotype for one variable
+means_LW <- pheno %>% 
+  group_by(Geno) %>% 
+  summarize(mean = mean(length_width_ratio),
+            sd = sd(length_width_ratio),
+            min = min(length_width_ratio),
+            max = max(length_width_ratio),
+            n = n()
+            )
+head(means_LW, n=10)
+```
+
+
+### Multiple traits
+
+If you have multiple traits, below is a loop that would help you to estimate the statistics for each trait and save it in a list.
+
+```{r}
+
+# List of columns/traits to compute statistics
+response_vars <- vars
+
+# Create empty vector to store results 
+response_var_stats <- list()
+
+# Iterate for each column 
+for (col in response_vars){
+  # compute statistics 
+  stats <- pheno %>%
+    group_by(Geno) %>%
+    summarize(across({{ col }}, list(
+      mean = mean,
+      sd = sd,
+      min = min,
+      max = max, 
+      n = ~sum(!is.na(.))
+    )),
+    .groups = "drop")
+  
+  # Add to the results list
+  response_var_stats[[col]] <- stats
+  
+}
+
+print(response_var_stats)
+```
+
+## Subset
+
+We are interested in `population 2`. There is more data here than we need so will subset it.
+
+```{r, message=FALSE, warning=FALSE}
+# Population 2
+Pop2 <- pheno[pheno$Geno %in% c("1629-CylindricalxFlat-F2", 
+                                "Cylindra", 
+                                "F1-1629", 
+                                "Mono"), ]
+```
+
+### Parents data
+
+We can also subset the data for the F~2~ **parents**. Including the parents in phenotypic evaluations is useful for comparison and helps interpret how they rank relative to the progeny of the segregating populations. It’s generally a good practice to include parental data when screening F~2~ individuals or, at the very least, to collect some phenotypic data on the parents for reference.
+
+```{r}
+#--- Subset parents only----
+
+# Subset parents
+all_parents <- pheno[pheno$Gen %in% c("P"),]
+
+# Subset parents of population 1
+parents <- pheno[pheno$Geno %in% c("OG-Mcgregor", 
+                                   "Program-Round1" 
+),]
+
+```
+
+### Multiple populations
+
+If you have multiple populations and traits combined in a single dataset, you can use code like the example below to compare them. In this case, I show data for all three populations and illustrate the approach using two traits as an example.
+
+```{r, fig.height=4.3, fig.width=6.5, message=FALSE, warning=FALSE}
+
+plots2 <- list()
+
+for (col in response_vars) {
+  plot <- ggplot(pheno %>% filter(Geno %in% c("1592-ConicalxRound-F2", 
+                                              "1633-RoundxCylindrical-F2", 
+                                              "1629-CylindricalxFlat-F2")), 
+                 aes(x = Geno, 
+                     y = !!sym(col), 
+                     fill = Geno)) +
+   
+     geom_violin(alpha = 0.5, color = "#2C3E50") +  # Rain (density)
+    geom_boxplot(width = 0.2, alpha = 0.7, color = "#2C3E50", outlier.shape = NA) +  # Cloud (boxplot)
+    geom_jitter(width = 0.15, alpha = 0.6, size = 1.5, color = "#A680B8") +  # Drops (data points)
+    labs(x = "Group", y = col, title = paste0("Raincloud Plot of ", col)) +
+    theme_minimal(base_size = 14) +
+    theme(
+      plot.title = element_text(size = 13, face = "bold"),
+      axis.text.x = element_text(size = 12, color = "#34495E"), 
+      axis.text.y = element_text(size = 12, color = "#34495E"), 
+      axis.title.x = element_text(size = 12.5, face = "bold"), 
+      axis.title.y = element_text(size = 12.5, face = "bold"),
+      panel.background = element_rect(fill = "#FAF3E0", color = NA), # Light beige background
+      panel.grid.major = element_line(color = "#D5DBDB", size = 0.5),
+      panel.grid.minor = element_blank(),
+      legend.position = "none"
+    ) + coord_flip()
+  
+  plots2[[col]] <- plot
+}
+
+print(plots2[vars][1:2])   # Run this
+```
+
+## Publication ready plots for parent differences
+
+In my previous linkage mapping projects, I’ve found it useful to highlight differences among the parents (see, for example, this publication: https://doi.org/10.1093/g3journal/jkae041). In this case the parents are `Cylindra` and `Mono`, two table beet varieties  Below, I demonstrate how to create a high-quality, publication-ready plot that shows the differences among the parental types.
+
+This code is designed to work for multiple traits but it would work for only one variable with minor refactoring. I show only 2 traits for example purposes.
+
+```{r, fig.height=4.3, fig.width=6.5, message=FALSE, warning=FALSE}
+# Population 2
+response_vars <- vars
+
+# Y-Axis labels
+
+ylab <- c(expression(Biomass ~ (mm ^ 2)),
+          "Maximum width (mm)",
+          "Width 50 (mm)",
+          "Length (mm)",
+          "Length to width ratio (mm)",
+          expression("Shoulder area" ~ (mm ^ 2)),
+          "Tip angle (degrees)")
+
+# Subset parents of population 2
+parents2 <- pheno[pheno$Geno %in% c("Mono", 
+                                   "Cylindra" 
+),]
+
+
+plots_pa2 <- list()  # Initialize the list
+
+for (i in seq_along(vars)) {
+  col <- vars[i]  # Extract column name
+  
+  plot <- ggplot(parents2,
+                 aes(x = Geno, 
+                     y = !!sym(col), 
+                     fill = Geno)) +
+    # Add half-eye distribution
+    ggdist::stat_halfeye(
+      adjust = 0.85,
+      alpha = 0.85,
+      width = 0.6,
+      .width = 0,
+      justification = -0.2,
+      point_colour = NA
+    ) +
+    # Add boxplot
+    geom_boxplot(
+      width = 0.15,
+      alpha = 0.4, 
+      outlier.shape = NA,
+      show.legend = FALSE
+    ) +
+    # Add points
+    geom_point(
+      aes(color = factor(Geno)),
+      size = 1.5,
+      alpha = 0.5, 
+      position = position_jitter(seed = 1, width = 0.1),
+      show.legend = FALSE # Remove legend for points
+    ) +
+    # Labels and aesthetics
+    labs(x = "", 
+         y = ylab[i], # Correctly indexing ylab
+         title = "Population 2"
+    ) +
+    theme_minimal(base_size = 14) +
+    theme(
+      plot.title = element_text(size = 13),
+      axis.text.x = element_text(size = 12, color = "#34495E"), 
+      axis.text.y = element_text(size = 12, color = "#34495E"), 
+      panel.background = element_rect(fill = "#FAF3E0", color = NA), #  background
+      panel.grid.major = element_line(color = "#D5DBDB", size = 0.1),
+      panel.grid.minor = element_blank(),
+      legend.position = "none"
+    ) + 
+    coord_flip()
+  
+  plots_pa2[[col]] <- plot  # Store plot in the list
+}
+
+# Check stored plots
+plots_pa2[1:2] # Run this
+```
+
+
+
+
