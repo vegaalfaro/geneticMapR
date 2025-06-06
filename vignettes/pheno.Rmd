@@ -49,7 +49,7 @@ library(readxl)
 ## Data
 
 ```{r data, message=FALSE, warning=FALSE}
-# Ordered Markers
+# Phenotype
 url1 <- "https://raw.githubusercontent.com/vegaalfaro/geneticMapRFiles/refs/heads/main/phenotype/phenotypes-binary.csv"
 
 # Download file

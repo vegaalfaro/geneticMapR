@@ -1,0 +1,106 @@
+---
+title: "Phenotypic Data Part II"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{pheno_part_2}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Intro
+This vignette will deal with how to properly and in a reproducible way work your phenotypic and genotypic data in a format compatible with R/qtl, a widely used package in linkage mapping.
+
+
+## Libraries
+
+```{r libraries, message=FALSE, warning=FALSE}
+library(geneticMapR)
+library(stringr)
+library(dplyr)
+library(ggdist)
+library(ggplot2)
+library(rlang)
+library(ggpubr)
+library(readxl)
+```
+
+## Data
+We continue with the data of our previous script.
+
+```{r data, message=FALSE, warning=FALSE}
+# Phenotype
+url1 <- "https://raw.githubusercontent.com/vegaalfaro/geneticMapRFiles/refs/heads/main/phenotype/phenotypes-binary.csv"
+
+# Download file
+if (!file.exists("local_copy_phenotypes-binary.csv")) {
+  download.file(url1, destfile = "local_copy_phenotypes-binary.csv")}
+
+# Read
+pheno <- read.csv("local_copy_phenotypes-binary.csv")
+
+# Most important variables
+vars <- names(pheno)[c(9, 10, 16, 22, 23, 24, 26)]
+response_vars <- vars #make a copy
+
+```
+
+In addition, we will need some meta-data available from the same data repository `geneticMapRFiles`.
+
+```{r, message=FALSE, warning=FALSE}
+
+url2 <- "https://github.com/vegaalfaro/geneticMapRFiles/raw/main/IDs/ID.csv"
+
+# Download file
+if (!file.exists("local_copy_ID.csv")) {
+  download.file(url2, destfile = "local_copy_ID.csv")}
+
+# Read
+ID_Pedigrees <- read.csv("local_copy_ID.csv")
+
+# Make as character
+ID_Pedigrees$ID <- as.character(ID_Pedigrees$ID)
+```
+
+
+## Prepare data for R/QTL
+
+This section filters the dataset to include only F~2~ individuals, excluding parents and F~1s~. It also matches phenotype IDs to their corresponding VCF IDs for integration with genotypic data, and selects only the relevant columns required for downstream analysis in R/qtl.
+
+```{r}
+# We subset like we did in the previous script.
+Pop2 <- pheno[pheno$Geno %in% c("1629-CylindricalxFlat-F2", 
+                                "Cylindra", 
+                                "F1-1629", 
+                                "Mono"), ]
+
+# Keep only F2 Individuals
+Pop2_progeny <- Pop2[Pop2$Gen == "F2",]
+Pop2_progeny$ID <- as.character(Pop2_progeny$ID) # Declare ID as character
+
+# Add VCF ID (ID that matches the geno file)
+Pop2_progeny <- Pop2_progeny %>%
+  left_join(ID_Pedigrees %>% select(ID, VCF_name), by = "ID")
+
+# Ensure "VCF_name" is included in the selection
+keep <- c(vars, "VCF_name")
+
+# Select only the desired columns and rename VCF_name to ID
+Pop2_progeny <- Pop2_progeny %>%
+  ungroup() %>%  # Remove any existing grouping (Annoying dplyr thing)
+  dplyr::select(all_of(keep)) %>%
+  rename(ID = VCF_name)
+
+
+```
+
+
+
+
+
