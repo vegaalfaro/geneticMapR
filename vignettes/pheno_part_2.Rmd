@@ -49,9 +49,12 @@ pheno <- read.csv("local_copy_phenotypes-binary.csv")
 vars <- names(pheno)[c(9, 10, 16, 22, 23, 24, 26)]
 response_vars <- vars #make a copy
 
+knitr::kable(head(pheno), caption = "Preview of the phenotype dataset")
 ```
 
 In addition, we will need some meta-data available from the same data repository `geneticMapRFiles`.
+The file ID contains the column `VCF_name` which will match the ID in the genotype matrix. The phenotype and the genotype files share the same individuals but the names are slightly different. This ID file, 1001-F2-Alpha-A1, 1002-F2-Alpha-B1, 1003-F2-Alpha-C1). They share parto of the name but we need to make them match.
+
 
 ```{r, message=FALSE, warning=FALSE}
 
@@ -66,8 +69,10 @@ ID_Pedigrees <- read.csv("local_copy_ID.csv")
 
 # Make as character
 ID_Pedigrees$ID <- as.character(ID_Pedigrees$ID)
-```
 
+head(ID_Pedigrees)
+knitr::kable(head(ID_Pedigrees), caption = "Preview of the ID Meta-data")
+```
 
 ## Prepare data for R/QTL
 
@@ -98,6 +103,7 @@ Pop2_progeny <- Pop2_progeny %>%
   rename(ID = VCF_name)
 
 
+knitr::kable(head(Pop2_progeny), caption = "Preview of the Phenotypic data")
 ```
 
 
