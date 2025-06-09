@@ -111,9 +111,293 @@ R/qtl, a widely used package in linkage mapping.</p>
 <span></span>
 <span><span class="co"># Most important variables</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">pheno</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">10</span>, <span class="fl">16</span>, <span class="fl">22</span>, <span class="fl">23</span>, <span class="fl">24</span>, <span class="fl">26</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">response_vars</span> <span class="op">&lt;-</span> <span class="va">vars</span> <span class="co">#make a copy</span></span></code></pre></div>
+<span><span class="va">response_vars</span> <span class="op">&lt;-</span> <span class="va">vars</span> <span class="co">#make a copy</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pheno</span><span class="op">)</span>, caption <span class="op">=</span> <span class="st">"Preview of the phenotype dataset"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Preview of the phenotype dataset</caption>
+<colgroup>
+<col width="1%">
+<col width="1%">
+<col width="3%">
+<col width="1%">
+<col width="6%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="5%">
+<col width="3%">
+<col width="4%">
+<col width="3%">
+<col width="4%">
+<col width="5%">
+<col width="6%">
+<col width="3%">
+<col width="4%">
+<col width="1%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">ID</th>
+<th align="left">Row</th>
+<th align="left">UID</th>
+<th align="left">Gen</th>
+<th align="left">Geno</th>
+<th align="right">F1Num</th>
+<th align="right">Scale</th>
+<th align="right">Photo</th>
+<th align="right">biomass</th>
+<th align="right">max_width</th>
+<th align="right">width_0</th>
+<th align="right">width_10</th>
+<th align="right">width_20</th>
+<th align="right">width_30</th>
+<th align="right">width_40</th>
+<th align="right">width_50</th>
+<th align="right">width_60</th>
+<th align="right">width_70</th>
+<th align="right">width_80</th>
+<th align="right">width_90</th>
+<th align="right">width_100</th>
+<th align="right">length</th>
+<th align="right">length_width_ratio</th>
+<th align="right">shoulder_top</th>
+<th align="right">shoulder_bottom</th>
+<th align="right">tip_angle_top</th>
+<th align="right">tip_angle_bottom</th>
+<th align="right">above_tipangle_top</th>
+<th align="right">above_tipangle_bottom</th>
+<th align="left">created</th>
+<th align="left">modified</th>
+<th align="left">type</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1001</td>
+<td align="left">1204</td>
+<td align="left">1021-MAP-2024</td>
+<td align="left">F2</td>
+<td align="left">1592-ConicalxRound-F2</td>
+<td align="right">1592</td>
+<td align="right">955</td>
+<td align="right">1</td>
+<td align="right">6786.411</td>
+<td align="right">87.6339</td>
+<td align="right">55.60</td>
+<td align="right">81.88</td>
+<td align="right">87.22</td>
+<td align="right">77.37</td>
+<td align="right">62.72</td>
+<td align="right">44.92</td>
+<td align="right">31.31</td>
+<td align="right">22.41</td>
+<td align="right">17.17</td>
+<td align="right">9.42</td>
+<td align="right">0.31</td>
+<td align="right">144.0672</td>
+<td align="right">1.64</td>
+<td align="right">119.0812</td>
+<td align="right">144.8640</td>
+<td align="right">29.209159</td>
+<td align="right">3.381727</td>
+<td align="right">25.7499</td>
+<td align="right">21.1459</td>
+<td align="left">10/22/24 9:31</td>
+<td align="left">10/22/24 11:17</td>
+<td align="left">binary</td>
+</tr>
+<tr class="even">
+<td align="right">1002</td>
+<td align="left">1204</td>
+<td align="left">1022-MAP-2024</td>
+<td align="left">F2</td>
+<td align="left">1592-ConicalxRound-F2</td>
+<td align="right">1592</td>
+<td align="right">955</td>
+<td align="right">1</td>
+<td align="right">5172.714</td>
+<td align="right">67.1127</td>
+<td align="right">44.39</td>
+<td align="right">56.01</td>
+<td align="right">63.97</td>
+<td align="right">66.17</td>
+<td align="right">58.00</td>
+<td align="right">47.12</td>
+<td align="right">34.76</td>
+<td align="right">23.77</td>
+<td align="right">16.23</td>
+<td align="right">11.62</td>
+<td align="right">0.52</td>
+<td align="right">127.8387</td>
+<td align="right">1.90</td>
+<td align="right">65.9479</td>
+<td align="right">201.6805</td>
+<td align="right">32.242468</td>
+<td align="right">1.762391</td>
+<td align="right">24.6428</td>
+<td align="right">45.3173</td>
+<td align="left">10/22/24 9:31</td>
+<td align="left">10/22/24 11:17</td>
+<td align="left">binary</td>
+</tr>
+<tr class="odd">
+<td align="right">1003</td>
+<td align="left">1204</td>
+<td align="left">1023-MAP-2024</td>
+<td align="left">F2</td>
+<td align="left">1592-ConicalxRound-F2</td>
+<td align="right">1592</td>
+<td align="right">945</td>
+<td align="right">1</td>
+<td align="right">10918.769</td>
+<td align="right">106.6464</td>
+<td align="right">60.20</td>
+<td align="right">100.30</td>
+<td align="right">105.06</td>
+<td align="right">78.93</td>
+<td align="right">48.24</td>
+<td align="right">34.49</td>
+<td align="right">25.18</td>
+<td align="right">21.37</td>
+<td align="right">15.87</td>
+<td align="right">13.33</td>
+<td align="right">0.21</td>
+<td align="right">227.8932</td>
+<td align="right">2.14</td>
+<td align="right">300.6052</td>
+<td align="right">301.0753</td>
+<td align="right">8.733682</td>
+<td align="right">13.212747</td>
+<td align="right">115.8542</td>
+<td align="right">42.5134</td>
+<td align="left">10/22/24 9:31</td>
+<td align="left">10/22/24 11:17</td>
+<td align="left">binary</td>
+</tr>
+<tr class="even">
+<td align="right">1004</td>
+<td align="left">1204</td>
+<td align="left">1024-MAP-2024</td>
+<td align="left">F2</td>
+<td align="left">1592-ConicalxRound-F2</td>
+<td align="right">1592</td>
+<td align="right">947</td>
+<td align="right">1</td>
+<td align="right">3145.966</td>
+<td align="right">48.2592</td>
+<td align="right">12.04</td>
+<td align="right">44.56</td>
+<td align="right">48.15</td>
+<td align="right">46.57</td>
+<td align="right">42.13</td>
+<td align="right">35.59</td>
+<td align="right">27.98</td>
+<td align="right">22.60</td>
+<td align="right">19.11</td>
+<td align="right">14.89</td>
+<td align="right">0.32</td>
+<td align="right">97.1520</td>
+<td align="right">2.01</td>
+<td align="right">47.1480</td>
+<td align="right">53.7830</td>
+<td align="right">32.040405</td>
+<td align="right">24.824555</td>
+<td align="right">75.9742</td>
+<td align="right">1.4608</td>
+<td align="left">10/22/24 9:31</td>
+<td align="left">10/22/24 11:17</td>
+<td align="left">binary</td>
+</tr>
+<tr class="odd">
+<td align="right">1005</td>
+<td align="left">1204</td>
+<td align="left">1025-MAP-2024</td>
+<td align="left">F2</td>
+<td align="left">1592-ConicalxRound-F2</td>
+<td align="right">1592</td>
+<td align="right">955</td>
+<td align="right">1</td>
+<td align="right">1395.935</td>
+<td align="right">35.3886</td>
+<td align="right">22.51</td>
+<td align="right">32.67</td>
+<td align="right">35.07</td>
+<td align="right">32.14</td>
+<td align="right">26.18</td>
+<td align="right">19.37</td>
+<td align="right">13.51</td>
+<td align="right">9.63</td>
+<td align="right">8.48</td>
+<td align="right">6.70</td>
+<td align="right">0.42</td>
+<td align="right">70.4631</td>
+<td align="right">1.99</td>
+<td align="right">24.6537</td>
+<td align="right">37.2711</td>
+<td align="right">12.022277</td>
+<td align="right">22.166346</td>
+<td align="right">2.6419</td>
+<td align="right">23.7439</td>
+<td align="left">10/22/24 9:31</td>
+<td align="left">10/22/24 11:17</td>
+<td align="left">binary</td>
+</tr>
+<tr class="even">
+<td align="right">1006</td>
+<td align="left">1204</td>
+<td align="left">1026-MAP-2024</td>
+<td align="left">F2</td>
+<td align="left">1592-ConicalxRound-F2</td>
+<td align="right">1592</td>
+<td align="right">955</td>
+<td align="right">1</td>
+<td align="right">5172.572</td>
+<td align="right">57.0615</td>
+<td align="right">42.93</td>
+<td align="right">55.49</td>
+<td align="right">55.81</td>
+<td align="right">51.72</td>
+<td align="right">43.66</td>
+<td align="right">29.63</td>
+<td align="right">24.50</td>
+<td align="right">21.04</td>
+<td align="right">20.10</td>
+<td align="right">17.90</td>
+<td align="right">0.10</td>
+<td align="right">148.6740</td>
+<td align="right">2.61</td>
+<td align="right">53.9335</td>
+<td align="right">52.3549</td>
+<td align="right">10.482438</td>
+<td align="right">33.103642</td>
+<td align="right">81.6456</td>
+<td align="right">63.0868</td>
+<td align="left">10/22/24 9:31</td>
+<td align="left">10/22/24 11:17</td>
+<td align="left">binary</td>
+</tr>
+</tbody>
+</table>
 <p>In addition, we will need some meta-data available from the same data
-repository <code>geneticMapRFiles</code>.</p>
+repository <code>geneticMapRFiles</code>. The file ID contains the
+column <code>VCF_name</code> which will match the ID in the genotype
+matrix. The phenotype and the genotype files share the same individuals
+but the names are slightly different. This ID file, 1001-F2-Alpha-A1,
+1002-F2-Alpha-B1, 1003-F2-Alpha-C1). They share parto of the name but we
+need to make them match.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">url2</span> <span class="op">&lt;-</span> <span class="st">"https://github.com/vegaalfaro/geneticMapRFiles/raw/main/IDs/ID.csv"</span></span>
@@ -126,7 +410,71 @@ repository <code>geneticMapRFiles</code>.</p>
 <span><span class="va">ID_Pedigrees</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"local_copy_ID.csv"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Make as character</span></span>
-<span><span class="va">ID_Pedigrees</span><span class="op">$</span><span class="va">ID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">ID_Pedigrees</span><span class="op">$</span><span class="va">ID</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">ID_Pedigrees</span><span class="op">$</span><span class="va">ID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">ID_Pedigrees</span><span class="op">$</span><span class="va">ID</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ID_Pedigrees</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     ID Sample_Name Population Type         VCF_name</span></span>
+<span><span class="co">#&gt; 1 1001     1001-F2       1592   F2 1001-F2-Alpha-A1</span></span>
+<span><span class="co">#&gt; 2 1002     1002-F2       1592   F2 1002-F2-Alpha-B1</span></span>
+<span><span class="co">#&gt; 3 1003     1003-F2       1592   F2 1003-F2-Alpha-C1</span></span>
+<span><span class="co">#&gt; 4 1004     1004-F2       1592   F2 1004-F2-Alpha-D1</span></span>
+<span><span class="co">#&gt; 5 1005     1005-F2       1592   F2 1005-F2-Alpha-E1</span></span>
+<span><span class="co">#&gt; 6 1006     1006-F2       1592   F2 1006-F2-Alpha-F1</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ID_Pedigrees</span><span class="op">)</span>, caption <span class="op">=</span> <span class="st">"Preview of the ID Meta-data"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Preview of the ID Meta-data</caption>
+<thead><tr class="header">
+<th align="left">ID</th>
+<th align="left">Sample_Name</th>
+<th align="left">Population</th>
+<th align="left">Type</th>
+<th align="left">VCF_name</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">1001</td>
+<td align="left">1001-F2</td>
+<td align="left">1592</td>
+<td align="left">F2</td>
+<td align="left">1001-F2-Alpha-A1</td>
+</tr>
+<tr class="even">
+<td align="left">1002</td>
+<td align="left">1002-F2</td>
+<td align="left">1592</td>
+<td align="left">F2</td>
+<td align="left">1002-F2-Alpha-B1</td>
+</tr>
+<tr class="odd">
+<td align="left">1003</td>
+<td align="left">1003-F2</td>
+<td align="left">1592</td>
+<td align="left">F2</td>
+<td align="left">1003-F2-Alpha-C1</td>
+</tr>
+<tr class="even">
+<td align="left">1004</td>
+<td align="left">1004-F2</td>
+<td align="left">1592</td>
+<td align="left">F2</td>
+<td align="left">1004-F2-Alpha-D1</td>
+</tr>
+<tr class="odd">
+<td align="left">1005</td>
+<td align="left">1005-F2</td>
+<td align="left">1592</td>
+<td align="left">F2</td>
+<td align="left">1005-F2-Alpha-E1</td>
+</tr>
+<tr class="even">
+<td align="left">1006</td>
+<td align="left">1006-F2</td>
+<td align="left">1592</td>
+<td align="left">F2</td>
+<td align="left">1006-F2-Alpha-F1</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level2">
 <h2 id="prepare-data-for-rqtl">Prepare data for R/QTL<a class="anchor" aria-label="anchor" href="#prepare-data-for-rqtl"></a>
@@ -158,7 +506,95 @@ downstream analysis in R/qtl.</p>
 <span><span class="va">Pop2_progeny</span> <span class="op">&lt;-</span> <span class="va">Pop2_progeny</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>  <span class="co"># Remove any existing grouping (Annoying dplyr thing)</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link">all_of</a></span><span class="op">(</span><span class="va">keep</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="va">VCF_name</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="va">VCF_name</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">Pop2_progeny</span><span class="op">)</span>, caption <span class="op">=</span> <span class="st">"Preview of the Phenotypic data"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Preview of the Phenotypic data</caption>
+<colgroup>
+<col width="9%">
+<col width="9%">
+<col width="8%">
+<col width="8%">
+<col width="18%">
+<col width="12%">
+<col width="13%">
+<col width="16%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">biomass</th>
+<th align="right">max_width</th>
+<th align="right">width_50</th>
+<th align="right">length</th>
+<th align="right">length_width_ratio</th>
+<th align="right">shoulder_top</th>
+<th align="right">tip_angle_top</th>
+<th align="left">ID</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">7046.486</td>
+<td align="right">89.0997</td>
+<td align="right">79.57</td>
+<td align="right">111.6102</td>
+<td align="right">1.25</td>
+<td align="right">128.2565</td>
+<td align="right">41.445822</td>
+<td align="left">2001-F2-Beta-A10</td>
+</tr>
+<tr class="even">
+<td align="right">5883.917</td>
+<td align="right">72.3297</td>
+<td align="right">72.12</td>
+<td align="right">105.1587</td>
+<td align="right">1.45</td>
+<td align="right">108.9967</td>
+<td align="right">49.626571</td>
+<td align="left">2002-F2-Beta-B10</td>
+</tr>
+<tr class="odd">
+<td align="right">8650.555</td>
+<td align="right">88.8501</td>
+<td align="right">60.36</td>
+<td align="right">149.8485</td>
+<td align="right">1.69</td>
+<td align="right">124.2265</td>
+<td align="right">57.371546</td>
+<td align="left">2003-F2-Beta-C10</td>
+</tr>
+<tr class="even">
+<td align="right">8809.267</td>
+<td align="right">86.2728</td>
+<td align="right">85.23</td>
+<td align="right">135.5865</td>
+<td align="right">1.57</td>
+<td align="right">197.8657</td>
+<td align="right">44.441035</td>
+<td align="left">2004-F2-Beta-D10</td>
+</tr>
+<tr class="odd">
+<td align="right">10023.938</td>
+<td align="right">110.4552</td>
+<td align="right">110.35</td>
+<td align="right">119.0250</td>
+<td align="right">1.08</td>
+<td align="right">341.3724</td>
+<td align="right">62.982283</td>
+<td align="left">2005-F2-Beta-E10</td>
+</tr>
+<tr class="even">
+<td align="right">10861.375</td>
+<td align="right">92.2389</td>
+<td align="right">86.41</td>
+<td align="right">170.6049</td>
+<td align="right">1.85</td>
+<td align="right">256.2808</td>
+<td align="right">5.314546</td>
+<td align="left">2006-F2-Beta-F10</td>
+</tr>
+</tbody>
+</table>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
