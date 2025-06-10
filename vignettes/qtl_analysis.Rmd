@@ -248,14 +248,13 @@ Please notice that the plot for length-to-width ratio using CIM is different fro
 
 ## Summary of Significant QTLs
 
-We can save the results of the QTLs scan in a list.
+We can save the results of the QTLs scan in a list and query them later.
 
 ```{r summary-results}
 results_pop2 <- lapply(seq_along(cim_qtl_results2), function(i) {
   summary(cim_qtl_results2[[i]], threshold = cim_perm_pop2[[i]][1])
 })
 names(results_pop2) <- names(cim_qtl_results2)
-knitr::kable(head(results_pop2), caption = "QTL results")
 ```
 
 ## LOD Support Interval
@@ -273,7 +272,7 @@ The output, lw_result_pop2, is a data frame listing the start and end positions 
 
 ## Effect Plots
 
-We can visualize the allelic effects of a specific QTL using the effect_plot() function. Below, we load the effect estimates and generate a plot for QTL_1 associated with the length_width_ratio trait:
+We can visualize the allelic effects of a specific QTL using the `effect_plot()` function. The effect plot that I propose below is powerful as it shows the distribution, the median and the number of individuals under each category. Below, we load the effect estimates and generate a plot for QTL_1 associated with the length_width_ratio trait:
 
 ```{r effect-plots, fig.height=4.3, fig.width=5.5, message=FALSE, warning=FALSE}
 effects2 <- read.csv("../data/rqtl.csv")[-c(1:2), ]
