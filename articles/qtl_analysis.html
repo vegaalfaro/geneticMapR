@@ -427,100 +427,13 @@ seem clearer and narrower when CIM was used.</p>
 <div class="section level2">
 <h2 id="summary-of-significant-qtls">Summary of Significant QTLs<a class="anchor" aria-label="anchor" href="#summary-of-significant-qtls"></a>
 </h2>
-<p>We can save the results of the QTLs scan in a list.</p>
+<p>We can save the results of the QTLs scan in a list and query them
+later.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results_pop2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">cim_qtl_results2</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">cim_qtl_results2</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, threshold <span class="op">=</span> <span class="va">cim_perm_pop2</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">results_pop2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cim_qtl_results2</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results_pop2</span><span class="op">)</span>, caption <span class="op">=</span> <span class="st">"QTL results"</span><span class="op">)</span></span></code></pre></div>
-<table class="table kable_wrapper">
-<caption>
-QTL results
-</caption>
-<tbody><tr>
-<td>
-<table class="table">
-<thead><tr class="header">
-<th align="left">chr</th>
-<th align="right">pos</th>
-<th align="right">lod</th>
-</tr></thead>
-<tbody></tbody>
-</table>
-</td>
-<td>
-<table class="table">
-<thead><tr class="header">
-<th align="left">chr</th>
-<th align="right">pos</th>
-<th align="right">lod</th>
-</tr></thead>
-<tbody></tbody>
-</table>
-</td>
-<td>
-<table class="table">
-<thead><tr class="header">
-<th align="left">chr</th>
-<th align="right">pos</th>
-<th align="right">lod</th>
-</tr></thead>
-<tbody></tbody>
-</table>
-</td>
-<td>
-<table class="table">
-<thead><tr class="header">
-<th align="left">chr</th>
-<th align="right">pos</th>
-<th align="right">lod</th>
-</tr></thead>
-<tbody></tbody>
-</table>
-</td>
-<td>
-<table class="table">
-<thead><tr class="header">
-<th align="left"></th>
-<th align="left">chr</th>
-<th align="right">pos</th>
-<th align="right">lod</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">c4.loc43</td>
-<td align="left">4</td>
-<td align="right">43.00000</td>
-<td align="right">7.322167</td>
-</tr>
-<tr class="even">
-<td align="left">CHR6_8692961</td>
-<td align="left">6</td>
-<td align="right">22.58004</td>
-<td align="right">8.302219</td>
-</tr>
-<tr class="odd">
-<td align="left">c7.loc5.5</td>
-<td align="left">7</td>
-<td align="right">5.50000</td>
-<td align="right">13.637436</td>
-</tr>
-</tbody>
-</table>
-</td>
-<td>
-<table class="table">
-<thead><tr class="header">
-<th align="left">chr</th>
-<th align="right">pos</th>
-<th align="right">lod</th>
-</tr></thead>
-<tbody></tbody>
-</table>
-</td>
-</tr></tbody>
-</table>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">results_pop2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cim_qtl_results2</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="lod-support-interval">LOD Support Interval<a class="anchor" aria-label="anchor" href="#lod-support-interval"></a>
@@ -547,8 +460,11 @@ identifying candidate genes or comparing results across populations.</p>
 <h2 id="effect-plots">Effect Plots<a class="anchor" aria-label="anchor" href="#effect-plots"></a>
 </h2>
 <p>We can visualize the allelic effects of a specific QTL using the
-effect_plot() function. Below, we load the effect estimates and generate
-a plot for QTL_1 associated with the length_width_ratio trait:</p>
+<code><a href="../reference/effect_plot.html">effect_plot()</a></code> function. The effect plot that I propose
+below is powerful as it shows the distribution, the median and the
+number of individuals under each category. Below, we load the effect
+estimates and generate a plot for QTL_1 associated with the
+length_width_ratio trait:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">effects2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"../data/rqtl.csv"</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>, <span class="op">]</span></span>
 <span></span>
