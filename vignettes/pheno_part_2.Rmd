@@ -17,6 +17,18 @@ knitr::opts_chunk$set(
 ## Intro
 This vignette will deal with how to properly and in a reproducible way work your phenotypic and genotypic data in a format compatible with R/qtl, a widely used package in linkage mapping.
 
+The main **objective of this article** is to demonstrate the use of the `format_qtl_input` function.
+This function formats the genotype, map, and phenotype files  for QTL analysis in R/qtl. It allows the user to specify whether the genotype data should be converted from dosage to ABH format or used as is.
+
+So we need 3 critical files:
+
+* genotype file
+* map
+* phenotype file
+
+Let's get those and it should be really easy then to use the function to put them together in a format that R/qtl can understand.
+
+The main advantage of using this function is that it automates the integration of map, phenotype, and genotype data. If you need to redo the phenotypic analysis later, having a script that allows you to reproducibly update your files will make the process much easier.
 
 ## Libraries
 
@@ -32,6 +44,9 @@ library(readxl)
 ```
 
 ## Data
+
+### Phenotype
+
 We continue with the data of our previous script.
 
 ```{r data, message=FALSE, warning=FALSE}
@@ -49,7 +64,8 @@ pheno <- read.csv("local_copy_phenotypes-binary.csv")
 vars <- names(pheno)[c(9, 10, 16, 22, 23, 24, 26)]
 response_vars <- vars #make a copy
 
-knitr::kable(head(pheno), caption = "Preview of the phenotype dataset")
+knitr::kable(head(pheno[, 1:7]), caption = "Preview of the first 7 columns of the phenotype dataset")
+
 ```
 
 In addition, we will need some meta-data available from the same data repository `geneticMapRFiles`.
@@ -57,7 +73,6 @@ The file ID contains the column `VCF_name` which will match the ID in the genoty
 
 
 ```{r, message=FALSE, warning=FALSE}
-
 url2 <- "https://github.com/vegaalfaro/geneticMapRFiles/raw/main/IDs/ID.csv"
 
 # Download file
@@ -74,7 +89,36 @@ head(ID_Pedigrees)
 knitr::kable(head(ID_Pedigrees), caption = "Preview of the ID Meta-data")
 ```
 
+### Genotype data
+
+We'll load the ordered genotype matrix that we worked on in the previous scripts and is avaialbe in the the GitHub repository [geneticMapRFiles](https://github.com/vegaalfaro/geneticMapRFiles/tree/main?tab=readme-ov-file).
+
+```{r}
+url3 <- "https://github.com/vegaalfaro/geneticMapRFiles/raw/main/R_data/genotype_matrices_hmm_pop2-2025-03-12.RData"
+
+download.file(url3, destfile = "local_copy_geno.RData", mode = "wb")
+
+load("local_copy_geno.RData")
+
+```
+
+### Maps
+
+These code loads the maps that we worked on and saved in the previous [script](https://vegaalfaro.github.io/geneticMapR/articles/Haplotype_and_Map.html). 
+
+```{r}
+url4 <- "https://github.com/vegaalfaro/geneticMapRFiles/raw/main/R_data/genetic_maps_pop2-2025-06-06.RData"
+
+download.file(url4, destfile = "local_copy_maps.RData", mode = "wb")
+
+load("local_copy_maps.RData")
+
+```
+
+
 ## Prepare data for R/QTL
+
+### Phenotype
 
 This section filters the dataset to include only F~2~ individuals, excluding parents and F~1s~. It also matches phenotype IDs to their corresponding VCF IDs for integration with genotypic data, and selects only the relevant columns required for downstream analysis in R/qtl.
 
@@ -102,11 +146,43 @@ Pop2_progeny <- Pop2_progeny %>%
   dplyr::select(all_of(keep)) %>%
   rename(ID = VCF_name)
 
-
-knitr::kable(head(Pop2_progeny), caption = "Preview of the Phenotypic data")
+knitr::kable(head(Pop2_progeny), caption = "Preview of the columns of the phenotypic data")
 ```
 
 
+Please notice that the phenotype file `Pop2_progeny` of the which we got a glimpse, has the ID at the end. The ID column is not really needed for R/qtl, in fact it detects it as another phenotype trait.
+So we have the phenotype ready. Let's move on to the map file.
 
+### Map
+
+We will use the map that uses the reference genome order. The function `format_qtl_input` requires the columns marker, chrom and position. So we'll change our file slightly to accomodate the requirements.
+
+```{r}
+# Map
+map2 <- MAP_Ref_Genome_Order %>%
+  dplyr::mutate(marker = paste0(chrom, "_", position_Mb)) %>%
+  dplyr::select(marker, chrom, position = position_cM)
+```
+
+
+## Format data with `format_qtl_input`
+The code below uses the `format_qtl_input` to convert the phenotype, genetic map and genotype matrix in a format that can be used to load the data in R/qtl.
+
+```{r}
+# Example usage
+ result <- format_qtl_input(geno_genome_order, map2, Pop2_progeny, numeric = TRUE)
+
+# Save results as csv 
+ write.csv(result, file = "../data/rqtl.csv", row.names = FALSE)
+
+```
+
+Let's look at the data.
+```{r}
+knitr::kable(head(result[,1:15]), caption = "Preview of csv file ready for R/qtl")
+```
+
+
+If you look through the full `rqtl.csv` file, you’ll notice a few individuals have phenotypic data but no genotypic data. This is expected—some didn’t meet the quality criteria for genotyping, were duplicates, or were recorded but not actually sequenced. No problem: `format_input_qtl` handled this by assigning `NAs`, which rqtl will automatically ignore.
 
 

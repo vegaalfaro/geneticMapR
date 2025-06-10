@@ -466,10 +466,16 @@ haplo_ordered
 
 We will save our progress and continue with genetic mapping.
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 #--- Save genotypes  
-  save(geno_genome_order, 
-       geno_optimized_order, file = "processed_data/R_data/genotype_matrices_hmm_pop2-2025-03-12.RData")
-  
+save(geno_genome_order, 
+     geno_optimized_order, file = "../data/genotype_matrices_hmm_pop2-2025-06-06.RData")
+
+#--- Save Maps 
+save(MAP_Ref_Genome_Order, 
+     MAP_Optimized_Order, file = "../data/genetic_maps_pop2-2025-06-06.RData")
+
 ```
+
+
 
