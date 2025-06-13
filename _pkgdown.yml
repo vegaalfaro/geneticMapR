@@ -8,18 +8,18 @@ navbar:
   - icon:
     text: "Articles"
     menu:
-        - text: "Recode Markers"
-          href: vignettes/Recode.html
-        - text: "Binning SNP Markers"
-          href: vignettes/LD_binning.html
-        - text: "Linkage Groups and Marker Order"
-          href: vignettes/Linkage_Groups.html
-        - text: "Phenotype Part I"
-          href: vignettes/pheno.html
-        - text: "Phenotype Part II"
-          href: vignettes/pheno_part_2.html
-        - text: "Linkage Groups and Marker Order"
-          href: vignettes/qtl_analysis.html
+      - text: "Recode Markers"
+        href: vignettes/Recode.html
+      - text: "Binning SNP Markers"
+        href: vignettes/LD_binning.html
+      - text: "Linkage Groups and Marker Order"
+        href: vignettes/Linkage_Groups.html
+      - text: "Phenotype Part I"
+        href: vignettes/pheno.html
+      - text: "Phenotype Part II"
+        href: vignettes/pheno_part_2.html
+      - text: "Linkage Groups and Marker Order"
+        href: vignettes/qtl_analysis.html
 
 reference:
   - title: Core Functions

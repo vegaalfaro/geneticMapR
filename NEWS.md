@@ -1,3 +1,10 @@
 # geneticMapR (development version)
 
-* Initial CRAN submission.
+
+## Changes
+
+## New features
+
+## Bug fixes
+
+* Initial GitHub submission.
