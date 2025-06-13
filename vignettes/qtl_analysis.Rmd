@@ -334,12 +334,19 @@ The QTL on chromosome 4 shown in the first effect plot and in the PVE example ex
 
 ## Save Results
 
-```{r save, eval=FALSE}
-save(cim_qtl_results2, cim_perm_pop2, M2, effects2, mapStats2,
-     scanone_qtl_results2, scanone_results2,
+```{r save}
+save(cim_qtl_results2, 
+     cim_perm_pop2, 
+     M2, 
+     effects2,
+     mapStats2,
+     scanone_qtl_results2, 
+     scanone_results2,
      file = "../data/plot_trace_pop2.RData")
+
 ```
 
 ## Conclusion
 
 This vignette provides a streamlined and reproducible QTL mapping workflow using R/qtl and custom plotting utilities from genticMapR. The steps shown allow detection, validation, of QTLs in an efficient manner. Go to the next article to learn more about better visualizing the QTL results using functions from `geneticMapR.`
+
