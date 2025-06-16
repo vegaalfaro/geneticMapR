@@ -1,0 +1,142 @@
+---
+title: "Drawing a QTL trace"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{qtl_trace}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Intro
+
+This vignette demonstrates how to prepare a QTL trace plot in a reproducible way and publication ready. The steps include loading data, extracting physical or genetic positions, identifying significant thresholds, and visualizing results with `geneticMapR` functions based on `ggplot2` and `ggpubr.`
+
+
+```{r setup}
+library(geneticMapR)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(cowplot)
+library(ggpubr)
+```
+
+## Load CIM Results
+Let's load the previous results.
+
+```{r data}
+load("../data/plot_trace_pop2.RData")
+```
+
+## Setup
+
+Using names(M2$pheno)[-8] dynamically selects all phenotype variables except the ID (8th column). 
+
+```{r}
+response_vars <- names(M2$pheno)[-8]  # Drop ID column
+
+# Define the traits manually for clarity or fixed order
+traits <- c("tip_angle_top", "width_50", "length", "shoulder_top", "length_width_ratio", "biomass")
+
+```
+
+
+## Helper functions
+
+```{r}
+combine_qtl <- function(results, trait_names) {
+  do.call(rbind, lapply(names(results), function(i) {
+    df <- results[[i]]
+    df$response_var <- trait_names[match(i, names(results))]
+    df
+  }))
+}
+
+add_physical_pos <- function(df) {
+  marker.name <- rownames(df)
+  split_marker <- strsplit(marker.name, "[_.]")
+  df$phys.pos <- as.numeric(sapply(split_marker, `[`, 2)) / 1e6
+  df
+}
+
+get_thresholds <- function(qtl_df, perm_df, trait) {
+  sig_thresh <- perm_df["5%", 1]
+  qtl_df %>%
+    filter(lod >= sig_thresh) %>%
+    distinct(chr) %>%
+    mutate(hline = sig_thresh, response_var = trait)
+}
+```
+
+## Thresholds
+
+```{r}
+thresholds_df2 <- bind_rows(lapply(traits, function(trait) {
+  get_thresholds(cim_qtl_results2[[trait]], cim_perm_pop2[[trait]], trait)
+}))
+```
+
+
+## Trait Colors
+
+```{r}
+trait_colors <- c(
+  tip_angle_top = "#d55e00",
+  width_50 = "#cc79a7",
+  length = "#0072b2",
+  shoulder_top = "#f7a600",
+  length_width_ratio = "#009e73",
+  biomass = "black"
+)
+
+```
+
+
+
+## Combine and Annotate QTL Results
+
+```{r}
+pop2 <- do.call(rbind, lapply(names(cim_qtl_results2), function(i) {
+  df <- cim_qtl_results2[[i]]
+  df$response_var <- response_vars[match(i, names(cim_qtl_results2))]
+  df
+}))
+
+pop2 <- add_physical_pos(pop2)
+```
+
+## Known QTLs (Vertical Lines)
+```{r}
+vline_df2 <- data.frame(chr = unique(pop1$chr),
+                        vline = c(NA, NA, NA, 48, NA, 16.6, 12.75, NA, NA))
+
+```
+
+
+```{r}
+pop2_plot <- ggplot(pop2, aes(x = pos, y = lod, color = response_var)) +
+  geom_line(linewidth = 0.85, alpha = 0.6) +
+  geom_hline(data = thresholds_df2, aes(yintercept = hline, group = response_var),
+             size = 1.05, alpha = 0.75) +
+  geom_vline(data = vline_df2, aes(xintercept = vline),
+             linetype = "dotted", color = "black", alpha = 0.85, size = 0.63) +
+  facet_wrap(~chr, nrow = 1) +
+  theme_test() +
+  theme(legend.position = "none") +
+  scale_color_manual(values = trait_colors) +
+  labs(x = "Position (cM)", y = "LOD", color = "Trait") +
+  scale_x_continuous(limits = c(0, 80)) +
+  ggtitle("Population 2")
+
+pop2_plot
+
+```
+
+
