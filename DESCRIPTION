@@ -9,6 +9,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+Remotes: jendelman/MapRtools
 Imports:
     ggplot2, 
     tibble,
@@ -24,7 +25,7 @@ Imports:
     qtl,
     utils,
     png
-Remotes: jendelman/MapRtools
+    MapRtools
 Suggests: 
     knitr,
     rmarkdown,
