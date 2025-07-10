@@ -46,7 +46,7 @@ Check out the Articles tab to learn in detail how to construct genetic maps for 
 
 ## Usage
 
-The example shows how to *recode* markers when neither parent is the reference genome, as is common with [GBS](https://en.wikipedia.org/wiki/Genotyping_by_sequencing) data. Molecular markers (SNPs) must be phased to accurately trace allele inheritance in the progeny. `recode` is a general function that can help with that:
+The example shows how to *recode_markers* markers when neither parent is the reference genome, as is common with [GBS](https://en.wikipedia.org/wiki/Genotyping_by_sequencing) data. Molecular markers (SNPs) must be phased to accurately trace allele inheritance in the progeny. `recode_markers` is a general function that can help with that:
 
 #### Recode markers
 
@@ -57,8 +57,8 @@ data("simulated_geno")
 # Check markers previous to recoding
 print(simulated_geno)
 
-# Recode the markers using the recode() function
-phased <- geneticMapR::recode(simulated_geno, parent1 = "Parent1", parent2 = "Parent2")
+# Recode the markers using the recode_markers() function
+phased <- geneticMapR::recode_markers(simulated_geno, parent1 = "Parent1", parent2 = "Parent2")
 
 # Print the output
 print(phased)
@@ -93,7 +93,7 @@ Credit: Adriana Lopez
 
 ## Last update:
 
-```{r}
-
+```{r, echo=FALSE}
+format(Sys.Date(), "%Y-%m-%d")
 ```
 
