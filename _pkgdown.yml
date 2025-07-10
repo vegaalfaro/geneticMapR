@@ -18,8 +18,11 @@ navbar:
         href: vignettes/pheno.html
       - text: "Phenotype Part II"
         href: vignettes/pheno_part_2.html
-      - text: "Linkage Groups and Marker Order"
+      - text: "QTL analysis"
         href: vignettes/qtl_analysis.html
+      - text: "QTL trace"
+        href: vignettes/qtl_trace.html
+
 
 reference:
   - title: Core Functions

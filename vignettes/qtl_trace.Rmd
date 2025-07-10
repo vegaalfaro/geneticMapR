@@ -1,6 +1,7 @@
 ---
 title: "Drawing a QTL trace"
 output: rmarkdown::html_vignette
+date: "2025-07-10"
 vignette: >
   %\VignetteIndexEntry{qtl_trace}
   %\VignetteEngine{knitr::rmarkdown}

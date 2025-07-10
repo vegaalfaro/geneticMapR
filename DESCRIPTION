@@ -25,7 +25,8 @@ Imports:
     qtl,
     utils,
     png,
-    MapRtools
+    MapRtools,
+    tidyverse
 Suggests: 
     knitr,
     rmarkdown,

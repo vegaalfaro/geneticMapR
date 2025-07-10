@@ -1,5 +1,5 @@
 ---
-title: "QTL analysis using R/qtl and help from geneticMapR"
+title: "QTL analysis"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{qtl_analysis}

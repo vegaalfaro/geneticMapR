@@ -9,7 +9,7 @@ plot_marey(map, chrom)
 \arguments{
 \item{map}{A data frame containing marker mapping information with at least the following columns:
 \itemize{
-\item \code{"position_Mb"}: Physical position of markers (in base pairs).
+\item \code{"position_Mb"}: Physical position of markers (best in Mb).
 \item \code{"position_cM"}: Genetic distance in centimorgans (cM).
 }}
 
