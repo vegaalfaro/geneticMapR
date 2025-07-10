@@ -95,3 +95,9 @@ Check the articles tab for a systematic example from VCF to Effect Plots.
 library(utils)
 utils::sessionInfo()
 ```
+
+## Last update:
+
+```{r, echo=FALSE}
+format(Sys.Date(), "%Y-%m-%d")
+```

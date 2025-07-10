@@ -4,6 +4,7 @@
 # geneticMapR <img src="man/figures/logo.png" width="200px" align="right" alt="geneticMapR website"/>
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 `geneticMapR` simplifies the construction of genetic maps. Built on top
@@ -44,12 +45,12 @@ documentation also provides some examples.
 
 ## Usage
 
-The example shows how to *recode* markers when neither parent is the
-reference genome, as is common with
+The example shows how to *recode_markers* markers when neither parent is
+the reference genome, as is common with
 [GBS](https://en.wikipedia.org/wiki/Genotyping_by_sequencing) data.
 Molecular markers (SNPs) must be phased to accurately trace allele
-inheritance in the progeny. `recode` is a general function that can help
-with that:
+inheritance in the progeny. `recode_markers` is a general function that
+can help with that:
 
 #### Recode markers
 
@@ -67,8 +68,8 @@ print(simulated_geno)
 #> Marker5       0       2    0    2    1
 #> Marker6       2       0    2    0    0
 
-# Recode the markers using the recode() function
-phased <- geneticMapR::recode(simulated_geno, parent1 = "Parent1", parent2 = "Parent2")
+# Recode the markers using the recode_markers() function
+phased <- geneticMapR::recode_markers(simulated_geno, parent1 = "Parent1", parent2 = "Parent2")
 
 # Print the output
 print(phased)
@@ -112,3 +113,7 @@ For detailed documentation and examples, visit
 ## Hexlogo
 
 Credit: Adriana Lopez
+
+## Last update:
+
+    #> [1] "2025-07-10"
