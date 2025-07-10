@@ -99,5 +99,6 @@ utils::sessionInfo()
 ## Last update:
 
 ```{r, echo=FALSE}
-format(Sys.Date(), "%Y-%m-%d")
+format(Sys.Date(), "%Y-%m-%d") 
+
 ```

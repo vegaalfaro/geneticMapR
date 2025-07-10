@@ -24,7 +24,7 @@ Imports:
     ggpubr,
     qtl,
     utils,
-    png
+    png,
     MapRtools
 Suggests: 
     knitr,
