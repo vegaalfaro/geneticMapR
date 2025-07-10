@@ -82,7 +82,9 @@ data("qtl_example")
                 trait_colors = qtl_example$colors,
                 trait_labels = qtl_example$labels,
                 plot_title = "Population 1")
+     
 ```
+
 
 ## Documentation
 
@@ -94,6 +96,7 @@ Credit: Adriana Lopez
 ## Last update:
 
 ```{r, echo=FALSE}
-format(Sys.Date(), "%Y-%m-%d")
+format(Sys.Date(), "%Y-%m-%d") 
+format(Sys.Date(), "%Y-%m-%d") 
 ```
 
