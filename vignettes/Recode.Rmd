@@ -42,9 +42,8 @@ load_or_install_cran("BiocManager")
 
 
 # Variant Annotation Package
-#BiocManager::install("VariantAnnotation")
+BiocManager::install("VariantAnnotation")
 load_or_install_cran("VariantAnnotation")
-
 
 ```
 
