@@ -114,8 +114,9 @@ pop2 <- add_physical_pos(pop2)
 ```
 
 ## Known QTLs (Vertical Lines)
+
 ```{r}
-vline_df2 <- data.frame(chr = unique(pop1$chr),
+vline_df2 <- data.frame(chr = unique(pop2$chr),
                         vline = c(NA, NA, NA, 48, NA, 16.6, 12.75, NA, NA))
 
 ```
