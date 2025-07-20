@@ -37,14 +37,14 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../vignettes/Recode.html">Recode Markers</a></li>
-    <li><a class="dropdown-item" href="../vignettes/LD_binning.html">Binning SNP Markers</a></li>
-    <li><a class="dropdown-item" href="../vignettes/Linkage_Groups.html">Linkage Groups and Marker Order</a></li>
-    <li><a class="dropdown-item" href="../vignettes/Haplotype_and_Map.html">Haplotype Reconstruction and Genetic Map</a></li>
-    <li><a class="dropdown-item" href="../vignettes/pheno.html">Phenotype Part I</a></li>
-    <li><a class="dropdown-item" href="../vignettes/pheno_part_2.html">Phenotype Part II</a></li>
-    <li><a class="dropdown-item" href="../vignettes/qtl_analysis.html">QTL analysis</a></li>
-    <li><a class="dropdown-item" href="../vignettes/qtl_trace.html">QTL trace</a></li>
+<li><a class="dropdown-item" href="../docs/Recode.html">Recode Markers</a></li>
+    <li><a class="dropdown-item" href="../docs/LD_binning.html">Binning SNP Markers</a></li>
+    <li><a class="dropdown-item" href="../docs/Linkage_Groups.html">Linkage Groups and Marker Order</a></li>
+    <li><a class="dropdown-item" href="../docs/Haplotype_and_Map.html">Haplotype Reconstruction and Genetic Map</a></li>
+    <li><a class="dropdown-item" href="../docs/pheno.html">Phenotype Part I</a></li>
+    <li><a class="dropdown-item" href="../docs/pheno_part_2.html">Phenotype Part II</a></li>
+    <li><a class="dropdown-item" href="../docs/qtl_analysis.html">QTL analysis</a></li>
+    <li><a class="dropdown-item" href="../docs/qtl_trace.html">QTL trace</a></li>
   </ul>
 </li>
       </ul>
@@ -87,27 +87,14 @@ functions based on <code>ggplot2</code> and <code>ggpubr.</code></p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vegaalfaro/geneticMapR" class="external-link">geneticMapR</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter, lag</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/cowplot/" class="external-link">cowplot</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/ggpubr/" class="external-link">ggpubr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'ggpubr'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:cowplot':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     get_legend</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/ggpubr/" class="external-link">ggpubr</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="load-cim-results">Load CIM Results<a class="anchor" aria-label="anchor" href="#load-cim-results"></a>
 </h2>
-<p>Let’s load the previous results.</p>
+<p>Let’s load the previous results from the QTL analysis script.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"../data/plot_trace_pop2.RData"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -125,6 +112,22 @@ except the ID (8th column).</p>
 <div class="section level2">
 <h2 id="helper-functions">Helper functions<a class="anchor" aria-label="anchor" href="#helper-functions"></a>
 </h2>
+<p>This section defines a few utility functions used throughout the
+analysis. These functions streamline common tasks, including combining
+QTL results across multiple traits, extracting physical positions from
+marker names, and determining significance thresholds from permutation
+tests:</p>
+<p><code>combine_qtl()</code> merges QTL mapping results for multiple
+traits into a single data frame while adding a column to indicate the
+trait name associated with each result.</p>
+<p><code>add_physical_pos()</code> parses marker names to extract and
+convert physical positions (in base pairs) into megabases (Mb), which
+are useful for plotting along chromosomes.</p>
+<p><code>get_thresholds()</code> filters QTL peaks that exceed a LOD
+score significance threshold (typically the 5% level) and returns the
+relevant chromosome(s), the threshold line, and the associated trait
+label for visualization.</p>
+<p>These helper functions simplify repetitive tasks.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">combine_qtl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">results</span>, <span class="va">trait_names</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span>
@@ -152,6 +155,14 @@ except the ID (8th column).</p>
 <div class="section level2">
 <h2 id="thresholds">Thresholds<a class="anchor" aria-label="anchor" href="#thresholds"></a>
 </h2>
+<p>In this step, we compute the LOD score significance thresholds for
+each trait using results from permutation tests. This is important to
+identify which QTL peaks are statistically significant.</p>
+<p>The code uses the <code>get_thresholds()</code> helper function to
+extract chromosomes with QTLs exceeding the 5% significance threshold
+for each trait. The results are combined into a single data frame,
+thresholds_df2, which will later be used to add horizontal reference
+lines (significance cutoffs) in QTL plots.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">thresholds_df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">traits</span>, <span class="kw">function</span><span class="op">(</span><span class="va">trait</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu">get_thresholds</span><span class="op">(</span><span class="va">cim_qtl_results2</span><span class="op">[[</span><span class="va">trait</span><span class="op">]</span><span class="op">]</span>, <span class="va">cim_perm_pop2</span><span class="op">[[</span><span class="va">trait</span><span class="op">]</span><span class="op">]</span>, <span class="va">trait</span><span class="op">)</span></span>
@@ -160,6 +171,13 @@ except the ID (8th column).</p>
 <div class="section level2">
 <h2 id="trait-colors">Trait Colors<a class="anchor" aria-label="anchor" href="#trait-colors"></a>
 </h2>
+<p>We are working with multiple traits, which is useful for QTL mapping
+projects. To ensure consistent and visually distinct plotting across
+traits, we define a named vector of colors for each trait. These colors
+will be used in visualizations such as QTL plots to easily distinguish
+between traits like tip angle, width, length, and biomass. This improves
+clarity when interpreting multi-trait results and enhances the overall
+readability of figures.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trait_colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  tip_angle_top <span class="op">=</span> <span class="st">"#d55e00"</span>,</span>
@@ -173,6 +191,15 @@ except the ID (8th column).</p>
 <div class="section level2">
 <h2 id="combine-and-annotate-qtl-results">Combine and Annotate QTL Results<a class="anchor" aria-label="anchor" href="#combine-and-annotate-qtl-results"></a>
 </h2>
+<p>In this step, we merge QTL mapping results across all traits into a
+single data frame. For each trait, we extract the corresponding QTL
+output, annotate it with the trait name (response_var), and bind the
+results together.</p>
+<p>We then add to the combined data the physical positions (in
+megabases) using the <code>add_physical_pos()</code> helper function.
+These physical positions are parsed from the marker names and are
+essential for visualizing QTLs along chromosomes with accurate genomic
+context.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pop2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cim_qtl_results2</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">cim_qtl_results2</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span></span>
@@ -180,15 +207,44 @@ except the ID (8th column).</p>
 <span>  <span class="va">df</span></span>
 <span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">pop2</span> <span class="op">&lt;-</span> <span class="fu">add_physical_pos</span><span class="op">(</span><span class="va">pop2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in add_physical_pos(pop2): NAs introduced by coercion</span></span></code></pre></div>
+<span><span class="va">pop2</span> <span class="op">&lt;-</span> <span class="fu">add_physical_pos</span><span class="op">(</span><span class="va">pop2</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="known-qtls-vertical-lines">Known QTLs (Vertical Lines)<a class="anchor" aria-label="anchor" href="#known-qtls-vertical-lines"></a>
 </h2>
+<p>To help interpret the QTL results in the context of prior knowledge,
+we define a set of known QTL positions for specific chromosomes. These
+are stored in the <code>vline_df2</code> data frame, where each row
+corresponds to a chromosome and the <code>vline</code> column indicates
+the physical position (in megabases) of a known or previously reported
+QTL.</p>
+<p>These values can later be used to add vertical reference lines to
+plots, highlighting regions of interest based on previous knowledge or
+literature or your own previous projects!. Chromosomes without known
+QTLs are assigned NA.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">vline_df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">pop2</span><span class="op">$</span><span class="va">chr</span><span class="op">)</span>,</span>
 <span>                        vline <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">48</span>, <span class="cn">NA</span>, <span class="fl">16.6</span>, <span class="fl">12.75</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="draw-qtl-trace-using-better-visualization">Draw QTL trace using better visualization<a class="anchor" aria-label="anchor" href="#draw-qtl-trace-using-better-visualization"></a>
+</h2>
+<p>Draw QTL Trace Using Better Visualization This plot visualizes the
+QTL scan results for Population 2 across all chromosomes. Each trait is
+shown in a distinct color (as defined earlier), with the LOD score
+plotted along the y-axis and the genetic position (in centimorgans) on
+the x-axis.</p>
+<p>Key visual elements include:</p>
+<p>LOD curves (geom_line) for each trait showing QTL signal
+strength.</p>
+<p>Horizontal lines (geom_hline) marking the trait-specific significance
+thresholds based on permutation tests.</p>
+<p>Vertical dotted lines (geom_vline) indicating positions of known
+QTLs, aiding comparison with previous studies or expectations.</p>
+<p>Chromosomes are displayed side by side using facet_wrap, allowing for
+clear comparison of QTL distributions across the genome. The result is a
+clean, interpretable plot summarizing multi-trait QTL signals for
+Population 2.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pop2_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">pop2</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">pos</span>, y <span class="op">=</span> <span class="va">lod</span>, color <span class="op">=</span> <span class="va">response_var</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">0.85</span>, alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
@@ -203,16 +259,9 @@ except the ID (8th column).</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Position (cM)"</span>, y <span class="op">=</span> <span class="st">"LOD"</span>, color <span class="op">=</span> <span class="st">"Trait"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">80</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Population 2"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
 <span></span>
-<span><span class="va">pop2_plot</span></span>
-<span><span class="co">#&gt; Warning: Removed 6 rows containing missing values or values outside the scale range</span></span>
-<span><span class="co">#&gt; (`geom_vline()`).</span></span></code></pre></div>
-<p><img src="qtl_trace_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<span><span class="va">pop2_plot</span></span></code></pre></div>
+<p><img src="qtl_trace_files/figure-html/trace-1.png" width="720"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
