@@ -43,9 +43,11 @@
 <li><a class="dropdown-item" href="vignettes/Recode.html">Recode Markers</a></li>
     <li><a class="dropdown-item" href="vignettes/LD_binning.html">Binning SNP Markers</a></li>
     <li><a class="dropdown-item" href="vignettes/Linkage_Groups.html">Linkage Groups and Marker Order</a></li>
+    <li><a class="dropdown-item" href="vignettes/Haplotype_and_Map.html">Haplotype Reconstruction and Genetic Map</a></li>
     <li><a class="dropdown-item" href="vignettes/pheno.html">Phenotype Part I</a></li>
     <li><a class="dropdown-item" href="vignettes/pheno_part_2.html">Phenotype Part II</a></li>
-    <li><a class="dropdown-item" href="vignettes/qtl_analysis.html">Linkage Groups and Marker Order</a></li>
+    <li><a class="dropdown-item" href="vignettes/qtl_analysis.html">QTL analysis</a></li>
+    <li><a class="dropdown-item" href="vignettes/qtl_trace.html">QTL trace</a></li>
   </ul>
 </li>
       </ul>
@@ -93,7 +95,7 @@
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>The example shows how to <em>recode</em> markers when neither parent is the reference genome, as is common with <a href="https://en.wikipedia.org/wiki/Genotyping_by_sequencing" class="external-link">GBS</a> data. Molecular markers (SNPs) must be phased to accurately trace allele inheritance in the progeny. <code>recode</code> is a general function that can help with that:</p>
+<p>The example shows how to <em>recode_markers</em> markers when neither parent is the reference genome, as is common with <a href="https://en.wikipedia.org/wiki/Genotyping_by_sequencing" class="external-link">GBS</a> data. Molecular markers (SNPs) must be phased to accurately trace allele inheritance in the progeny. <code>recode_markers</code> is a general function that can help with that:</p>
 <div class="section level4">
 <h4 id="recode-markers">Recode markers<a class="anchor" aria-label="anchor" href="#recode-markers"></a>
 </h4>
@@ -111,8 +113,8 @@
 <span><span class="co">#&gt; Marker5       0       2    0    2    1</span></span>
 <span><span class="co">#&gt; Marker6       2       0    2    0    0</span></span>
 <span></span>
-<span><span class="co"># Recode the markers using the recode() function</span></span>
-<span><span class="va">phased</span> <span class="op">&lt;-</span> <span class="fu">geneticMapR</span><span class="fu">::</span><span class="fu">recode</span><span class="op">(</span><span class="va">simulated_geno</span>, parent1 <span class="op">=</span> <span class="st">"Parent1"</span>, parent2 <span class="op">=</span> <span class="st">"Parent2"</span><span class="op">)</span></span>
+<span><span class="co"># Recode the markers using the recode_markers() function</span></span>
+<span><span class="va">phased</span> <span class="op">&lt;-</span> <span class="fu">geneticMapR</span><span class="fu">::</span><span class="fu"><a href="reference/recode_markers.html">recode_markers</a></span><span class="op">(</span><span class="va">simulated_geno</span>, parent1 <span class="op">=</span> <span class="st">"Parent1"</span>, parent2 <span class="op">=</span> <span class="st">"Parent2"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Print the output</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">phased</span><span class="op">)</span></span>
@@ -153,6 +155,11 @@
 <h2 id="hexlogo">Hexlogo<a class="anchor" aria-label="anchor" href="#hexlogo"></a>
 </h2>
 <p>Credit: Adriana Lopez</p>
+</div>
+<div class="section level2">
+<h2 id="last-update">Last update:<a class="anchor" aria-label="anchor" href="#last-update"></a>
+</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co">#&gt; [1] "2025-07-10"</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
