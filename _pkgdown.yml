@@ -9,23 +9,21 @@ navbar:
     text: "Articles"
     menu:
       - text: "Recode Markers"
-        href: docs/articles/Recode.html
+        href: articles/Recode.html
       - text: "Binning SNP Markers"
-        href: docs/articles/LD_binning.html
+        href: articles/LD_binning.html
       - text: "Linkage Groups and Marker Order"
-        href: docs/articles/Linkage_Groups.html
+        href: articles/Linkage_Groups.html
       - text: "Haplotype Reconstruction and Genetic Map"
-        href: docs/articles/Haplotype_and_Map.html
+        href: articles/Haplotype_and_Map.html
       - text: "Phenotype Part I"
-        href: docs/articles/pheno.html
+        href: articles/pheno.html
       - text: "Phenotype Part II"
-        href: docs/articles/pheno_part_2.html
+        href: articles/pheno_part_2.html
       - text: "QTL analysis"
-        href: docs/articles/qtl_analysis.html
+        href: articles/qtl_analysis.html
       - text: "QTL trace"
-        href: docs/articles/qtl_trace.html
-
-
+        href: articles/qtl_trace.html
 reference:
   - title: Core Functions
     contents:
