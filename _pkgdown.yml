@@ -10,30 +10,34 @@ navbar:
       menu:
         - text: "Package Presentation"
           href: articles/geneticMapR.html
-        - header: "Step 1: Data Preprocessing"
+        - text: "--- Step 1: Data Preprocessing ---"
+          href: "#"
         - text: "1. Recode Markers"
           href: articles/Recode.html
         - text: "2. Binning SNP Markers"
           href: articles/LD_binning.html
-        - header: "Step 2: Genetic Map Construction"
+        - text: "--- Step 2: Genetic Map Construction ---"
+          href: "#"
         - text: "3. Linkage Groups and Marker Order"
           href: articles/Linkage_Groups.html
         - text: "4. Haplotype Reconstruction and Genetic Map"
           href: articles/Haplotype_and_Map.html
-        - header: "Step 3: Phenotypic Analysis"
+        - text: "--- Step 3: Phenotypic Analysis ---"
+          href: "#"
         - text: "5. Phenotype Part I"
           href: articles/pheno.html
         - text: "6. Phenotype Part II"
           href: articles/pheno_part_2.html
-        - header: "Step 4: QTL Mapping"
+        - text: "--- Step 4: QTL Mapping ---"
+          href: "#"
         - text: "7. QTL analysis"
           href: articles/qtl_analysis.html
         - text: "8. QTL trace"
           href: articles/qtl_trace.html
-        - header: "Reference"
+        - text: "--- Reference ---"
+          href: "#"
         - text: "Functions Reference"
           href: reference/index.html
-
 
 reference:
   - title: Core Functions
